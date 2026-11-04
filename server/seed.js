@@ -1,7 +1,5 @@
 // seed.js
-// Isi koleksi contents dengan 30 konten.
-// No 1 sampai 20 langsung terbit (tanggal mundur ke belakang),
-// no 21 sampai 30 terjadwal ke depan dengan selang 1 sampai 2 hari.
+// isi 30 konten
 require('dotenv').config();
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
@@ -10,7 +8,7 @@ const contents = require('./data/contents.json');
 
 const SATU_HARI = 24 * 60 * 60 * 1000;
 const JUMLAH_TERBIT = 20;
-// hari ke depan untuk konten terjadwal (no 21 sampai 30)
+// jadwal terbit
 const JADWAL = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14];
 
 const jamPagi = (date) => {
@@ -22,7 +20,7 @@ const jamPagi = (date) => {
 const hitungPublishedAt = (no) => {
   const sekarang = new Date();
   if (no <= JUMLAH_TERBIT) {
-    // konten lama terbit lebih dulu, no 20 terbit kemarin
+    // sudah terbit
     return jamPagi(sekarang.getTime() - (JUMLAH_TERBIT - no + 1) * SATU_HARI);
   }
   return jamPagi(sekarang.getTime() + JADWAL[no - JUMLAH_TERBIT - 1] * SATU_HARI);

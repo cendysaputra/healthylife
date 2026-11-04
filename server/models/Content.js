@@ -28,11 +28,11 @@ const ContentSchema = new mongoose.Schema({
   publishedAt: { type: Date, required: true }
 }, { timestamps: true });
 
-// untuk pencarian judul dan ringkasan
+// index pencarian
 ContentSchema.index({ title: 'text', summary: 'text', tags: 'text' });
 ContentSchema.index({ category: 1, publishedAt: -1 });
 
-// hanya konten yang sudah terbit
+// konten terbit
 ContentSchema.statics.published = function (filter = {}) {
   return this.find({ ...filter, publishedAt: { $lte: new Date() } });
 };
