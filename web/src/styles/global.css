@@ -1,0 +1,214 @@
+/* Global CSS HealthyLife */
+
+/* Variabel */
+:root {
+  /* Warna (sementara putih semua) */
+  --color-bg: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-text: #121212;
+  --color-brand: #0099FF;
+  --color-border: #121212;
+
+  /* Font */
+  --font-heading: 'Inter', system-ui, sans-serif;
+  --font-body: 'Poppins', system-ui, sans-serif;
+
+  /* Layout desktop */
+  --container-width: 1200px;
+  --container-padding: 24px;
+  --section-gap: 160px;
+
+  /* tablet: <= 1024px, mobile: <= 767px */
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  :root {
+    --container-padding: 24px;
+    --section-gap: 72px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  :root {
+    --container-padding: 16px;
+    --section-gap: 72px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Kerangka pages */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: calc(var(--container-width) + var(--container-padding) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* Jarak section */
+.section + .section {
+  margin-top: var(--section-gap);
+}
+
+.section:last-child {
+  margin-bottom: var(--section-gap);
+}
+
+/* Header */
+.header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header__nav {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header__menu {
+  display: flex;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Hamburger hide desktop */
+.header__burger {
+  display: none;
+}
+
+/* Menu tablet/mobile */
+@media (max-width: 1024px) {
+  .header__burger {
+    display: block;
+  }
+
+  .header__nav {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header__nav.is-open {
+    display: flex;
+  }
+
+  .header__menu,
+  .header__actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropdown__panel {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 10;
+  min-width: 260px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+@media (max-width: 1024px) {
+  .dropdown__panel {
+    position: static;
+  }
+}
+
+/* Grid card */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Video 16:9 */
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+}
+
+.video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Tabel bisa digeser */
+.table-wrap {
+  overflow-x: auto;
+}
+
+/* Footer */
+.footer {
+  padding-block: 24px;
+}
