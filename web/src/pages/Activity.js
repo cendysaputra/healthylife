@@ -71,33 +71,53 @@ function Activity() {
     return `Sedikit lagi! Tinggal ${summary.remaining} menit untuk capai targetmu.`;
   };
 
-  if (loading) return <p className="container">Memuat...</p>;
+  if (loading) {
+    return (
+      <section className="section">
+        <div className="container">
+          <p className="status" role="status">Memuat...</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
       <section className="section">
         <div className="container">
-          <h1>Aktivitas</h1>
+          <header className="page-head">
+            <h1>Aktivitas</h1>
+          </header>
 
           {/* Progres hari ini */}
           {summary && (
-            <div>
-              <h2>Hari ini</h2>
-              <p>
-                <strong>{summary.today}</strong> dari {summary.target} menit ({summary.percent}%)
-              </p>
-              <progress value={summary.today} max={summary.target} aria-label="Progres target harian" />
-              <p>{pesanProgres()}</p>
+            <div className="today">
+              <div>
+                <h2 className="today__title">Hari ini</h2>
+                <p className="stat">
+                  <strong className="stat__value">{summary.today}</strong>
+                  <span className="stat__unit">dari {summary.target} menit</span>
+                </p>
+                <progress value={summary.today} max={summary.target} aria-label="Progres target harian" />
+                <div className="today__foot">
+                  <p className="today__message">{pesanProgres()}</p>
+                  <p className="today__percent">{summary.percent}% dari target</p>
+                </div>
+              </div>
 
               {/* Tujuh hari */}
-              <h3>7 hari terakhir</h3>
-              <ul>
-                {summary.week.map((h) => (
-                  <li key={h.date}>
-                    {formatTanggal(h.date)}: {h.minutes} menit
-                  </li>
-                ))}
-              </ul>
+              <div>
+                <h3 className="week__title">7 hari terakhir</h3>
+                <ul className="week-list">
+                  {summary.week.map((h) => (
+                    <li key={h.date} className="week-list__item">
+                      <span className="week-list__date">{formatTanggal(h.date)}</span>
+                      <span className="week-list__minutes">{h.minutes} menit</span>
+                      <progress value={h.minutes} max={summary.target} aria-hidden="true" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>
@@ -106,41 +126,60 @@ function Activity() {
       <section className="section">
         <div className="container">
           {/* Form catat */}
-          <form onSubmit={handleSubmit}>
-            <h2>Catat aktivitas</h2>
+          <div className="form-block">
+            <form onSubmit={handleSubmit} className="form">
+              <h2 className="form__title">Catat aktivitas</h2>
 
-            <label htmlFor="type">Jenis</label>
-            <select id="type" name="type" value={form.type} onChange={handleChange}>
-              {JENIS_AKTIVITAS.map((j) => (
-                <option key={j.value} value={j.value}>{j.label}</option>
-              ))}
-            </select>
+              <div className="form__grid">
+                <div className="field">
+                  <label htmlFor="type">Jenis</label>
+                  <select id="type" name="type" value={form.type} onChange={handleChange}>
+                    {JENIS_AKTIVITAS.map((j) => (
+                      <option key={j.value} value={j.value}>{j.label}</option>
+                    ))}
+                  </select>
+                </div>
 
-            <label htmlFor="duration">Durasi (menit)</label>
-            <input id="duration" name="duration" type="number" min="1" max="600" required value={form.duration} onChange={handleChange} />
+                <div className="field">
+                  <label htmlFor="duration">Durasi (menit)</label>
+                  <input id="duration" name="duration" type="number" min="1" max="600" required value={form.duration} onChange={handleChange} />
+                </div>
 
-            <label htmlFor="date">Tanggal</label>
-            <input id="date" name="date" type="date" max={hariIni()} required value={form.date} onChange={handleChange} />
+                <div className="field">
+                  <label htmlFor="date">Tanggal</label>
+                  <input id="date" name="date" type="date" max={hariIni()} required value={form.date} onChange={handleChange} />
+                </div>
 
-            <label htmlFor="note">Catatan</label>
-            <input id="note" name="note" type="text" maxLength="200" placeholder="Opsional" value={form.note} onChange={handleChange} />
+                <div className="field">
+                  <label htmlFor="note">Catatan</label>
+                  <input id="note" name="note" type="text" maxLength="200" placeholder="Opsional" value={form.note} onChange={handleChange} />
+                </div>
+              </div>
 
-            <button type="submit" disabled={simpan}>{simpan ? 'Menyimpan...' : 'Simpan Aktivitas'}</button>
-          </form>
+              <div className="form__actions">
+                <button type="submit" className="btn btn--primary" disabled={simpan}>{simpan ? 'Menyimpan...' : 'Simpan Aktivitas'}</button>
+              </div>
+            </form>
 
-          {error && <p role="alert">{error}</p>}
-          {pesan && <p role="status">{pesan}</p>}
+            {error && <p role="alert" className="alert alert--error">{error}</p>}
+            {pesan && <p role="status" className="alert alert--success">{pesan}</p>}
+          </div>
         </div>
       </section>
 
       <section className="section">
         <div className="container">
           {/* Riwayat */}
-          <h2>Riwayat aktivitas</h2>
+          <div className="section-head">
+            <h2>Riwayat aktivitas</h2>
+          </div>
           {riwayat.length === 0 ? (
-            <p>Belum ada aktivitas. Catat aktivitas pertamamu di atas.</p>
+            <div className="empty">
+              <p className="empty__title">Belum ada aktivitas.</p>
+              <p className="empty__text">Catat aktivitas pertamamu lewat form di atas. Riwayatnya muncul di sini.</p>
+            </div>
           ) : (
-            <div className="table-wrap">
+            <div className="table-wrap" tabIndex="0" role="region" aria-label="Riwayat aktivitas">
               <table>
                 <thead>
                   <tr>
@@ -148,18 +187,18 @@ function Activity() {
                     <th>Jenis</th>
                     <th>Durasi</th>
                     <th>Catatan</th>
-                    <th>Aksi</th>
+                    <th className="table-action">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
                   {riwayat.map((a) => (
                     <tr key={a._id}>
-                      <td>{formatTanggal(a.date)}</td>
+                      <td className="table-num">{formatTanggal(a.date)}</td>
                       <td>{labelAktivitas(a.type)}</td>
-                      <td>{a.duration} menit</td>
+                      <td className="table-num">{a.duration} menit</td>
                       <td>{a.note || '-'}</td>
-                      <td>
-                        <button type="button" onClick={() => handleHapus(a._id)}>Hapus</button>
+                      <td className="table-action">
+                        <button type="button" className="btn-text btn-text--danger" onClick={() => handleHapus(a._id)}>Hapus</button>
                       </td>
                     </tr>
                   ))}

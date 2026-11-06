@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import client, { pesanError } from '../api/client';
 import { useAuth } from '../context/AuthContext';
+import Icon from './Icon';
 
 // Button favorit
 function FavoriteButton({ contentId }) {
@@ -50,11 +51,18 @@ function FavoriteButton({ contentId }) {
   };
 
   return (
-    <div>
-      <button type="button" onClick={handleClick} disabled={proses}>
+    <div className="favorite">
+      <button
+        type="button"
+        className={`btn btn--secondary btn--sm favorite__btn ${tersimpan ? 'is-saved' : ''}`}
+        onClick={handleClick}
+        disabled={proses}
+        aria-pressed={tersimpan}
+      >
+        <Icon name="heart" />
         {tersimpan ? 'Hapus dari Favorit' : 'Simpan ke Favorit'}
       </button>
-      {error && <p role="alert">{error}</p>}
+      {error && <p role="alert" className="alert alert--error">{error}</p>}
     </div>
   );
 }

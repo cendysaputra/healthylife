@@ -45,29 +45,44 @@ function Register() {
   return (
     <section className="section">
       <div className="container">
-        <h1>Daftar</h1>
+        <div className="auth">
+          <div className="auth__intro">
+            <h1>Daftar</h1>
+            <p>Buat akun untuk mencatat aktivitas harian, memantau target, dan menyimpan konten favorit.</p>
+          </div>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Nama</label>
-          <input id="name" name="name" type="text" required value={form.name} onChange={handleChange} />
+          <div className="auth__form">
+            <form onSubmit={handleSubmit} className="form">
+              <div className="field">
+                <label htmlFor="name">Nama</label>
+                <input id="name" name="name" type="text" autoComplete="name" required value={form.name} onChange={handleChange} />
+              </div>
 
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} />
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input id="email" name="email" type="email" autoComplete="email" required value={form.email} onChange={handleChange} />
+              </div>
 
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" minLength="8" required value={form.password} onChange={handleChange} />
+              <div className="field">
+                <label htmlFor="password">Password</label>
+                <input id="password" name="password" type="password" autoComplete="new-password" minLength="8" required value={form.password} onChange={handleChange} />
+              </div>
 
-          <label htmlFor="konfirmasi">Konfirmasi password</label>
-          <input id="konfirmasi" name="konfirmasi" type="password" minLength="8" required value={form.konfirmasi} onChange={handleChange} />
+              <div className="field">
+                <label htmlFor="konfirmasi">Konfirmasi password</label>
+                <input id="konfirmasi" name="konfirmasi" type="password" autoComplete="new-password" minLength="8" required value={form.konfirmasi} onChange={handleChange} />
+              </div>
 
-          {error && <p role="alert">{error}</p>}
+              {error && <p role="alert" className="alert alert--error">{error}</p>}
 
-          <button type="submit" disabled={proses}>{proses ? 'Memproses...' : 'Daftar'}</button>
-        </form>
+              <button type="submit" className="btn btn--primary btn--block" disabled={proses}>{proses ? 'Memproses...' : 'Daftar'}</button>
+            </form>
 
-        <p>
-          Sudah punya akun? <Link to="/login" state={location.state}>Masuk</Link>
-        </p>
+            <p className="auth__switch">
+              Sudah punya akun? <Link to="/login" state={location.state}>Masuk</Link>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

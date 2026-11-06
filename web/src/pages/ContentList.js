@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import client, { pesanError } from '../api/client';
 import ContentCard from '../components/ContentCard';
+import Icon from '../components/Icon';
 import { KATEGORI, labelKategori } from '../utils/format';
 
 function ContentList() {
@@ -51,47 +52,68 @@ function ContentList() {
   return (
     <section className="section">
       <div className="container">
-        <h1>{judul}</h1>
+        <header className="page-head">
+          <h1>{judul}</h1>
+        </header>
 
-        {/* Tab kategori */}
-        <div role="tablist" aria-label="Kategori">
-          <button type="button" role="tab" aria-selected={!kategori} onClick={() => ubahParam({ kategori: '', page: '' })}>
-            Semua
-          </button>
-          {KATEGORI.map((k) => (
-            <button
-              key={k.value}
-              type="button"
-              role="tab"
-              aria-selected={kategori === k.value}
-              onClick={() => ubahParam({ kategori: k.value, page: '' })}
-            >
-              {k.label}
+        <div className="toolbar">
+          {/* Tab kategori */}
+          <div role="tablist" aria-label="Kategori" className="tabs">
+            <button type="button" role="tab" className="tab" aria-selected={!kategori} onClick={() => ubahParam({ kategori: '', page: '' })}>
+              Semua
             </button>
-          ))}
+            {KATEGORI.map((k) => (
+              <button
+                key={k.value}
+                type="button"
+                role="tab"
+                className="tab"
+                aria-selected={kategori === k.value}
+                onClick={() => ubahParam({ kategori: k.value, page: '' })}
+              >
+                {k.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Pencarian */}
+          <form onSubmit={handleCari} className="search" role="search">
+            <div className="search__field">
+              <label htmlFor="cari">Cari konten</label>
+              <div className="search__input">
+                <Icon name="search" />
+                <input
+                  id="cari"
+                  type="search"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="Contoh: sarapan sehat"
+                />
+              </div>
+            </div>
+            <button type="submit" className="btn btn--secondary">Cari</button>
+          </form>
         </div>
 
-        {/* Pencarian */}
-        <form onSubmit={handleCari}>
-          <label htmlFor="cari">Cari konten</label>
-          <input
-            id="cari"
-            type="search"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            placeholder="Contoh: sarapan sehat"
-          />
-          <button type="submit">Cari</button>
-        </form>
+        {q && <p className="result-info">Hasil pencarian "{q}": {hasil.total} konten</p>}
 
-        {q && <p>Hasil pencarian "{q}": {hasil.total} konten</p>}
+        {loading && <p className="status" role="status">Memuat...</p>}
+        {error && <p className="alert alert--error" role="alert">{error}</p>}
 
-        {loading && <p>Memuat...</p>}
-        {error && <p role="alert">{error}</p>}
-
-        {!loading && !error && hasil.items.length === 0 && <p>Konten tidak ditemukan.</p>}
+        {!loading && !error && hasil.items.length === 0 && (
+          <div className="empty">
+            <p className="empty__title">Konten tidak ditemukan.</p>
+            {(q || kategori) && (
+              <>
+                <p className="empty__text">Coba kata kunci lain atau pilih kategori Semua.</p>
+                <Link to="/konten" className="link-plain">Lihat semua konten</Link>
+              </>
+            )}
+          </div>
+        )}
 
         {/* Daftar konten */}
+        <h2 className="visually-hidden">Daftar konten</h2>
         {!loading && !error && (
           <div className="grid">
             {hasil.items.map((item) => (
@@ -102,7 +124,7 @@ function ContentList() {
 
         {/* Halaman */}
         {hasil.totalPages > 1 && (
-          <nav aria-label="Halaman">
+          <nav aria-label="Halaman" className="pagination">
             {Array.from({ length: hasil.totalPages }, (_, i) => i + 1).map((n) => (
               <button
                 key={n}

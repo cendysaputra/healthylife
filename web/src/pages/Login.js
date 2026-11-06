@@ -34,24 +34,35 @@ function Login() {
   return (
     <section className="section">
       <div className="container">
-        <h1>Masuk</h1>
-        {location.state?.from && <p>Masuk dulu untuk melanjutkan.</p>}
+        <div className="auth">
+          <div className="auth__intro">
+            <h1>Masuk</h1>
+            <p>Masuk untuk mencatat aktivitas harian dan menyimpan konten favorit.</p>
+            {location.state?.from && <p className="auth__note">Masuk dulu untuk melanjutkan.</p>}
+          </div>
 
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} />
+          <div className="auth__form">
+            <form onSubmit={handleSubmit} className="form">
+              <div className="field">
+                <label htmlFor="email">Email</label>
+                <input id="email" name="email" type="email" autoComplete="email" required value={form.email} onChange={handleChange} />
+              </div>
 
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" required value={form.password} onChange={handleChange} />
+              <div className="field">
+                <label htmlFor="password">Password</label>
+                <input id="password" name="password" type="password" autoComplete="current-password" required value={form.password} onChange={handleChange} />
+              </div>
 
-          {error && <p role="alert">{error}</p>}
+              {error && <p role="alert" className="alert alert--error">{error}</p>}
 
-          <button type="submit" disabled={proses}>{proses ? 'Memproses...' : 'Masuk'}</button>
-        </form>
+              <button type="submit" className="btn btn--primary btn--block" disabled={proses}>{proses ? 'Memproses...' : 'Masuk'}</button>
+            </form>
 
-        <p>
-          Belum punya akun? <Link to="/register" state={location.state}>Daftar sekarang</Link>
-        </p>
+            <p className="auth__switch">
+              Belum punya akun? <Link to="/register" state={location.state}>Daftar sekarang</Link>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );

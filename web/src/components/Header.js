@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import client from '../api/client';
 import { KATEGORI, labelKategori } from '../utils/format';
+import Icon from './Icon';
 
 function Header() {
   const { user, logout } = useAuth();
@@ -75,6 +76,7 @@ function Header() {
           aria-controls="menu-utama"
           onClick={() => setMenuOpen((v) => !v)}
         >
+          <Icon name={menuOpen ? 'close' : 'menu'} />
           {menuOpen ? 'Tutup' : 'Menu'}
         </button>
 
@@ -96,13 +98,16 @@ function Header() {
           </ul>
 
           <div className="header__actions">
-            <Link to="/konten">Cari</Link>
+            <Link to="/konten" className="header__action header__action--icon">
+              <Icon name="search" />
+              <span className="header__action-text">Cari</span>
+            </Link>
 
             {/* Belum login */}
             {!user && (
               <>
-                <Link to="/login">Masuk</Link>
-                <Link to="/register">Daftar</Link>
+                <Link to="/login" className="header__action">Masuk</Link>
+                <Link to="/register" className="btn btn--primary btn--sm">Daftar</Link>
               </>
             )}
 
@@ -110,17 +115,26 @@ function Header() {
             {user && (
               <>
                 <div className="dropdown">
-                  <button type="button" onClick={toggleNotif} aria-expanded={notifOpen}>
-                    Notifikasi {notif.count > 0 && `(${notif.count})`}
+                  <button
+                    type="button"
+                    className="header__action header__action--icon"
+                    onClick={toggleNotif}
+                    aria-expanded={notifOpen}
+                  >
+                    <Icon name="bell" />
+                    <span className="header__action-text">Notifikasi</span>
+                    {notif.count > 0 && <span className="badge header__badge">{notif.count}</span>}
                   </button>
                   {notifOpen && (
                     <div className="dropdown__panel">
-                      {notif.items.length === 0 && <p>Belum ada konten baru.</p>}
-                      <ul>
+                      <p className="dropdown__title">Konten baru</p>
+                      {notif.items.length === 0 && <p className="dropdown__empty">Belum ada konten baru.</p>}
+                      <ul className="dropdown__list">
                         {notif.items.map((item) => (
                           <li key={item._id}>
                             <Link to={`/konten/${item.slug}`} onClick={tutupNotif}>
-                              [{labelKategori(item.category)}] {item.title}
+                              <span className="dropdown__meta">{labelKategori(item.category)}</span>
+                              {item.title}
                             </Link>
                           </li>
                         ))}
@@ -132,20 +146,26 @@ function Header() {
                 <div className="dropdown">
                   <button
                     type="button"
+                    className="header__action"
                     onClick={() => {
                       setAkunOpen((v) => !v);
                       setNotifOpen(false);
                     }}
                     aria-expanded={akunOpen}
                   >
-                    {user.name}
+                    <span className="account__avatar" aria-hidden="true">
+                      {user.name?.charAt(0).toUpperCase()}
+                    </span>
+                    <span className="account__name">{user.name}</span>
+                    <Icon name="chevron-down" className="account__chevron" />
                   </button>
                   {akunOpen && (
                     <div className="dropdown__panel">
-                      <ul>
+                      <ul className="dropdown__list">
                         <li><Link to="/profil">Profil</Link></li>
                         <li><Link to="/profil#favorit">Favorit</Link></li>
-                        <li><button type="button" onClick={handleLogout}>Keluar</button></li>
+                        <li className="dropdown__divider" aria-hidden="true" />
+                        <li><button type="button" className="dropdown__danger" onClick={handleLogout}>Keluar</button></li>
                       </ul>
                     </div>
                   )}
