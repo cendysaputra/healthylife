@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { pesanError } from '../lib/api';
 import { useAuth } from '../lib/auth';
-import Screen, { Section } from '../components/Screen';
+import { colors } from '../lib/theme';
+import AuthLayout from '../components/AuthLayout';
 import Field from '../components/Field';
 import Button from '../components/Button';
+import Teks from '../components/Teks';
 
 export default function Login() {
   const { from } = useLocalSearchParams();
@@ -30,25 +32,53 @@ export default function Login() {
   };
 
   return (
-    <Screen error={error}>
-      <Section>
-        {from ? <Text>Masuk dulu untuk melanjutkan.</Text> : null}
-        <Field
-          label="Email"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoComplete="email"
-        />
-        <Field label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" />
-        <Button title={proses ? 'Memproses...' : 'Masuk'} onPress={handleMasuk} disabled={proses} />
+    <AuthLayout
+      judul={'Masuk, lalu\n'}
+      aksen="lanjutkan ritmemu."
+      deskripsi={
+        from
+          ? 'Masuk dulu untuk melanjutkan. Setelah itu kamu langsung kembali ke halaman tadi.'
+          : 'Catat aktivitas harian, pantau target, dan buka lagi konten favoritmu.'
+      }
+      kartuJudul="Masuk"
+      header="Masuk"
+      error={error}
+    >
+      <Field
+        label="Email"
+        value={email}
+        onChangeText={setEmail}
+        placeholder="nama@email.com"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoComplete="email"
+        textContentType="emailAddress"
+        returnKeyType="next"
+      />
+      <Field
+        label="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        autoComplete="password"
+        textContentType="password"
+        returnKeyType="go"
+        onSubmitEditing={handleMasuk}
+      />
+      <Button title={proses ? 'Memproses...' : 'Masuk'} onPress={handleMasuk} disabled={proses} />
+      <View style={styles.footer}>
+        <Teks style={styles.footerTeks}>Belum punya akun?</Teks>
         <Button
-          title="Belum punya akun? Daftar"
-          variant="outline"
+          title="Daftar gratis"
+          variant="link"
           onPress={() => router.replace({ pathname: '/register', params: from ? { from } : {} })}
         />
-      </Section>
-    </Screen>
+      </View>
+    </AuthLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6 },
+  footerTeks: { color: colors.muted, fontSize: 14 }
+});

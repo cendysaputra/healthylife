@@ -1,10 +1,13 @@
 import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { pesanError } from '../lib/api';
 import { useAuth } from '../lib/auth';
-import Screen, { Section } from '../components/Screen';
+import { colors } from '../lib/theme';
+import AuthLayout from '../components/AuthLayout';
 import Field from '../components/Field';
 import Button from '../components/Button';
+import Teks from '../components/Teks';
 
 export default function Register() {
   const { from } = useLocalSearchParams();
@@ -13,7 +16,7 @@ export default function Register() {
   const [proses, setProses] = useState(false);
   const [error, setError] = useState('');
 
-  const ubah = (key) => (value) => setForm({ ...form, [key]: value });
+  const ubah = (key) => (value) => setForm((f) => ({ ...f, [key]: value }));
 
   const handleDaftar = async () => {
     setError('');
@@ -32,26 +35,63 @@ export default function Register() {
   };
 
   return (
-    <Screen error={error}>
-      <Section>
-        <Field label="Nama" value={form.name} onChangeText={ubah('name')} autoComplete="name" />
-        <Field
-          label="Email"
-          value={form.email}
-          onChangeText={ubah('email')}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          autoComplete="email"
-        />
-        <Field label="Password" value={form.password} onChangeText={ubah('password')} secureTextEntry />
-        <Field label="Konfirmasi password" value={form.konfirmasi} onChangeText={ubah('konfirmasi')} secureTextEntry />
-        <Button title={proses ? 'Memproses...' : 'Daftar'} onPress={handleDaftar} disabled={proses} />
+    <AuthLayout
+      judul={'Satu akun,\n'}
+      aksen="banyak langkah baik."
+      deskripsi="Buat akun gratis untuk mencatat aktivitas, memantau target, dan menyimpan konten favorit."
+      kartuJudul="Daftar gratis"
+      header="Daftar"
+      error={error}
+    >
+      <Field
+        label="Nama"
+        value={form.name}
+        onChangeText={ubah('name')}
+        placeholder="Nama panggilanmu"
+        autoComplete="name"
+        textContentType="name"
+      />
+      <Field
+        label="Email"
+        value={form.email}
+        onChangeText={ubah('email')}
+        placeholder="nama@email.com"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        autoComplete="email"
+        textContentType="emailAddress"
+      />
+      <Field
+        label="Password"
+        value={form.password}
+        onChangeText={ubah('password')}
+        secureTextEntry
+        autoComplete="new-password"
+        textContentType="newPassword"
+      />
+      <Field
+        label="Konfirmasi"
+        value={form.konfirmasi}
+        onChangeText={ubah('konfirmasi')}
+        secureTextEntry
+        hint="Password minimal 8 karakter."
+        returnKeyType="go"
+        onSubmitEditing={handleDaftar}
+      />
+      <Button title={proses ? 'Memproses...' : 'Daftar'} onPress={handleDaftar} disabled={proses} />
+      <View style={styles.footer}>
+        <Teks style={styles.footerTeks}>Sudah punya akun?</Teks>
         <Button
-          title="Sudah punya akun? Masuk"
-          variant="outline"
+          title="Masuk"
+          variant="link"
           onPress={() => router.replace({ pathname: '/login', params: from ? { from } : {} })}
         />
-      </Section>
-    </Screen>
+      </View>
+    </AuthLayout>
   );
 }
+
+const styles = StyleSheet.create({
+  footer: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 6 },
+  footerTeks: { color: colors.muted, fontSize: 14 }
+});
