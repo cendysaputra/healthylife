@@ -89,7 +89,7 @@ Kategori konten: `artikel`, `video`, `olahraga`, `nutrisi`.
 | Item | URL |
 |---|---|
 | Desain Figma | - |
-| Web | - |
+| Web | https://healthylife-theta.vercel.app/ |
 | API | - |
 | Expo Go (QR) | - |
 | APK | - |
