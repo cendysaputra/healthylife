@@ -1,4 +1,4 @@
-// Geometri maskot (dari assets/images/maskot*.svg): ukuran, warna, mata, senyum
+// Geometri maskot
 export const MASKOT = {
   ungu: {
     s: 78,

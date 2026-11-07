@@ -28,7 +28,7 @@ function NotFound() {
         </div>
       </PageHero>
 
-      <section className="category-section container" style={{ paddingBottom: 80 }}>
+      <section className="category-section container">
         <Sym id="buddy" className="section-doodle doodle-b" />
         <div className="section-heading compact">
           <div>

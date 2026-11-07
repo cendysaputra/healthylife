@@ -1,10 +1,10 @@
-/* Interaksi, state, dan komponen bersama */
+/* Komponen bersama */
 :root {
-  --muted: #63605d;
+  --muted: #555;
   --soft: #777066;
   --panel: #fffaf4;
   --panel-line: #e6dfd7;
-  --accent: #ed7647;
+  --accent: #ff6600;
   --danger: #b4321f;
   --success: #2f6b46;
 }
@@ -53,7 +53,7 @@ main:focus {
 }
 
 .button-blue:hover {
-  background: #0052cc;
+  background: var(--hl-purple-hover);
 }
 
 .button-dark:hover {
@@ -164,7 +164,7 @@ main:focus {
   }
 }
 
-/* Header: akun, notifikasi, dropdown */
+/* Header */
 .nav-account {
   position: relative;
 }
@@ -387,7 +387,7 @@ main:focus {
   }
 }
 
-/* Status, alert, kosong */
+/* Status & alert */
 .status {
   font-size: 14px;
   color: var(--muted);
@@ -438,7 +438,7 @@ main:focus {
   }
 }
 
-/* Kartu artikel: tautan & sampul */
+/* Kartu artikel */
 .article-image-button {
   display: block;
   cursor: pointer;
@@ -477,7 +477,7 @@ main:focus {
   margin-left: 6px;
 }
 
-/* Kartu video dari API */
+/* Kartu video */
 .video-card {
   color: inherit;
   display: grid;
@@ -495,7 +495,7 @@ main:focus {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, #2d2c2b66, transparent 55%);
+  background: linear-gradient(to top, #1b1b1b66, transparent 55%);
 }
 
 .video-visual--photo .video-format {
@@ -554,7 +554,7 @@ main:focus {
   }
 }
 
-/* Menu HP: ikon silang */
+/* Menu HP */
 .menu-toggle span {
   transition: transform 0.2s ease;
 }
@@ -600,7 +600,7 @@ main:focus {
 
 /* Dialog form */
 .article-dialog {
-  box-shadow: 0 30px 70px #2d2c2b30;
+  box-shadow: 0 30px 70px #1b1b1b30;
 }
 
 .dialog-close {
@@ -669,7 +669,7 @@ main:focus {
   color: #000;
 }
 
-/* Field umum (dipakai halaman form) */
+/* Field */
 .field {
   display: flex;
   flex-direction: column;
@@ -699,7 +699,7 @@ main:focus {
 .field select:focus,
 .field textarea:focus {
   border-color: var(--blue);
-  outline: 2px solid #0061ef33;
+  outline: 2px solid #7500b433;
   outline-offset: 0;
 }
 
@@ -754,4 +754,215 @@ main:focus {
 
 .footer-bottom .footer-disclaimer {
   max-width: 420px;
+}
+
+/* Dropdown */
+.select {
+  position: relative;
+  width: 100%;
+}
+
+.select-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px 0 18px;
+  border: 1.5px solid #e6d4f8;
+  border-radius: 16px;
+  background: #fff;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--hl-ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.select-button:hover {
+  border-color: #c9a6f0;
+}
+
+.select-button:focus-visible,
+.select.is-open .select-button {
+  border-color: var(--hl-purple);
+  outline: 3px solid #7500b41f;
+  outline-offset: 0;
+}
+
+.select-icon {
+  display: grid;
+  flex: none;
+  color: var(--hl-purple);
+}
+
+.select-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.select-value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select-chevron.icon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--hl-muted);
+  transition: transform 0.2s ease;
+}
+
+.select.is-open .select-chevron {
+  transform: rotate(180deg);
+}
+
+.select-list {
+  position: absolute;
+  z-index: 40;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  max-height: 288px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border: 1.5px solid #f0e6f6;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 48px #36005a24;
+  outline: none;
+  animation: select-muncul 0.16s ease-out;
+}
+
+.select.is-up .select-list {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
+.select-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px 0 14px;
+  border-radius: 12px;
+  font-size: 15px;
+  color: var(--hl-ink);
+  cursor: pointer;
+}
+
+.select-list li.is-active {
+  background: var(--hl-lav);
+}
+
+.select-list li[aria-selected='true'] {
+  font-weight: 500;
+  color: var(--hl-purple);
+}
+
+.select-check {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes select-muncul {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .select-list {
+    animation: none;
+  }
+}
+
+/* Dropdown arsip */
+.list-select .select-button {
+  min-height: 46px;
+  border-radius: 999px;
+}
+
+.list-select .select-list {
+  border-radius: 20px;
+}
+
+/* Field dialog */
+.form-dialog .field input {
+  min-height: 52px;
+  padding: 0 18px;
+  border: 1.5px solid #e6d4f8;
+  border-radius: 16px;
+  font-size: 15px;
+}
+
+.form-dialog .field input:focus {
+  border-color: var(--hl-purple);
+  outline: 3px solid #7500b41f;
+  outline-offset: 0;
+}
+
+/* Scrollbar dropdown */
+.select-list::-webkit-scrollbar {
+  width: 14px;
+}
+
+.select-list::-webkit-scrollbar-track {
+  margin: 10px 0;
+  background: transparent;
+}
+
+.select-list::-webkit-scrollbar-thumb {
+  min-height: 40px;
+  border: 5px solid #fff;
+  border-radius: 999px;
+  background: #d9b8ff;
+}
+
+.select-list::-webkit-scrollbar-thumb:hover {
+  background: var(--hl-purple);
+}
+
+/* Firefox */
+@supports not selector(::-webkit-scrollbar) {
+  .select-list {
+    scrollbar-width: thin;
+    scrollbar-color: #d9b8ff transparent;
+  }
+}
+
+/* Ikon header */
+.nav-account:has(.account-trigger) {
+  gap: 8px;
+}
+
+.icon-button--fav svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 600px) {
+  .nav-account:has(.account-trigger) {
+    gap: 6px;
+  }
 }

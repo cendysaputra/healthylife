@@ -6,7 +6,7 @@ import { formatTanggalKartu, gayaKategori, labelKategori, urlGambar } from '../u
 import { BookmarkIcon } from './Icon';
 import Sym from './Svg';
 
-// Urutan sampul: thumbnail API, foto kategori, lalu ilustrasi
+// Sampul: thumbnail, foto kategori, ilustrasi
 export function Sampul({ content }) {
   const gaya = gayaKategori(content.category);
   const [gagal, setGagal] = useState(false);
@@ -64,8 +64,11 @@ function ContentCard({ content, headingLevel = 3 }) {
 
   const meta = [
     content.publishedAt ? formatTanggalKartu(content.publishedAt) : null,
-    content.readTime ? `${content.readTime} MENIT BACA` : null,
-    content.durationMinutes ? `${content.durationMinutes} MENIT` : null
+    content.readTime
+      ? `${content.readTime} MENIT BACA`
+      : content.durationMinutes
+        ? `${content.durationMinutes} MENIT`
+        : null
   ].filter(Boolean);
 
   return (

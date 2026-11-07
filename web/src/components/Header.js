@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useFavorites } from '../context/FavoritesContext';
 import client from '../api/client';
 import { KATEGORI, labelKategori } from '../utils/format';
-import Icon from './Icon';
+import Icon, { BookmarkIcon } from './Icon';
 import logo from '../assets/images/logo.png';
 
 function Header() {
   const { user, logout } = useAuth();
+  const { items: favorit } = useFavorites();
   const navigate = useNavigate();
   const location = useLocation();
   const akunRef = useRef(null);
@@ -24,7 +26,7 @@ function Header() {
     setAkunOpen(false);
   }, [location.pathname, location.search]);
 
-  // Tutup saat klik di luar / tekan Escape
+  // Klik luar / Escape
   useEffect(() => {
     if (!notifOpen && !akunOpen) return undefined;
     const onClick = (e) => {
@@ -62,12 +64,12 @@ function Header() {
     const buka = !notifOpen;
     setNotifOpen(buka);
     setAkunOpen(false);
-    // Badge hilang setelah panel dibuka
+    // Tandai dibaca
     if (buka && notif.count > 0) {
       try {
         await client.put('/notifications/seen');
       } catch {
-        // gagal menandai bukan masalah besar
+        // Abaikan
       }
     }
   };
@@ -125,6 +127,14 @@ function Header() {
 
           {user && (
             <>
+              <Link
+                to="/profil#favorit"
+                className="icon-button icon-button--fav"
+                aria-label={favorit.length > 0 ? `Favorit, ${favorit.length} tersimpan` : 'Favorit'}
+              >
+                <BookmarkIcon />
+              </Link>
+
               <div className="dropdown">
                 <button
                   type="button"
@@ -203,7 +213,7 @@ function Header() {
           )}
         </div>
 
-        {/* Hamburger di tablet & HP */}
+        {/* Hamburger */}
         <button
           type="button"
           className="menu-toggle"

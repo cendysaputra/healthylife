@@ -24,7 +24,7 @@ function ScrollManager() {
 }
 
 function Layout() {
-  // Tiap halaman mengisi slot ini lewat <InCanvas>
+  // Slot hero
   const [slot, setSlot] = useState(null);
 
   useEffect(() => mulaiSmoothScroll(), []);

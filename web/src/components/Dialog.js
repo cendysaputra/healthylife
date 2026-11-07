@@ -28,7 +28,7 @@ function Dialog({ open, onClose, labelledBy, className = '', children }) {
     []
   );
 
-  // Klik di backdrop menutup dialog
+  // Klik backdrop
   const handleClick = (e) => {
     if (e.target === ref.current) onClose();
   };

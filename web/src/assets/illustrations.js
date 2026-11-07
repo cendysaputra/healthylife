@@ -1,6 +1,6 @@
-// Ilustrasi SVG HealthyLife (dari HealthyLife-static.html)
+// Ilustrasi SVG
 
-// Simbol yang dipakai ulang lewat <use href="#id">
+// Simbol <use>
 export const SYMBOLS = `
   <symbol id="arrow" viewBox="0 0 24 24">
   <path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">

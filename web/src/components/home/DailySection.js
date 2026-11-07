@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import client, { pesanError } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
@@ -6,24 +6,7 @@ import { formatTanggalPendek, hariIni, labelAktivitas, pesanProgres, tanggalLoka
 import ActivityForm from '../ActivityForm';
 import Dialog from '../Dialog';
 import TargetForm from '../TargetForm';
-import { useHidup } from '../Mascot';
-
-// Sepasang mata di pojok kartu ungu
-function MataKartu() {
-  const wajahRef = useRef(null);
-  const mataRef = useRef(null);
-  useHidup(wajahRef, mataRef, { ukuran: 40, menoleh: false });
-  return (
-    <svg className="hl-daily-eyes" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
-      <g ref={wajahRef} fill="#fff">
-        <g ref={mataRef}>
-          <ellipse data-mata="" cx="13" cy="15" rx="6" ry="8.5" transform="rotate(28 13 15)" />
-          <ellipse data-mata="" cx="29" cy="25" rx="6" ry="8.5" transform="rotate(28 29 25)" />
-        </g>
-      </g>
-    </svg>
-  );
-}
+import { MataKartu } from '../Mascot';
 
 function DailySection() {
   const { user } = useAuth();
@@ -74,7 +57,7 @@ function DailySection() {
     }
   };
 
-  // Tamu melihat angka contoh
+  // Angka contoh untuk tamu
   const today = user ? (summary?.today ?? 0) : 8;
   const target = summary?.target ?? user?.dailyTarget ?? 30;
   const pesan = summary ? pesanProgres(summary) : 'Satu langkah kecil, bisa jadi awal yang baik.';

@@ -5,7 +5,7 @@ import { MASKOT } from '../data/maskot';
 const acak = (min, max) => min + Math.random() * (max - min);
 const kurangGerak = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-// Wajah terpotong tepi lingkaran saat menoleh, jadi terasa seperti bola yang berputar
+// Animasi menoleh & kedip
 export function useHidup(
   wajahRef,
   mataRef,
@@ -21,7 +21,7 @@ export function useHidup(
       const maksY = ukuran * naik;
 
       const menoleh = () => {
-        // Sesekali kembali ke tengah
+        // Kadang ke tengah
         const x = Math.random() < 0.25 ? 0 : acak(-maksX, maksX);
         const y = Math.random() < 0.25 ? 0 : acak(-maksY, maksY);
         gsap.to(wajah, {
@@ -57,6 +57,23 @@ export function useHidup(
       ctx.revert();
     };
   }, [wajahRef, mataRef, geser, naik, ukuran, bisaMenoleh]);
+}
+
+// Mata kartu ungu
+export function MataKartu({ className = 'hl-daily-eyes' }) {
+  const wajahRef = useRef(null);
+  const mataRef = useRef(null);
+  useHidup(wajahRef, mataRef, { ukuran: 40, menoleh: false });
+  return (
+    <svg className={className} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
+      <g ref={wajahRef} fill="#fff">
+        <g ref={mataRef}>
+          <ellipse data-mata="" cx="13" cy="15" rx="6" ry="8.5" transform="rotate(28 13 15)" />
+          <ellipse data-mata="" cx="29" cy="25" rx="6" ry="8.5" transform="rotate(28 29 25)" />
+        </g>
+      </g>
+    </svg>
+  );
 }
 
 function Mascot({ varian = 'putih', className = '' }) {

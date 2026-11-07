@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { pesanError } from '../api/client';
-import AuthBenefits from '../components/AuthBenefits';
-import { PageHero } from '../components/Canvas';
+import { InCanvas } from '../components/Canvas';
+import Mascot from '../components/Mascot';
 import Sym from '../components/Svg';
 import { useAuth } from '../context/AuthContext';
 
@@ -35,37 +35,42 @@ function Login() {
 
   return (
     <>
-      <PageHero
-        className="page-hero--auth"
-        eyebrow="SENANG BERTEMU LAGI"
-        title={
-          <>
-            Masuk, lalu
-            <br />
-            <span>lanjutkan ritmemu.</span>
-          </>
-        }
-        description="Catat aktivitas harian, pantau target, dan buka lagi konten favoritmu."
-        art={
-          <div className="auth-card">
-            <Sym id="sun" className="auth-card-sun" />
+      <InCanvas>
+        <section className="masuk container">
+          <div className="masuk-copy">
+            <h1>
+              Masuk, lalu
+              <br />
+              <span>lanjutkan ritmemu.</span>
+            </h1>
+            <p>Catat aktivitas harian, pantau target, dan buka lagi konten favoritmu.</p>
+            <div className="masuk-maskot" aria-hidden="true">
+              <Mascot varian="lavender" className="masuk-maskot-a" />
+              <Mascot varian="ungu" className="masuk-maskot-b" />
+              <Mascot varian="kuning" className="masuk-maskot-c" />
+            </div>
+          </div>
+
+          <div className="masuk-card">
+            <Mascot varian="krem" className="masuk-card-maskot" />
             <h2>Masuk</h2>
-            {location.state?.from && <p className="auth-note">Masuk dulu untuk melanjutkan.</p>}
-            <form onSubmit={handleSubmit} className="form-stack">
-              <div className="field">
+            {location.state?.from && <p className="masuk-note">Masuk dulu untuk melanjutkan.</p>}
+            <form onSubmit={handleSubmit} className="masuk-form">
+              <div className="masuk-field">
                 <label htmlFor="email">Email</label>
                 <input
                   id="email"
                   name="email"
                   type="email"
                   autoComplete="email"
+                  placeholder="nama@email.com"
                   required
                   value={form.email}
                   onChange={handleChange}
                 />
               </div>
 
-              <div className="field">
+              <div className="masuk-field">
                 <label htmlFor="password">Password</label>
                 <input
                   id="password"
@@ -84,33 +89,20 @@ function Login() {
                 </p>
               )}
 
-              <button type="submit" className="button button-blue button-block" disabled={proses}>
+              <button type="submit" className="hl-button masuk-submit" disabled={proses}>
                 {proses ? 'Memproses...' : 'Masuk'} <Sym id="arrow" />
               </button>
             </form>
 
-            <p className="auth-switch">
+            <p className="masuk-switch">
               Belum punya akun?{' '}
               <Link to="/register" state={location.state}>
                 Daftar gratis
               </Link>
             </p>
           </div>
-        }
-      >
-        <div className="about-values">
-          <span>
-            <Sym id="cat-leaf" />
-            Mulai dari yang kecil
-          </span>
-          <span>
-            <Sym id="heart" />
-            Dengan ritmemu sendiri
-          </span>
-        </div>
-      </PageHero>
-
-      <AuthBenefits />
+        </section>
+      </InCanvas>
     </>
   );
 }

@@ -1,4 +1,4 @@
-/* Beranda (home.pdf), plus header, kartu, dan footer yang dipakai bersama */
+/* Beranda */
 :root {
   --hl-purple: #7500b4;
   --hl-purple-hover: #5e0091;
@@ -16,7 +16,7 @@
   background: var(--hl-purple-hover);
 }
 
-/* Jarak antar section, skala awan, padding samping */
+/* Variabel layout */
 :root {
   --gap: 160px;
   --cs: 1;
@@ -38,6 +38,20 @@
 
 .hero-canvas {
   margin: 8px;
+}
+
+/* Jarak section */
+main > :where(section, article):not([class*='hl-']):not(.list-toolbar):not(.list-results) {
+  padding-top: var(--gap);
+  padding-bottom: 0;
+}
+
+main:not(:has(.hl-lavender)) {
+  padding-bottom: var(--gap);
+}
+
+body:has(.masuk) main {
+  padding-bottom: 0;
 }
 
 @media (max-width: 1024px) {
@@ -318,7 +332,7 @@
   }
 }
 
-/* Lavender: mulai + kategori */
+/* Lavender */
 .hl-lavender {
   position: relative;
   isolation: isolate;
@@ -437,7 +451,7 @@
   margin-bottom: 44px;
 }
 
-/* Pil kategori (juga dipakai halaman lain) */
+/* Pil kategori */
 .hl-cats {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -576,7 +590,7 @@
   z-index: 1;
 }
 
-/* Lingkaran latar target harian, menembus ke kartu kebiasaan */
+/* Lingkaran latar */
 .hl-habits-body:after {
   content: '';
   position: absolute;
@@ -692,7 +706,7 @@
   object-fit: cover;
 }
 
-/* Target harian + artikel */
+/* Target harian */
 .hl-warm {
   position: relative;
   z-index: 1;
@@ -1077,101 +1091,7 @@
   max-width: 440px;
 }
 
-.hl-video-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.hl-video {
-  position: relative;
-  display: block;
-  border-radius: 30px;
-  overflow: hidden;
-  aspect-ratio: 660/402;
-  background: #2b1a40;
-  color: #fff;
-}
-
-.hl-video img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.hl-video:hover img {
-  transform: scale(1.03);
-}
-
-.hl-video:after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, #000000d9, #00000059 32%, transparent 56%);
-}
-
-.hl-video-fallback {
-  display: grid;
-  place-items: center;
-  width: 100%;
-  height: 100%;
-  background: #d9b8ff;
-}
-
-.hl-video-fallback svg {
-  width: 30%;
-  height: 50%;
-}
-
-.hl-video-copy {
-  position: absolute;
-  left: 26px;
-  right: 120px;
-  bottom: 24px;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.hl-video-copy strong {
-  font-size: clamp(19px, 1.85vw, 26px);
-  font-weight: 500;
-  line-height: 1.25;
-}
-
-.hl-video-copy span {
-  font-size: 16px;
-  color: var(--hl-yellow);
-}
-
-.hl-video-play {
-  position: absolute;
-  right: 24px;
-  bottom: 22px;
-  z-index: 1;
-  width: clamp(54px, 5.3vw, 76px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #fff;
-  color: var(--hl-ink);
-  display: grid;
-  place-items: center;
-  transition: transform 0.2s ease;
-}
-
-.hl-video-play svg {
-  width: 44%;
-  height: 44%;
-}
-
-.hl-video:hover .hl-video-play {
-  transform: scale(1.06);
-}
-
 /* Footer */
-/* Margin setinggi awan supaya awan tidak menimpa konten */
 .hl-footer {
   position: relative;
   color: #fff;
@@ -1184,10 +1104,50 @@
 }
 
 .hl-footer-main {
-  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+  gap: 40px;
+  align-items: start;
+}
+
+.hl-footer-intro {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.hl-footer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.hl-footer-col h2 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #ffc9a8;
+}
+
+.hl-footer-col a {
+  font-size: 16px;
+  color: #fff;
+}
+
+.hl-footer-col a:hover {
+  color: #ffc9a8;
+}
+
+.hl-footer-col p {
+  margin: 0;
+  max-width: 240px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #ead6fb;
 }
 
 .hl-footer-brand {
@@ -1203,7 +1163,7 @@
   font-weight: 400;
 }
 
-.hl-footer-main p {
+.hl-footer-intro p {
   font-size: 18px;
   line-height: 1.7;
   margin: 28px 0 52px;
@@ -1224,7 +1184,7 @@
   color: #ead6fb;
 }
 
-/* Tombol melayang ke atas */
+/* Tombol ke atas */
 .hl-scrolltop {
   position: fixed;
   right: 24px;
@@ -1283,7 +1243,7 @@
   }
 }
 
-/* Tablet: menu hamburger, tata letak tetap kanan-kiri */
+/* Tablet */
 @media (max-width: 1024px) {
   .header .nav-wrap {
     height: 84px;
@@ -1386,10 +1346,6 @@
   .hl-daily {
     gap: 16px;
   }
-
-  .hl-video-grid {
-    gap: 16px;
-  }
 }
 
 @media (max-width: 850px) {
@@ -1408,7 +1364,7 @@
   }
 }
 
-/* Mobile: satu kolom */
+/* HP */
 @media (max-width: 600px) {
   .hl-brand img {
     height: 42px;
@@ -1588,30 +1544,11 @@
     font-size: 15px;
   }
 
-  .hl-video-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hl-video {
-    border-radius: 24px;
-  }
-
-  .hl-video-copy {
-    left: 18px;
-    right: 90px;
-    bottom: 18px;
-  }
-
-  .hl-video-play {
-    right: 16px;
-    bottom: 16px;
-  }
-
   .hl-heading--split p {
     font-size: 16px;
   }
 
-  .hl-footer-main p {
+  .hl-footer-intro p {
     font-size: 16px;
     margin: 20px 0 36px;
   }
@@ -1621,5 +1558,31 @@
     bottom: 16px;
     width: 40px;
     height: 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .hl-footer-main {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px 24px;
+  }
+
+  .hl-footer-intro {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .hl-footer-main {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 16px;
+  }
+
+  .hl-footer-col:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .hl-footer-col p {
+    max-width: none;
   }
 }

@@ -4,7 +4,7 @@ import { useAuth } from './AuthContext';
 
 const FavoritesContext = createContext(null);
 
-// Dibagi ke kartu, detail, dan profil supaya statusnya selalu sama
+// State favorit
 export function FavoritesProvider({ children }) {
   const { user } = useAuth();
   const userId = user?.id;
@@ -34,7 +34,7 @@ export function FavoritesProvider({ children }) {
 
   const ids = useMemo(() => new Set(items.map((i) => i._id)), [items]);
 
-  // Optimistis; kalau gagal state dikembalikan dan error dilempar
+  // Optimistis, rollback jika gagal
   const toggle = useCallback(
     async (content) => {
       const tersimpan = ids.has(content._id);

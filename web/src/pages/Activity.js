@@ -3,20 +3,58 @@ import client, { pesanError } from '../api/client';
 import ActivityForm from '../components/ActivityForm';
 import { PageHero } from '../components/Canvas';
 import Dialog from '../components/Dialog';
+import Icon from '../components/Icon';
+import Mascot, { MataKartu } from '../components/Mascot';
 import Sym from '../components/Svg';
 import TargetForm from '../components/TargetForm';
-import { formatTanggal, formatTanggalPendek, labelAktivitas, namaHari, pesanProgres } from '../utils/format';
+import {
+  formatTanggal,
+  formatTanggalPendek,
+  hariIni,
+  labelAktivitas,
+  namaHari,
+  pesanProgres,
+  tanggalLokal
+} from '../utils/format';
 import { scrollKe } from '../utils/smoothScroll';
 
-// Ilustrasi per jenis aktivitas
-const SIMBOL = {
-  jalan: 'cat-shoe',
-  lari: 'move',
-  bersepeda: 'cat-shoe',
-  gym: 'buddy',
-  yoga: 'mind',
-  peregangan: 'cat-leaf',
-  lainnya: 'bubbles'
+// Ikon per jenis
+const JENIS = {
+  jalan: { simbol: 'cat-shoe', warna: '#fff1c7' },
+  lari: { simbol: 'move', warna: '#ffe3d1' },
+  bersepeda: { simbol: 'cat-shoe', warna: '#f1e6ff' },
+  gym: { simbol: 'buddy', warna: '#ffe3d1' },
+  yoga: { simbol: 'mind', warna: '#f1e6ff' },
+  peregangan: { simbol: 'cat-leaf', warna: '#fff1c7' },
+  lainnya: { simbol: 'bubbles', warna: '#f3eee9' }
+};
+
+const kemarin = () => {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return tanggalLokal(d);
+};
+
+// Kelompok per tanggal
+const kelompokkan = (items) => {
+  const grup = [];
+  items.forEach((a) => {
+    const key = tanggalLokal(a.date);
+    let g = grup.find((x) => x.key === key);
+    if (!g) {
+      g = { key, items: [], total: 0 };
+      grup.push(g);
+    }
+    g.items.push(a);
+    g.total += a.duration;
+  });
+  return grup;
+};
+
+const labelTanggal = (key) => {
+  if (key === hariIni()) return 'Hari ini';
+  if (key === kemarin()) return 'Kemarin';
+  return formatTanggal(key);
 };
 
 function Activity() {
@@ -25,6 +63,7 @@ function Activity() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [pesan, setPesan] = useState('');
+  const [hapusId, setHapusId] = useState(null);
   const [dialogTarget, setDialogTarget] = useState(false);
 
   const muatData = useCallback(async () => {
@@ -52,12 +91,15 @@ function Activity() {
   const handleHapus = async (id) => {
     setError('');
     setPesan('');
+    setHapusId(id);
     try {
       await client.delete(`/activities/${id}`);
       setPesan('Aktivitas dihapus.');
       await muatData();
     } catch (err) {
       setError(pesanError(err));
+    } finally {
+      setHapusId(null);
     }
   };
 
@@ -68,15 +110,18 @@ function Activity() {
 
   const today = summary?.today ?? 0;
   const target = summary?.target ?? 30;
+  const percent = summary?.percent ?? 0;
   const week = summary?.week ?? [];
   const maks = Math.max(target, ...week.map((h) => h.minutes), 1);
   const totalMinggu = week.reduce((n, h) => n + h.minutes, 0);
   const hariTercapai = week.filter((h) => h.minutes >= target).length;
+  const rataRata = week.length ? Math.round(totalMinggu / week.length) : 0;
+  const grup = kelompokkan(riwayat);
 
   return (
     <>
       <PageHero
-        eyebrow="TARGET HARIANMU"
+        className="akt-hero"
         title={
           <>
             Sedikit demi sedikit,
@@ -86,162 +131,196 @@ function Activity() {
         }
         description="Catat setiap gerak, sekecil apa pun. Langkah kecilmu terkumpul di sini."
         art={
-          <div className="daily-card hero-daily">
-            <div className="daily-top">
-              <span>GERAKMU HARI INI</span>
-              <span>{formatTanggalPendek(new Date()).toUpperCase()}</span>
+          <div className="akt-today">
+            <MataKartu className="akt-today-eyes" />
+            <span className="hl-eyebrow">GERAKMU HARI INI · {formatTanggalPendek(new Date()).toUpperCase()}</span>
+            <div className="akt-today-total">
+              <strong>{loading ? '-' : today}</strong>
+              <span>dari {target} menit</span>
             </div>
-            <div className="daily-total">
-              <strong>{loading ? '–' : today}</strong>
-              <span>
-                dari <b>{target}</b> menit
-              </span>
-              <Sym id="move" />
+            <div
+              className="akt-progress"
+              role="progressbar"
+              aria-label="Progres target harian"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={percent}
+            >
+              <span style={{ width: `${percent}%` }} />
             </div>
-            <progress value={Math.min(today, target)} max={target} aria-label="Progres target harian" />
-            <div className="daily-foot">
+            <div className="akt-today-foot">
               <p>{summary ? pesanProgres(summary) : 'Memuat progresmu...'}</p>
-              {summary && <strong>{summary.percent}%</strong>}
+              <strong>{percent}%</strong>
             </div>
+            <Mascot varian="kuning" className="akt-today-maskot" />
           </div>
         }
       >
-        <div className="hero-actions">
-          <button type="button" className="button button-blue" onClick={keForm}>
-            + Catat aktivitas
+        <div className="akt-hero-actions">
+          <button type="button" className="hl-button" onClick={keForm}>
+            Catat aktivitas
           </button>
-          <button type="button" className="text-link" onClick={() => setDialogTarget(true)}>
-            Atur targetmu ↗
+          <button type="button" className="hl-link hl-link--ink" onClick={() => setDialogTarget(true)}>
+            Atur targetmu <Sym id="arrow" />
           </button>
         </div>
       </PageHero>
 
-      {loading && (
-        <section className="page container">
-          <p className="status" role="status">
-            Memuat...
-          </p>
-        </section>
-      )}
+      <section className="akt-week container" aria-labelledby="judul-minggu">
+        <div className="akt-stats">
+          <span className="hl-eyebrow">7 HARI TERAKHIR</span>
+          <h2 id="judul-minggu">Lihat langkahmu terkumpul.</h2>
+          <dl className="akt-stat-list">
+            <div>
+              <dt>Total minggu ini</dt>
+              <dd>
+                {loading ? '-' : totalMinggu}
+                <small>menit</small>
+              </dd>
+            </div>
+            <div>
+              <dt>Target tercapai</dt>
+              <dd>
+                {loading ? '-' : hariTercapai}
+                <small>/7 hari</small>
+              </dd>
+            </div>
+            <div>
+              <dt>Rata-rata</dt>
+              <dd>
+                {loading ? '-' : rataRata}
+                <small>menit/hari</small>
+              </dd>
+            </div>
+          </dl>
+        </div>
 
-      {!loading && (
-        <>
-          {summary && (
-            <section className="activity-section container week-section" aria-labelledby="judul-minggu">
-              <Sym id="bubbles" className="section-doodle doodle-d" />
-              <div className="activity-copy">
-                <span className="eyebrow">7 HARI TERAKHIR</span>
-                <h2 id="judul-minggu">
-                  Lihat langkahmu
-                  <br />
-                  terkumpul.
-                </h2>
-                <div className="week-stats">
-                  <div>
-                    <strong>{totalMinggu}</strong>
-                    <span>menit minggu ini</span>
-                  </div>
-                  <div>
-                    <strong>
-                      {hariTercapai}
-                      <small>/7</small>
-                    </strong>
-                    <span>hari target tercapai</span>
-                  </div>
+        <div className="akt-chart">
+          <div className="akt-chart-head">
+            <h3>Menit bergerak per hari</h3>
+            <p className="akt-legend">
+              <span className="akt-dot akt-dot--done" /> Tercapai
+              <span className="akt-dot" /> Belum
+            </p>
+          </div>
+          {loading ? (
+            <div className="akt-chart-skeleton" role="status" aria-label="Memuat grafik" />
+          ) : (
+            <>
+              <div className="akt-plot">
+                <div className="akt-target" style={{ bottom: `${(target / maks) * 100}%` }} aria-hidden="true">
+                  <span>Target {target}</span>
                 </div>
-              </div>
-              <div className="week-card">
-                <ol className="week-bars">
+                <ol className="akt-bars">
                   {week.map((h, i) => {
-                    const tinggi = Math.round((h.minutes / maks) * 100);
                     const kelas = [
-                      'week-bar',
+                      'akt-bar',
                       h.minutes >= target ? 'is-done' : '',
                       i === week.length - 1 ? 'is-today' : ''
-                    ].join(' ');
+                    ]
+                      .filter(Boolean)
+                      .join(' ');
                     return (
                       <li key={h.date} className={kelas} aria-label={`${formatTanggal(h.date)}: ${h.minutes} menit`}>
-                        <b aria-hidden="true">{h.minutes}</b>
-                        <span className="week-bar-track" aria-hidden="true">
-                          <span className="week-bar-fill" style={{ height: `${tinggi}%` }} />
+                        <span className="akt-bar-fill" style={{ height: `${(h.minutes / maks) * 100}%` }}>
+                          <b aria-hidden="true">{h.minutes}</b>
                         </span>
-                        <small aria-hidden="true">{namaHari(h.date)}</small>
                       </li>
                     );
                   })}
                 </ol>
-                <p className="week-legend">
-                  <span className="dot dot-done" /> Target tercapai
-                  <span className="dot" /> Belum tercapai
-                </p>
               </div>
-            </section>
-          )}
-
-          <section className="container log-section" id="catat">
-            <div className="start-panel start-motion log-panel">
-              <Sym id="cat-shoe" className="start-vector" />
-              <span className="eyebrow">CATAT GERAKMU</span>
-              <h2>Apa yang kamu lakukan hari ini?</h2>
-              <ActivityForm idPrefix="act" onSaved={handleSaved} />
-              {error && (
-                <p role="alert" className="alert alert--error">
-                  {error}
-                </p>
-              )}
-              {pesan && (
-                <p role="status" className="alert alert--success">
-                  {pesan}
-                </p>
-              )}
-            </div>
-          </section>
-
-          <section className="articles-section container history-section" aria-labelledby="judul-riwayat">
-            <Sym id="cat-leaf" className="section-doodle doodle-e" />
-            <div className="section-heading">
-              <div>
-                <span className="eyebrow">CATATANMU</span>
-                <h2 id="judul-riwayat">Riwayat aktivitas</h2>
-              </div>
-              <p>{riwayat.length > 0 ? `${riwayat.length} catatan terbaru` : 'Belum ada catatan'}</p>
-            </div>
-            {riwayat.length === 0 ? (
-              <div className="articles-empty">
-                <Sym id="cat-shoe" />
-                <h3>Belum ada aktivitas.</h3>
-                <p>Catat aktivitas pertamamu lewat form di atas. Riwayatnya muncul di sini.</p>
-              </div>
-            ) : (
-              <ul className="history-list">
-                {riwayat.map((a) => (
-                  <li key={a._id} className="history-item">
-                    <span className="history-icon">
-                      <Sym id={SIMBOL[a.type] || 'bubbles'} />
-                    </span>
-                    <div className="history-main">
-                      <strong>{labelAktivitas(a.type)}</strong>
-                      <span>
-                        {formatTanggal(a.date)}
-                        {a.note ? ` · ${a.note}` : ''}
-                      </span>
-                    </div>
-                    <span className="history-duration">{a.duration} menit</span>
-                    <button
-                      type="button"
-                      className="link-danger"
-                      onClick={() => handleHapus(a._id)}
-                      aria-label={`Hapus ${labelAktivitas(a.type)} ${formatTanggal(a.date)}`}
-                    >
-                      Hapus
-                    </button>
+              <ol className="akt-days" aria-hidden="true">
+                {week.map((h, i) => (
+                  <li key={h.date} className={i === week.length - 1 ? 'is-today' : undefined}>
+                    {i === week.length - 1 ? 'Hari ini' : namaHari(h.date)}
                   </li>
                 ))}
-              </ul>
-            )}
-          </section>
-        </>
-      )}
+              </ol>
+            </>
+          )}
+        </div>
+      </section>
+
+      <section className="akt-log container" aria-label="Catat dan riwayat aktivitas">
+        <div className="akt-form-card" id="catat">
+          <Mascot varian="lavender" className="akt-form-maskot" />
+          <span className="hl-eyebrow">CATAT GERAKMU</span>
+          <h2>Apa yang kamu lakukan hari ini?</h2>
+          <ActivityForm idPrefix="act" layout="stack" onSaved={handleSaved} />
+          {pesan && (
+            <p role="status" className="alert alert--success">
+              {pesan}
+            </p>
+          )}
+        </div>
+
+        <div className="akt-history">
+          <div className="akt-history-head">
+            <div>
+              <span className="hl-eyebrow">CATATANMU</span>
+              <h2 id="judul-riwayat">Riwayat aktivitas</h2>
+            </div>
+            {riwayat.length > 0 && <p>{riwayat.length} catatan terbaru</p>}
+          </div>
+
+          {error && (
+            <p role="alert" className="alert alert--error">
+              {error}
+            </p>
+          )}
+
+          {loading && (
+            <p className="status" role="status">
+              Memuat riwayat...
+            </p>
+          )}
+
+          {!loading && riwayat.length === 0 && (
+            <div className="hl-empty akt-empty">
+              <Mascot varian="ungu" className="akt-empty-maskot" />
+              <h3>Belum ada aktivitas.</h3>
+              <p>Catat aktivitas pertamamu lewat form di samping. Riwayatnya muncul di sini.</p>
+            </div>
+          )}
+
+          {!loading &&
+            grup.map((g) => (
+              <section key={g.key} className="akt-day" aria-label={labelTanggal(g.key)}>
+                <h3>
+                  <span>{labelTanggal(g.key)}</span>
+                  <small>{g.total} menit</small>
+                </h3>
+                <ul className="akt-items">
+                  {g.items.map((a) => {
+                    const jenis = JENIS[a.type] || JENIS.lainnya;
+                    return (
+                      <li key={a._id} className="akt-item">
+                        <span className="akt-item-icon" style={{ background: jenis.warna }}>
+                          <Sym id={jenis.simbol} />
+                        </span>
+                        <div className="akt-item-main">
+                          <strong>{labelAktivitas(a.type)}</strong>
+                          {a.note && <span>{a.note}</span>}
+                        </div>
+                        <span className="akt-item-duration">{a.duration} mnt</span>
+                        <button
+                          type="button"
+                          className="akt-item-delete"
+                          onClick={() => handleHapus(a._id)}
+                          disabled={hapusId === a._id}
+                          aria-label={`Hapus ${labelAktivitas(a.type)} ${a.duration} menit, ${formatTanggal(a.date)}`}
+                        >
+                          <Icon name="close" />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            ))}
+        </div>
+      </section>
 
       <Dialog
         open={dialogTarget}

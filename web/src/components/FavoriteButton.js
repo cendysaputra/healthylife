@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useFavorites } from '../context/FavoritesContext';
 import { BookmarkIcon } from './Icon';
 
-function FavoriteButton({ content }) {
+function FavoriteButton({ content, ikon = false }) {
   const { user } = useAuth();
   const { isSaved, toggle } = useFavorites();
   const navigate = useNavigate();
@@ -34,13 +34,15 @@ function FavoriteButton({ content }) {
     <div className="favorite">
       <button
         type="button"
-        className="favorite-button"
+        className={`favorite-button${ikon ? ' favorite-button--ikon' : ''}`}
         onClick={handleClick}
         disabled={proses}
         aria-pressed={tersimpan}
+        aria-label={ikon ? 'Simpan ke favorit' : undefined}
+        title={ikon ? (tersimpan ? 'Tersimpan di favorit' : 'Simpan ke favorit') : undefined}
       >
         <BookmarkIcon />
-        {tersimpan ? 'Tersimpan di favorit' : 'Simpan ke favorit'}
+        {!ikon && (tersimpan ? 'Tersimpan di favorit' : 'Simpan ke favorit')}
       </button>
       {error && (
         <p role="alert" className="alert alert--error">

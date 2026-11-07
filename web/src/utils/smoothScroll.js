@@ -1,7 +1,7 @@
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
-// Tidak aktif bila pengguna memilih kurangi gerak
+// Mati saat reduced motion
 let lenis = null;
 
 export function mulaiSmoothScroll() {
@@ -9,7 +9,7 @@ export function mulaiSmoothScroll() {
   lenis = new Lenis({
     autoRaf: true,
     lerp: 0.1,
-    // Dialog & dropdown tetap memakai scroll bawaan
+    // Scroll bawaan
     prevent: (node) => Boolean(node.closest?.('dialog, .dropdown-panel, [data-lenis-prevent]'))
   });
   return () => {
@@ -18,7 +18,7 @@ export function mulaiSmoothScroll() {
   };
 }
 
-// Tanpa Lenis jatuh ke scroll bawaan
+// Fallback tanpa Lenis
 export function scrollKe(target, { offset = -24, segera = false } = {}) {
   const el = typeof target === 'string' ? document.getElementById(target) : target;
   if (lenis) {

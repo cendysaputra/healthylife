@@ -1,4 +1,4 @@
-// Dipakai di beranda dan arsip konten
+// Data beranda
 export const KARTU_KATEGORI = [
   { value: '', label: 'Semua inspirasi', sub: 'Temukan hal baru', simbol: 'cat-leaf', warna: 'cream' },
   { value: 'nutrisi', label: 'Makan lebih baik', sub: 'Nutrisi sehari-hari', simbol: 'cat-bowl', warna: 'peach' },
@@ -71,7 +71,7 @@ export const KEBIASAAN = [
   }
 ];
 
-// Item genap tampil tebal oranye
+// Teks berjalan
 export const TEKS_BERJALAN = [
   'Gerak ringan',
   'Makan seimbang',

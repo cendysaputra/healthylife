@@ -10,7 +10,7 @@ import Hero from '../components/Hero';
 import { useAuth } from '../context/AuthContext';
 import { TEKS_BERJALAN } from '../data/home';
 
-// Dirender dua kali supaya geserannya tidak putus
+// Teks berjalan
 function Marquee() {
   const putaran = (salinan) => (
     <ul className="hl-marquee-track" aria-hidden={salinan || undefined}>

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1';
 
-// Gambar dilayani dari host yang sama, tanpa /api/v1
+// URL gambar (tanpa /api/v1)
 export const ASSET_URL = API_URL.replace(/\/api\/v1\/?$/, '');
 
 export const TOKEN_KEY = 'healthylife_token';

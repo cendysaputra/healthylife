@@ -1,5 +1,4 @@
-// Ukuran dalam px: layar lebar menambah gumpalan, bukan memperbesarnya.
-// l = tinggi pusat dari dasar; jaga di atas 36px agar tidak ada bagian lurus.
+// [diameter, tinggi pusat] dalam px, tinggi min 36px
 const POLA = [
   [300, 86],
   [256, 128],

@@ -2,16 +2,16 @@ import { createContext, useContext } from 'react';
 import { createPortal } from 'react-dom';
 import Sym from './Svg';
 
-// Slot hero di dalam kanvas header (diisi Layout)
+// Slot hero
 export const CanvasSlotContext = createContext(null);
 
-// Portal ke slot kanvas di bawah header
+// Portal ke slot hero
 export function InCanvas({ children }) {
   const slot = useContext(CanvasSlotContext);
   return slot ? createPortal(children, slot) : null;
 }
 
-// Hero standar halaman selain beranda
+// Hero halaman
 export function PageHero({ eyebrow, top, title, description, children, art, className = '' }) {
   return (
     <InCanvas>

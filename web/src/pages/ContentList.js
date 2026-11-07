@@ -4,30 +4,29 @@ import client, { pesanError } from '../api/client';
 import { PageHero } from '../components/Canvas';
 import ContentCard from '../components/ContentCard';
 import Icon from '../components/Icon';
+import Mascot from '../components/Mascot';
+import Select from '../components/Select';
 import Sym from '../components/Svg';
 import { scrollKe } from '../utils/smoothScroll';
 import { KATEGORI } from '../utils/format';
 
+const PILIHAN = [{ value: '', label: 'Semua' }, ...KATEGORI];
+
 const INTRO = {
   '': {
-    judul: ['Semua bekal baik,', 'di satu tempat.'],
-    teks: 'Artikel, video, panduan olahraga, dan ide nutrisi untuk menemani rutinitas sehatmu.'
+    judul: ['Semua bekal baik,', 'di satu tempat.']
   },
   artikel: {
-    judul: ['Bacaan ringan,', 'untuk hari ini.'],
-    teks: 'Seputar tidur, minum, istirahat, dan merawat pikiran. Pelan-pelan saja bacanya.'
+    judul: ['Bacaan ringan,', 'untuk hari ini.']
   },
   video: {
-    judul: ['Tonton sebentar,', 'lalu praktikkan.'],
-    teks: 'Video edukasi singkat yang bisa langsung kamu coba di rumah.'
+    judul: ['Tonton sebentar,', 'lalu praktikkan.']
   },
   olahraga: {
-    judul: ['Gerak kecil,', 'tetap berarti.'],
-    teks: 'Panduan gerak untuk pemula sampai yang ingin lebih rutin. Mulai dari yang paling nyaman.'
+    judul: ['Gerak kecil,', 'tetap berarti.']
   },
   nutrisi: {
-    judul: ['Isi piringmu,', 'isi energimu.'],
-    teks: 'Ide sederhana untuk makan lebih seimbang tanpa harus serba sempurna.'
+    judul: ['Isi piringmu,', 'isi energimu.']
   }
 };
 
@@ -42,7 +41,7 @@ function ContentList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Kolom cari mengikuti ?q di URL
+  // Sinkron ?q
   useEffect(() => {
     setKeyword(q);
   }, [q]);
@@ -90,12 +89,12 @@ function ContentList() {
             <span>{intro.judul[1]}</span>
           </>
         }
-        description={intro.teks}
       />
 
       <section className="container list-toolbar" aria-label="Saring konten">
+        <Mascot varian="lavender" className="list-mascot list-mascot--atas" />
         <div className="list-tabs" role="group" aria-label="Kategori konten">
-          {[{ value: '', label: 'Semua' }, ...KATEGORI].map((k) => (
+          {PILIHAN.map((k) => (
             <button
               key={k.value || 'semua'}
               type="button"
@@ -106,6 +105,20 @@ function ContentList() {
               {k.label}
             </button>
           ))}
+        </div>
+        {/* Dropdown tablet */}
+        <div className="list-select">
+          <span id="pilih-kategori-label" className="visually-hidden">
+            Kategori konten
+          </span>
+          <Select
+            id="pilih-kategori"
+            labelId="pilih-kategori-label"
+            value={kategori}
+            options={PILIHAN}
+            onChange={(v) => ubahParam({ kategori: v, page: '' })}
+            icon={<Icon name="kategori" />}
+          />
         </div>
         <form onSubmit={handleCari} className="search list-search" role="search">
           <label htmlFor="cari" className="visually-hidden">
@@ -127,7 +140,8 @@ function ContentList() {
         </form>
       </section>
 
-      <section className="articles-section container" id="hasil">
+      <section className="articles-section container list-results" id="hasil">
+        <Mascot varian="kuning" className="list-mascot list-mascot--bawah" />
         {q && (
           <div className="section-heading">
             <h2>Hasil untuk "{q}"</h2>

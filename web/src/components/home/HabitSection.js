@@ -26,13 +26,13 @@ function HabitSection() {
   const rencana = KEBIASAAN.find((k) => k.id === pilihan);
   const foto = fotoGagal[rencana.id] ? fotoCadangan : urlGambar(rencana.foto);
 
-  // Dibaca juga oleh halaman Profil
+  // Dipakai juga di Profil
   const pilih = (id) => {
     setPilihan(id);
     try {
       localStorage.setItem(KUNCI, id);
     } catch {
-      // penyimpanan tidak tersedia
+      // Abaikan
     }
   };
 

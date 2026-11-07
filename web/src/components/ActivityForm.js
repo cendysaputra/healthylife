@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import client, { pesanError } from '../api/client';
 import { JENIS_AKTIVITAS, hariIni } from '../utils/format';
+import Select from './Select';
 
 const formAwal = () => ({ type: 'jalan', duration: '', date: hariIni(), note: '' });
 
-// Dipakai di halaman Aktivitas dan dialog beranda
+// Form catat aktivitas
 function ActivityForm({ onSaved, idPrefix = 'act', layout = 'grid', submitLabel = 'Simpan aktivitas' }) {
   const [form, setForm] = useState(formAwal);
   const [simpan, setSimpan] = useState(false);
@@ -33,14 +34,16 @@ function ActivityForm({ onSaved, idPrefix = 'act', layout = 'grid', submitLabel 
     <form onSubmit={handleSubmit} className="form-stack">
       <div className={layout === 'grid' ? 'form-grid' : 'form-stack'}>
         <div className="field">
-          <label htmlFor={id('type')}>Jenis</label>
-          <select id={id('type')} name="type" value={form.type} onChange={handleChange}>
-            {JENIS_AKTIVITAS.map((j) => (
-              <option key={j.value} value={j.value}>
-                {j.label}
-              </option>
-            ))}
-          </select>
+          <label id={id('type-label')} htmlFor={id('type')}>
+            Jenis
+          </label>
+          <Select
+            id={id('type')}
+            labelId={id('type-label')}
+            value={form.type}
+            options={JENIS_AKTIVITAS}
+            onChange={(type) => setForm((f) => ({ ...f, type }))}
+          />
         </div>
 
         <div className="field">

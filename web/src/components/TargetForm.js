@@ -2,7 +2,7 @@ import { useState } from 'react';
 import client, { pesanError } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
-// Dipakai di Aktivitas, Profil, dan dialog beranda
+// Form target harian
 function TargetForm({ onSaved, idPrefix = 'target' }) {
   const { user, setUser } = useAuth();
   const [target, setTarget] = useState(user?.dailyTarget ?? 30);

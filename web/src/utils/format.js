@@ -53,14 +53,14 @@ export const urlEmbedYoutube = (url) => {
   return cocok ? `https://www.youtube.com/embed/${cocok[1]}` : null;
 };
 
-// YYYY-MM-DD dalam waktu lokal, bukan UTC
+// YYYY-MM-DD lokal
 export const hariIni = () => {
   const d = new Date();
   const offset = d.getTimezoneOffset() * 60000;
   return new Date(d.getTime() - offset).toISOString().slice(0, 10);
 };
 
-// Tanggal lokal dari Date/string
+// Tanggal lokal
 export const tanggalLokal = (date) => {
   const d = new Date(date);
   const offset = d.getTimezoneOffset() * 60000;

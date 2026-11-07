@@ -1,6 +1,6 @@
 import { SYMBOLS } from '../assets/illustrations';
 
-// Dirender sekali di Layout
+// Library simbol
 export function SvgLibrary() {
   return (
     <svg
@@ -12,7 +12,7 @@ export function SvgLibrary() {
   );
 }
 
-// Pakai satu simbol: <Sym id="sun" className="hero-sun" />
+// Satu simbol
 function Sym({ id, className, label }) {
   return (
     <svg
