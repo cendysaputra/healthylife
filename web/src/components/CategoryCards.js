@@ -21,11 +21,22 @@ function CategoryCards({ active = null, onSelect, hrefFor, semua = true, label =
         );
         const kelas = ['hl-cat', !k.value && 'hl-cat--semua', aktif && 'is-active'].filter(Boolean).join(' ');
         return hrefFor ? (
-          <Link key={k.value || 'semua'} to={hrefFor(k.value)} className={kelas} aria-current={aktif ? 'page' : undefined}>
+          <Link
+            key={k.value || 'semua'}
+            to={hrefFor(k.value)}
+            className={kelas}
+            aria-current={aktif ? 'page' : undefined}
+          >
             {isi}
           </Link>
         ) : (
-          <button key={k.value || 'semua'} type="button" className={kelas} aria-pressed={aktif} onClick={() => onSelect(k.value)}>
+          <button
+            key={k.value || 'semua'}
+            type="button"
+            className={kelas}
+            aria-pressed={aktif}
+            onClick={() => onSelect(k.value)}
+          >
             {isi}
           </button>
         );

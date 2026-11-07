@@ -33,7 +33,7 @@ export default function Jelajah() {
         setError('');
         if (halaman === 1) setLoading(true);
         const { data } = await api.get('/contents', {
-          params: { category: kategori || undefined, q: q || undefined, page: halaman, limit: LIMIT },
+          params: { category: kategori || undefined, q: q || undefined, page: halaman, limit: LIMIT }
         });
         setItems((lama) => (halaman === 1 ? data.items : [...lama, ...data.items]));
         setPage(data.page);
@@ -54,7 +54,11 @@ export default function Jelajah() {
   return (
     <Screen error={error}>
       {/* Pilih kategori */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: space.gap, marginBottom: space.gap }}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: space.gap, marginBottom: space.gap }}
+      >
         <Button title="Semua" variant={kategori ? 'outline' : 'primary'} onPress={() => setKategori('')} />
         {KATEGORI.map((k) => (
           <Button

@@ -9,7 +9,15 @@ import { formatTanggal, formatTanggalPendek, labelAktivitas, namaHari, pesanProg
 import { scrollKe } from '../utils/smoothScroll';
 
 // Ilustrasi per jenis aktivitas
-const SIMBOL = { jalan: 'cat-shoe', lari: 'move', bersepeda: 'cat-shoe', gym: 'buddy', yoga: 'mind', peregangan: 'cat-leaf', lainnya: 'bubbles' };
+const SIMBOL = {
+  jalan: 'cat-shoe',
+  lari: 'move',
+  bersepeda: 'cat-shoe',
+  gym: 'buddy',
+  yoga: 'mind',
+  peregangan: 'cat-leaf',
+  lainnya: 'bubbles'
+};
 
 function Activity() {
   const [summary, setSummary] = useState(null);
@@ -110,7 +118,9 @@ function Activity() {
 
       {loading && (
         <section className="page container">
-          <p className="status" role="status">Memuat...</p>
+          <p className="status" role="status">
+            Memuat...
+          </p>
         </section>
       )}
 
@@ -144,7 +154,11 @@ function Activity() {
                 <ol className="week-bars">
                   {week.map((h, i) => {
                     const tinggi = Math.round((h.minutes / maks) * 100);
-                    const kelas = ['week-bar', h.minutes >= target ? 'is-done' : '', i === week.length - 1 ? 'is-today' : ''].join(' ');
+                    const kelas = [
+                      'week-bar',
+                      h.minutes >= target ? 'is-done' : '',
+                      i === week.length - 1 ? 'is-today' : ''
+                    ].join(' ');
                     return (
                       <li key={h.date} className={kelas} aria-label={`${formatTanggal(h.date)}: ${h.minutes} menit`}>
                         <b aria-hidden="true">{h.minutes}</b>
@@ -170,8 +184,16 @@ function Activity() {
               <span className="eyebrow">CATAT GERAKMU</span>
               <h2>Apa yang kamu lakukan hari ini?</h2>
               <ActivityForm idPrefix="act" onSaved={handleSaved} />
-              {error && <p role="alert" className="alert alert--error">{error}</p>}
-              {pesan && <p role="status" className="alert alert--success">{pesan}</p>}
+              {error && (
+                <p role="alert" className="alert alert--error">
+                  {error}
+                </p>
+              )}
+              {pesan && (
+                <p role="status" className="alert alert--success">
+                  {pesan}
+                </p>
+              )}
             </div>
           </section>
 
@@ -205,7 +227,12 @@ function Activity() {
                       </span>
                     </div>
                     <span className="history-duration">{a.duration} menit</span>
-                    <button type="button" className="link-danger" onClick={() => handleHapus(a._id)} aria-label={`Hapus ${labelAktivitas(a.type)} ${formatTanggal(a.date)}`}>
+                    <button
+                      type="button"
+                      className="link-danger"
+                      onClick={() => handleHapus(a._id)}
+                      aria-label={`Hapus ${labelAktivitas(a.type)} ${formatTanggal(a.date)}`}
+                    >
                       Hapus
                     </button>
                   </li>
@@ -216,7 +243,12 @@ function Activity() {
         </>
       )}
 
-      <Dialog open={dialogTarget} onClose={() => setDialogTarget(false)} labelledBy="dialog-target-akt" className="form-dialog">
+      <Dialog
+        open={dialogTarget}
+        onClose={() => setDialogTarget(false)}
+        labelledBy="dialog-target-akt"
+        className="form-dialog"
+      >
         <span className="eyebrow">TARGET YANG NYAMAN</span>
         <h2 id="dialog-target-akt">Berapa menit bergerak per hari?</h2>
         <TargetForm

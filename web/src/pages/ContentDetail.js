@@ -40,9 +40,15 @@ function ContentDetail() {
   if (loading) {
     return (
       <>
-        <PageHero eyebrow="MEMUAT" title={<span className="hero-skeleton">Sebentar, ya…</span>} art={<HeroArt simbol="cat-leaf" />} />
+        <PageHero
+          eyebrow="MEMUAT"
+          title={<span className="hero-skeleton">Sebentar, ya…</span>}
+          art={<HeroArt simbol="cat-leaf" />}
+        />
         <section className="page container">
-          <p className="status" role="status">Memuat konten...</p>
+          <p className="status" role="status">
+            Memuat konten...
+          </p>
         </section>
       </>
     );
@@ -91,18 +97,20 @@ function ContentDetail() {
       <PageHero
         className="page-hero--detail"
         top={
-            <div className="detail-hero-top">
-              <nav aria-label="Breadcrumb" className="breadcrumb">
-                <Link to="/">Beranda</Link>
-                <span aria-hidden="true">/</span>
-                <Link to={`/konten?kategori=${content.category}`}>{label}</Link>
-              </nav>
-              <div className="article-meta">
-                <span className="article-tag" style={{ background: gaya.tag, color: gaya.tagTeks }}>{label.toUpperCase()}</span>
-                {content.readTime ? <span>{content.readTime} menit baca</span> : null}
-                {content.durationMinutes ? <span>{content.durationMinutes} menit</span> : null}
-              </div>
+          <div className="detail-hero-top">
+            <nav aria-label="Breadcrumb" className="breadcrumb">
+              <Link to="/">Beranda</Link>
+              <span aria-hidden="true">/</span>
+              <Link to={`/konten?kategori=${content.category}`}>{label}</Link>
+            </nav>
+            <div className="article-meta">
+              <span className="article-tag" style={{ background: gaya.tag, color: gaya.tagTeks }}>
+                {label.toUpperCase()}
+              </span>
+              {content.readTime ? <span>{content.readTime} menit baca</span> : null}
+              {content.durationMinutes ? <span>{content.durationMinutes} menit</span> : null}
             </div>
+          </div>
         }
         title={content.title}
         description={content.summary}
@@ -145,7 +153,8 @@ function ContentDetail() {
             </div>
 
             <p className="dialog-note">
-              Konten HealthyLife bersifat informasi umum, bukan diagnosis atau perawatan medis. Konsultasikan kebutuhan kesehatan pribadimu dengan tenaga kesehatan.
+              Konten HealthyLife bersifat informasi umum, bukan diagnosis atau perawatan medis. Konsultasikan kebutuhan
+              kesehatan pribadimu dengan tenaga kesehatan.
             </p>
           </div>
 
@@ -163,7 +172,9 @@ function ContentDetail() {
               {content.tags?.length > 0 && (
                 <div className="tag-list">
                   {content.tags.map((t) => (
-                    <Link key={t} to={`/konten?q=${encodeURIComponent(t)}`} className="tag-chip">#{t}</Link>
+                    <Link key={t} to={`/konten?q=${encodeURIComponent(t)}`} className="tag-chip">
+                      #{t}
+                    </Link>
                   ))}
                 </div>
               )}
@@ -178,7 +189,9 @@ function ContentDetail() {
                   {content.sources.map((s, i) => (
                     <li key={i}>
                       {s.url ? (
-                        <a href={s.url} target="_blank" rel="noreferrer">{s.title}</a>
+                        <a href={s.url} target="_blank" rel="noreferrer">
+                          {s.title}
+                        </a>
                       ) : (
                         s.title
                       )}

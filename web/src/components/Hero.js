@@ -19,8 +19,8 @@ function Hero() {
           <span>hal kecil.</span>
         </h1>
         <p>
-          Nggak perlu mengubah semuanya sekaligus. Temukan inspirasi sederhana untuk tubuh yang lebih aktif dan pikiran yang lebih
-          tenang.
+          Nggak perlu mengubah semuanya sekaligus. Temukan inspirasi sederhana untuk tubuh yang lebih aktif dan pikiran
+          yang lebih tenang.
         </p>
         <a href="#artikel" className="hl-button" onClick={keArtikel}>
           Temukan Inspirasimu

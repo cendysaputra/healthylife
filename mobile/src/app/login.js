@@ -33,10 +33,21 @@ export default function Login() {
     <Screen error={error}>
       <Section>
         {from ? <Text>Masuk dulu untuk melanjutkan.</Text> : null}
-        <Field label="Email" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" autoComplete="email" />
+        <Field
+          label="Email"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoComplete="email"
+        />
         <Field label="Password" value={password} onChangeText={setPassword} secureTextEntry autoComplete="password" />
         <Button title={proses ? 'Memproses...' : 'Masuk'} onPress={handleMasuk} disabled={proses} />
-        <Button title="Belum punya akun? Daftar" variant="outline" onPress={() => router.replace({ pathname: '/register', params: from ? { from } : {} })} />
+        <Button
+          title="Belum punya akun? Daftar"
+          variant="outline"
+          onPress={() => router.replace({ pathname: '/register', params: from ? { from } : {} })}
+        />
       </Section>
     </Screen>
   );

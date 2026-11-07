@@ -1,9 +1,24 @@
 import Sym from './Svg';
 
 const MANFAAT = [
-  { simbol: 'cat-shoe', warna: 'benefit-blue', judul: 'Catat gerakmu', teks: 'Jalan, yoga, atau peregangan. Semua menit dihitung dan terkumpul tiap hari.' },
-  { simbol: 'heart', warna: 'benefit-pink', judul: 'Simpan favorit', teks: 'Tandai bacaan dan video yang ingin kamu buka lagi nanti.' },
-  { simbol: 'sun', warna: 'benefit-yellow', judul: 'Target yang nyaman', teks: 'Atur sendiri target harianmu, dari 5 sampai 300 menit.' }
+  {
+    simbol: 'cat-shoe',
+    warna: 'benefit-blue',
+    judul: 'Catat gerakmu',
+    teks: 'Jalan, yoga, atau peregangan. Semua menit dihitung dan terkumpul tiap hari.'
+  },
+  {
+    simbol: 'heart',
+    warna: 'benefit-pink',
+    judul: 'Simpan favorit',
+    teks: 'Tandai bacaan dan video yang ingin kamu buka lagi nanti.'
+  },
+  {
+    simbol: 'sun',
+    warna: 'benefit-yellow',
+    judul: 'Target yang nyaman',
+    teks: 'Atur sendiri target harianmu, dari 5 sampai 300 menit.'
+  }
 ];
 
 function AuthBenefits() {

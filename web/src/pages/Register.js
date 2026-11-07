@@ -63,27 +63,68 @@ function Register() {
             <form onSubmit={handleSubmit} className="form-stack">
               <div className="field">
                 <label htmlFor="name">Nama</label>
-                <input id="name" name="name" type="text" autoComplete="name" required value={form.name} onChange={handleChange} />
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                />
               </div>
 
               <div className="field">
                 <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" autoComplete="email" required value={form.email} onChange={handleChange} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                />
               </div>
 
               <div className="field-row">
                 <div className="field">
                   <label htmlFor="password">Password</label>
-                  <input id="password" name="password" type="password" autoComplete="new-password" minLength="8" required value={form.password} onChange={handleChange} aria-describedby="password-hint" />
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="new-password"
+                    minLength="8"
+                    required
+                    value={form.password}
+                    onChange={handleChange}
+                    aria-describedby="password-hint"
+                  />
                 </div>
                 <div className="field">
                   <label htmlFor="konfirmasi">Konfirmasi</label>
-                  <input id="konfirmasi" name="konfirmasi" type="password" autoComplete="new-password" minLength="8" required value={form.konfirmasi} onChange={handleChange} />
+                  <input
+                    id="konfirmasi"
+                    name="konfirmasi"
+                    type="password"
+                    autoComplete="new-password"
+                    minLength="8"
+                    required
+                    value={form.konfirmasi}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
-              <small id="password-hint" className="field-hint">Password minimal 8 karakter.</small>
+              <small id="password-hint" className="field-hint">
+                Password minimal 8 karakter.
+              </small>
 
-              {error && <p role="alert" className="alert alert--error">{error}</p>}
+              {error && (
+                <p role="alert" className="alert alert--error">
+                  {error}
+                </p>
+              )}
 
               <button type="submit" className="button button-blue button-block" disabled={proses}>
                 {proses ? 'Memproses...' : 'Daftar'} <Sym id="arrow" />
@@ -91,7 +132,10 @@ function Register() {
             </form>
 
             <p className="auth-switch">
-              Sudah punya akun? <Link to="/login" state={location.state}>Masuk</Link>
+              Sudah punya akun?{' '}
+              <Link to="/login" state={location.state}>
+                Masuk
+              </Link>
             </p>
           </div>
         }

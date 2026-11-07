@@ -128,7 +128,10 @@ export default function Aktivitas() {
       <Section title="Riwayat aktivitas">
         {riwayat.length === 0 && <Text>Belum ada aktivitas.</Text>}
         {riwayat.map((a) => (
-          <View key={a._id} style={{ borderBottomWidth: 1, borderColor: colors.border, paddingVertical: space.gap, gap: 4 }}>
+          <View
+            key={a._id}
+            style={{ borderBottomWidth: 1, borderColor: colors.border, paddingVertical: space.gap, gap: 4 }}
+          >
             <Text style={{ fontWeight: '600' }}>
               {labelAktivitas(a.type)} · {a.duration} menit
             </Text>

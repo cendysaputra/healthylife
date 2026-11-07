@@ -12,7 +12,10 @@ export default function BellButton() {
   useFocusEffect(
     useCallback(() => {
       if (!user) return setCount(0);
-      api.get('/notifications').then(({ data }) => setCount(data.count)).catch(() => setCount(0));
+      api
+        .get('/notifications')
+        .then(({ data }) => setCount(data.count))
+        .catch(() => setCount(0));
     }, [user])
   );
 

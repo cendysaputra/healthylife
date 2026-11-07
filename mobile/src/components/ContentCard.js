@@ -7,11 +7,7 @@ export default function ContentCard({ content }) {
   const gambar = urlGambar(content.thumbnail);
 
   return (
-    <Pressable
-      style={styles.card}
-      onPress={() => router.push(`/konten/${content.slug}`)}
-      accessibilityRole="link"
-    >
+    <Pressable style={styles.card} onPress={() => router.push(`/konten/${content.slug}`)} accessibilityRole="link">
       {gambar && <Image source={{ uri: gambar }} style={styles.img} />}
       <View style={styles.body}>
         <Text style={styles.muted}>{labelKategori(content.category)}</Text>
@@ -31,5 +27,5 @@ const styles = StyleSheet.create({
   img: { width: '100%', aspectRatio: 16 / 9, backgroundColor: colors.border },
   body: { padding: space.gap, gap: 4 },
   title: { fontWeight: '600' },
-  muted: { color: colors.muted },
+  muted: { color: colors.muted }
 });

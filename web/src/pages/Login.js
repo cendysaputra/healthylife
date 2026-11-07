@@ -54,15 +54,35 @@ function Login() {
             <form onSubmit={handleSubmit} className="form-stack">
               <div className="field">
                 <label htmlFor="email">Email</label>
-                <input id="email" name="email" type="email" autoComplete="email" required value={form.email} onChange={handleChange} />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                />
               </div>
 
               <div className="field">
                 <label htmlFor="password">Password</label>
-                <input id="password" name="password" type="password" autoComplete="current-password" required value={form.password} onChange={handleChange} />
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={form.password}
+                  onChange={handleChange}
+                />
               </div>
 
-              {error && <p role="alert" className="alert alert--error">{error}</p>}
+              {error && (
+                <p role="alert" className="alert alert--error">
+                  {error}
+                </p>
+              )}
 
               <button type="submit" className="button button-blue button-block" disabled={proses}>
                 {proses ? 'Memproses...' : 'Masuk'} <Sym id="arrow" />
@@ -70,7 +90,10 @@ function Login() {
             </form>
 
             <p className="auth-switch">
-              Belum punya akun? <Link to="/register" state={location.state}>Daftar gratis</Link>
+              Belum punya akun?{' '}
+              <Link to="/register" state={location.state}>
+                Daftar gratis
+              </Link>
             </p>
           </div>
         }

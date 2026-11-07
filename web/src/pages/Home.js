@@ -42,7 +42,11 @@ function Home() {
 
       <div className="hl-lavender">
         <section className="hl-start container" aria-label="Mulai perjalanan sehat">
-          <Link to={user ? '/aktivitas' : '/konten?kategori=olahraga'} className="hl-start-card hl-start-card--purple" id="olahraga">
+          <Link
+            to={user ? '/aktivitas' : '/konten?kategori=olahraga'}
+            className="hl-start-card hl-start-card--purple"
+            id="olahraga"
+          >
             <h2>
               Yang penting mulai.
               <br />
@@ -67,7 +71,9 @@ function Home() {
         </section>
 
         <section className="hl-categories container" id="kategori" aria-labelledby="judul-kategori">
-          <h2 id="judul-kategori" className="hl-section-title">Sehat itu banyak bentuknya</h2>
+          <h2 id="judul-kategori" className="hl-section-title">
+            Sehat itu banyak bentuknya
+          </h2>
           <CategoryCards semua={false} hrefFor={(v) => `/konten?kategori=${v}`} />
         </section>
       </div>

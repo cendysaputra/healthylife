@@ -15,7 +15,12 @@ export function SvgLibrary() {
 // Pakai satu simbol: <Sym id="sun" className="hero-sun" />
 function Sym({ id, className, label }) {
   return (
-    <svg className={className} aria-hidden={label ? undefined : 'true'} role={label ? 'img' : undefined} aria-label={label}>
+    <svg
+      className={className}
+      aria-hidden={label ? undefined : 'true'}
+      role={label ? 'img' : undefined}
+      aria-label={label}
+    >
       <use href={`#${id}`} />
     </svg>
   );

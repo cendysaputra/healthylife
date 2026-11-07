@@ -95,20 +95,28 @@ function Header() {
 
         <nav className={`nav ${menuOpen ? 'open' : ''}`} aria-label="Navigasi utama" id="main-nav">
           {navKategori.map((k) => (
-            <Link key={k.value} to={`/konten?kategori=${k.value}`} aria-current={kategoriAktif === k.value ? 'page' : undefined}>
+            <Link
+              key={k.value}
+              to={`/konten?kategori=${k.value}`}
+              aria-current={kategoriAktif === k.value ? 'page' : undefined}
+            >
               {k.label}
             </Link>
           ))}
           <NavLink to="/aktivitas">Aktivitas</NavLink>
           {!user && (
-            <NavLink to="/login" className="nav-mobile-only">Masuk</NavLink>
+            <NavLink to="/login" className="nav-mobile-only">
+              Masuk
+            </NavLink>
           )}
         </nav>
 
         <div className="nav-account" ref={akunRef}>
           {!user && (
             <>
-              <Link to="/login" className="text-link is-plain">Masuk</Link>
+              <Link to="/login" className="text-link is-plain">
+                Masuk
+              </Link>
               <Link to="/register" className="hl-button hl-button--sm">
                 Daftar
               </Link>
@@ -126,12 +134,18 @@ function Header() {
                   aria-label={notif.count > 0 ? `Notifikasi, ${notif.count} konten baru` : 'Notifikasi'}
                 >
                   <Icon name="bell" />
-                  {notif.count > 0 && <span className="notif-badge" aria-hidden="true">{notif.count}</span>}
+                  {notif.count > 0 && (
+                    <span className="notif-badge" aria-hidden="true">
+                      {notif.count}
+                    </span>
+                  )}
                 </button>
                 {notifOpen && (
                   <div className="dropdown-panel">
                     <p className="dropdown-title">KONTEN BARU</p>
-                    {notif.items.length === 0 && <p className="dropdown-empty">Belum ada konten baru. Kami kabari kalau ada.</p>}
+                    {notif.items.length === 0 && (
+                      <p className="dropdown-empty">Belum ada konten baru. Kami kabari kalau ada.</p>
+                    )}
                     <ul className="dropdown-list">
                       {notif.items.map((item) => (
                         <li key={item._id}>
@@ -157,18 +171,30 @@ function Header() {
                   aria-expanded={akunOpen}
                   aria-label={`Akun ${user.name}`}
                 >
-                  <span className="avatar" aria-hidden="true">{user.name?.charAt(0).toUpperCase()}</span>
+                  <span className="avatar" aria-hidden="true">
+                    {user.name?.charAt(0).toUpperCase()}
+                  </span>
                   <span className="account-name">{user.name}</span>
                   <Icon name="chevron-down" />
                 </button>
                 {akunOpen && (
                   <div className="dropdown-panel dropdown-panel--small">
                     <ul className="dropdown-list">
-                      <li><Link to="/profil">Profil</Link></li>
-                      <li><Link to="/profil#favorit">Favorit</Link></li>
-                      <li><Link to="/aktivitas">Aktivitas</Link></li>
+                      <li>
+                        <Link to="/profil">Profil</Link>
+                      </li>
+                      <li>
+                        <Link to="/profil#favorit">Favorit</Link>
+                      </li>
+                      <li>
+                        <Link to="/aktivitas">Aktivitas</Link>
+                      </li>
                       <li className="dropdown-divider" aria-hidden="true" />
-                      <li><button type="button" className="dropdown-danger" onClick={handleLogout}>Keluar</button></li>
+                      <li>
+                        <button type="button" className="dropdown-danger" onClick={handleLogout}>
+                          Keluar
+                        </button>
+                      </li>
                     </ul>
                   </div>
                 )}

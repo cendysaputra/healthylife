@@ -51,9 +51,7 @@ router.get('/summary', async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100);
-    const items = await Activity.find({ user: req.user._id })
-      .sort({ date: -1, createdAt: -1 })
-      .limit(limit);
+    const items = await Activity.find({ user: req.user._id }).sort({ date: -1, createdAt: -1 }).limit(limit);
     res.json({ items });
   } catch (err) {
     next(err);

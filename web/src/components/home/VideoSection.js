@@ -36,7 +36,12 @@ function VideoSection() {
               return (
                 <Link key={v._id} to={`/konten/${v.slug}`} className="hl-video">
                   {foto ? (
-                    <img src={urlGambar(v.thumbnail)} alt="" loading="lazy" onError={() => setGagal((g) => ({ ...g, [v._id]: true }))} />
+                    <img
+                      src={urlGambar(v.thumbnail)}
+                      alt=""
+                      loading="lazy"
+                      onError={() => setGagal((g) => ({ ...g, [v._id]: true }))}
+                    />
                   ) : (
                     <span className="hl-video-fallback">
                       <Sym id={gayaKategori('video').simbol} />
@@ -47,7 +52,9 @@ function VideoSection() {
                     {v.durationMinutes || v.readTime ? <span>{v.durationMinutes || v.readTime} Menit</span> : null}
                   </span>
                   <span className="hl-video-play" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" /></svg>
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" />
+                    </svg>
                   </span>
                 </Link>
               );

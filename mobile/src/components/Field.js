@@ -13,5 +13,5 @@ export default function Field({ label, ...props }) {
 
 const styles = StyleSheet.create({
   wrap: { gap: 4 },
-  input: { minHeight: 44, borderWidth: 1, borderColor: colors.border, paddingHorizontal: space.gap, color: colors.text },
+  input: { minHeight: 44, borderWidth: 1, borderColor: colors.border, paddingHorizontal: space.gap, color: colors.text }
 });

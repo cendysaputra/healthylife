@@ -4,7 +4,7 @@ export const KATEGORI = [
   { value: 'artikel', label: 'Artikel' },
   { value: 'video', label: 'Video' },
   { value: 'olahraga', label: 'Olahraga' },
-  { value: 'nutrisi', label: 'Nutrisi' },
+  { value: 'nutrisi', label: 'Nutrisi' }
 ];
 
 export const labelKategori = (v) => KATEGORI.find((k) => k.value === v)?.label || v;
@@ -16,7 +16,7 @@ export const JENIS_AKTIVITAS = [
   { value: 'gym', label: 'Gym' },
   { value: 'yoga', label: 'Yoga' },
   { value: 'peregangan', label: 'Peregangan' },
-  { value: 'lainnya', label: 'Lainnya' },
+  { value: 'lainnya', label: 'Lainnya' }
 ];
 
 export const labelAktivitas = (v) => JENIS_AKTIVITAS.find((j) => j.value === v)?.label || v;

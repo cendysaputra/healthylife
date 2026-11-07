@@ -22,7 +22,7 @@ export default function Beranda() {
         ambil({ limit: 4 }),
         ambil({ category: 'video', limit: 3 }),
         ambil({ category: 'olahraga', limit: 3 }),
-        ambil({ category: 'nutrisi', limit: 3 }),
+        ambil({ category: 'nutrisi', limit: 3 })
       ]);
       setData({ terbaru, video, olahraga, nutrisi });
     } catch (err) {
@@ -53,7 +53,9 @@ export default function Beranda() {
       <Section>
         <Text>Your Daily Healthy Habit</Text>
         <Text style={{ fontSize: 24, fontWeight: '800' }}>Hidup sehat dimulai dari kebiasaan kecil hari ini</Text>
-        <Text>Temukan artikel, video edukasi, panduan olahraga, dan informasi nutrisi untuk menemani rutinitas sehatmu.</Text>
+        <Text>
+          Temukan artikel, video edukasi, panduan olahraga, dan informasi nutrisi untuk menemani rutinitas sehatmu.
+        </Text>
         <Button title="Jelajahi Konten" onPress={() => keJelajah()} />
         <Button title="Catat Aktivitas" variant="outline" onPress={() => router.push('/aktivitas')} />
       </Section>

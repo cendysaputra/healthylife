@@ -75,7 +75,11 @@ export default function DetailKonten() {
               {content.durationMinutes ? ` · Durasi ${content.durationMinutes} menit` : ''}
               {content.level ? ` · Level ${content.level}` : ''}
             </Text>
-            <Button title={favorit ? 'Hapus dari Favorit' : 'Simpan ke Favorit'} variant="outline" onPress={toggleFavorit} />
+            <Button
+              title={favorit ? 'Hapus dari Favorit' : 'Simpan ke Favorit'}
+              variant="outline"
+              onPress={toggleFavorit}
+            />
           </Section>
 
           {/* Video atau gambar */}

@@ -15,7 +15,6 @@ client.interceptors.request.use((config) => {
   return config;
 });
 
-export const pesanError = (err) =>
-  err?.response?.data?.message || 'Terjadi kesalahan, coba lagi.';
+export const pesanError = (err) => err?.response?.data?.message || 'Terjadi kesalahan, coba lagi.';
 
 export default client;

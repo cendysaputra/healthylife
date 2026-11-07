@@ -56,7 +56,9 @@ function Profile() {
         art={
           <div className="hero-blob-wrap">
             <div className="hero-blob profile-blob">
-              <span className="profile-initial" aria-hidden="true">{user.name?.charAt(0).toUpperCase()}</span>
+              <span className="profile-initial" aria-hidden="true">
+                {user.name?.charAt(0).toUpperCase()}
+              </span>
             </div>
             <Sym id="buddy" className="hero-blob-badge" />
             <Sym id="sun" className="hero-blob-sun" />
@@ -91,7 +93,13 @@ function Profile() {
             <dd>{formatTanggal(user.createdAt)}</dd>
             <dt>Kebiasaan</dt>
             <dd>
-              {kebiasaan ? kebiasaan.label : <Link to="/#kebiasaan" className="inline-link">Pilih kebiasaan di beranda</Link>}
+              {kebiasaan ? (
+                kebiasaan.label
+              ) : (
+                <Link to="/#kebiasaan" className="inline-link">
+                  Pilih kebiasaan di beranda
+                </Link>
+              )}
             </dd>
           </dl>
           <button type="button" className="text-link profile-logout" onClick={handleLogout}>
@@ -123,8 +131,16 @@ function Profile() {
             Cari konten lain <Sym id="arrow" />
           </Link>
         </div>
-        {error && <p role="alert" className="alert alert--error">{error}</p>}
-        {loading && <p className="status" role="status">Memuat...</p>}
+        {error && (
+          <p role="alert" className="alert alert--error">
+            {error}
+          </p>
+        )}
+        {loading && (
+          <p className="status" role="status">
+            Memuat...
+          </p>
+        )}
         {!loading && (
           <div className="article-grid">
             {favorit.length === 0 ? (
@@ -140,7 +156,9 @@ function Profile() {
               favorit.map((item) => (
                 <div key={item._id} className="favorite-item">
                   <ContentCard content={item} />
-                  <button type="button" className="link-danger" onClick={() => hapusFavorit(item)}>Hapus dari favorit</button>
+                  <button type="button" className="link-danger" onClick={() => hapusFavorit(item)}>
+                    Hapus dari favorit
+                  </button>
                 </div>
               ))
             )}

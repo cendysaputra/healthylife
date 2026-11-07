@@ -32,11 +32,21 @@ function FavoriteButton({ content }) {
 
   return (
     <div className="favorite">
-      <button type="button" className="favorite-button" onClick={handleClick} disabled={proses} aria-pressed={tersimpan}>
+      <button
+        type="button"
+        className="favorite-button"
+        onClick={handleClick}
+        disabled={proses}
+        aria-pressed={tersimpan}
+      >
         <BookmarkIcon />
         {tersimpan ? 'Tersimpan di favorit' : 'Simpan ke favorit'}
       </button>
-      {error && <p role="alert" className="alert alert--error">{error}</p>}
+      {error && (
+        <p role="alert" className="alert alert--error">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

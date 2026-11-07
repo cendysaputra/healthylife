@@ -5,11 +5,11 @@ export const colors = {
   muted: '#5B6672',
   brand: '#0099FF',
   border: '#DDDDDD',
-  danger: '#B33A3A',
+  danger: '#B33A3A'
 };
 
 export const space = {
   screen: 16,
   section: 32,
-  gap: 12,
+  gap: 12
 };

@@ -22,7 +22,9 @@ function NotFound() {
           <Link to="/" className="button button-blue">
             Kembali ke beranda <Sym id="arrow" />
           </Link>
-          <Link to="/konten" className="text-link">Lihat semua konten</Link>
+          <Link to="/konten" className="text-link">
+            Lihat semua konten
+          </Link>
         </div>
       </PageHero>
 

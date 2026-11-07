@@ -10,8 +10,7 @@ export const KATEGORI = [
   { value: 'nutrisi', label: 'Nutrisi' }
 ];
 
-export const labelKategori = (value) =>
-  KATEGORI.find((k) => k.value === value)?.label || value;
+export const labelKategori = (value) => KATEGORI.find((k) => k.value === value)?.label || value;
 
 const GAYA_KATEGORI = {
   artikel: { tag: '#ffc015', tagTeks: '#1b1b1b', simbol: 'cat-cloud', foto: fotoPikiran },
@@ -32,8 +31,7 @@ export const JENIS_AKTIVITAS = [
   { value: 'lainnya', label: 'Lainnya' }
 ];
 
-export const labelAktivitas = (value) =>
-  JENIS_AKTIVITAS.find((j) => j.value === value)?.label || value;
+export const labelAktivitas = (value) => JENIS_AKTIVITAS.find((j) => j.value === value)?.label || value;
 
 export const formatTanggal = (date) =>
   new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -45,8 +43,7 @@ export const formatTanggalKartu = (date) =>
 export const formatTanggalPendek = (date) =>
   new Date(date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 
-export const namaHari = (date) =>
-  new Date(date).toLocaleDateString('id-ID', { weekday: 'short' });
+export const namaHari = (date) => new Date(date).toLocaleDateString('id-ID', { weekday: 'short' });
 
 export const urlGambar = (path) => (path ? `${ASSET_URL}${path}` : '');
 

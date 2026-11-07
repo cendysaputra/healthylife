@@ -18,7 +18,9 @@ const bacaPilihan = () => {
 
 function HabitSection() {
   const tersimpanAwal = bacaPilihan();
-  const [pilihan, setPilihan] = useState(KEBIASAAN.some((k) => k.id === tersimpanAwal) ? tersimpanAwal : KEBIASAAN[0].id);
+  const [pilihan, setPilihan] = useState(
+    KEBIASAAN.some((k) => k.id === tersimpanAwal) ? tersimpanAwal : KEBIASAAN[0].id
+  );
   const [fotoGagal, setFotoGagal] = useState({});
 
   const rencana = KEBIASAAN.find((k) => k.id === pilihan);

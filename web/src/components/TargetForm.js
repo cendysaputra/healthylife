@@ -48,8 +48,16 @@ function TargetForm({ onSaved, idPrefix = 'target' }) {
           {simpan ? 'Menyimpan...' : 'Simpan target'}
         </button>
       </form>
-      {error && <p role="alert" className="alert alert--error">{error}</p>}
-      {pesan && <p role="status" className="alert alert--success">{pesan}</p>}
+      {error && (
+        <p role="alert" className="alert alert--error">
+          {error}
+        </p>
+      )}
+      {pesan && (
+        <p role="status" className="alert alert--success">
+          {pesan}
+        </p>
+      )}
     </>
   );
 }

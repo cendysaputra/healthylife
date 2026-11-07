@@ -7,8 +7,8 @@ Notifications.setNotificationHandler({
     shouldShowBanner: true,
     shouldShowList: true,
     shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
+    shouldSetBadge: false
+  })
 });
 
 const ID_PENGINGAT = 'pengingat-harian';
@@ -21,7 +21,7 @@ export const aktifkanPengingat = async () => {
   if (Platform.OS === 'android') {
     await Notifications.setNotificationChannelAsync('pengingat', {
       name: 'Pengingat harian',
-      importance: Notifications.AndroidImportance.DEFAULT,
+      importance: Notifications.AndroidImportance.DEFAULT
     });
   }
 
@@ -30,20 +30,19 @@ export const aktifkanPengingat = async () => {
     identifier: ID_PENGINGAT,
     content: {
       title: 'HealthyLife',
-      body: 'Sudah bergerak hari ini? Catat aktivitasmu, yuk.',
+      body: 'Sudah bergerak hari ini? Catat aktivitasmu, yuk.'
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,
       hour: 19,
       minute: 0,
-      channelId: 'pengingat',
-    },
+      channelId: 'pengingat'
+    }
   });
   return true;
 };
 
-export const matikanPengingat = () =>
-  Notifications.cancelScheduledNotificationAsync(ID_PENGINGAT).catch(() => {});
+export const matikanPengingat = () => Notifications.cancelScheduledNotificationAsync(ID_PENGINGAT).catch(() => {});
 
 export const cekPengingat = async () => {
   const list = await Notifications.getAllScheduledNotificationsAsync();

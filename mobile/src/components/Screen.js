@@ -35,5 +35,5 @@ const styles = StyleSheet.create({
   content: { padding: space.screen, paddingBottom: space.section * 2 },
   section: { marginBottom: space.section, gap: space.gap },
   sectionTitle: { fontSize: 18, fontWeight: '700' },
-  error: { color: colors.danger, marginBottom: space.gap },
+  error: { color: colors.danger, marginBottom: space.gap }
 });

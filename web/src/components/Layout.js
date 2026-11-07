@@ -33,7 +33,9 @@ function Layout() {
     <CanvasSlotContext.Provider value={slot}>
       <SvgLibrary />
       <ScrollManager />
-      <a href="#main" className="skip-link">Lewati ke konten</a>
+      <a href="#main" className="skip-link">
+        Lewati ke konten
+      </a>
       <div className="hero-canvas">
         <Header />
         <div ref={setSlot} className="canvas-slot" />

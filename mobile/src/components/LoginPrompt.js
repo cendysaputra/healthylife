@@ -9,7 +9,11 @@ export default function LoginPrompt({ pesan, from }) {
     <View style={{ gap: space.gap }}>
       <Text>{pesan}</Text>
       <Button title="Masuk" onPress={() => router.push({ pathname: '/login', params: { from } })} />
-      <Button title="Daftar" variant="outline" onPress={() => router.push({ pathname: '/register', params: { from } })} />
+      <Button
+        title="Daftar"
+        variant="outline"
+        onPress={() => router.push({ pathname: '/register', params: { from } })}
+      />
     </View>
   );
 }

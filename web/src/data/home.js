@@ -1,4 +1,3 @@
-
 // Dipakai di beranda dan arsip konten
 export const KARTU_KATEGORI = [
   { value: '', label: 'Semua inspirasi', sub: 'Temukan hal baru', simbol: 'cat-leaf', warna: 'cream' },

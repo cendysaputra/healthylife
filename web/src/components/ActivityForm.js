@@ -36,28 +36,61 @@ function ActivityForm({ onSaved, idPrefix = 'act', layout = 'grid', submitLabel 
           <label htmlFor={id('type')}>Jenis</label>
           <select id={id('type')} name="type" value={form.type} onChange={handleChange}>
             {JENIS_AKTIVITAS.map((j) => (
-              <option key={j.value} value={j.value}>{j.label}</option>
+              <option key={j.value} value={j.value}>
+                {j.label}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="field">
           <label htmlFor={id('duration')}>Durasi (menit)</label>
-          <input id={id('duration')} name="duration" type="number" inputMode="numeric" min="1" max="600" required placeholder="Contoh: 15" value={form.duration} onChange={handleChange} />
+          <input
+            id={id('duration')}
+            name="duration"
+            type="number"
+            inputMode="numeric"
+            min="1"
+            max="600"
+            required
+            placeholder="Contoh: 15"
+            value={form.duration}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="field">
           <label htmlFor={id('date')}>Tanggal</label>
-          <input id={id('date')} name="date" type="date" max={hariIni()} required value={form.date} onChange={handleChange} />
+          <input
+            id={id('date')}
+            name="date"
+            type="date"
+            max={hariIni()}
+            required
+            value={form.date}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="field">
           <label htmlFor={id('note')}>Catatan</label>
-          <input id={id('note')} name="note" type="text" maxLength="200" placeholder="Opsional" value={form.note} onChange={handleChange} />
+          <input
+            id={id('note')}
+            name="note"
+            type="text"
+            maxLength="200"
+            placeholder="Opsional"
+            value={form.note}
+            onChange={handleChange}
+          />
         </div>
       </div>
 
-      {error && <p role="alert" className="alert alert--error">{error}</p>}
+      {error && (
+        <p role="alert" className="alert alert--error">
+          {error}
+        </p>
+      )}
 
       <div className="form-actions">
         <button type="submit" className="button button-blue" disabled={simpan}>

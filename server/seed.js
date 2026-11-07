@@ -37,9 +37,11 @@ const run = async () => {
 
     const terbit = data.filter((c) => c.publishedAt <= new Date()).length;
     console.log(`Seed selesai: ${data.length} konten, ${terbit} sudah terbit, ${data.length - terbit} terjadwal.`);
-    data.filter((c) => c.publishedAt > new Date()).forEach((c) => {
-      console.log(`  ${c.publishedAt.toISOString().slice(0, 10)}  ${c.title}`);
-    });
+    data
+      .filter((c) => c.publishedAt > new Date())
+      .forEach((c) => {
+        console.log(`  ${c.publishedAt.toISOString().slice(0, 10)}  ${c.title}`);
+      });
   } catch (err) {
     console.error('Seed gagal:', err.message);
     process.exitCode = 1;

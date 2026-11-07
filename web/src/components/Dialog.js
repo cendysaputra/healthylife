@@ -45,7 +45,9 @@ function Dialog({ open, onClose, labelledBy, className = '', children }) {
       }}
       onClick={handleClick}
     >
-      <button type="button" className="dialog-close" onClick={onClose} aria-label="Tutup">×</button>
+      <button type="button" className="dialog-close" onClick={onClose} aria-label="Tutup">
+        ×
+      </button>
       {open && <div className="dialog-body">{children}</div>}
     </dialog>
   );

@@ -8,11 +8,14 @@ function ProtectedRoute() {
   if (loading) {
     return (
       <div className="page container">
-        <p className="status" role="status">Memuat...</p>
+        <p className="status" role="status">
+          Memuat...
+        </p>
       </div>
     );
   }
-  if (!user) return <Navigate to="/login" replace state={{ from: location.pathname + location.search + location.hash }} />;
+  if (!user)
+    return <Navigate to="/login" replace state={{ from: location.pathname + location.search + location.hash }} />;
 
   return <Outlet />;
 }

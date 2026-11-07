@@ -22,14 +22,19 @@ export default function Profil() {
 
   useEffect(() => {
     if (user) setTarget(String(user.dailyTarget));
-    cekPengingat().then(setPengingat).catch(() => {});
+    cekPengingat()
+      .then(setPengingat)
+      .catch(() => {});
   }, [user]);
 
   // Ambil favorit setiap tab dibuka
   useFocusEffect(
     useCallback(() => {
       if (!user) return;
-      api.get('/favorites').then(({ data }) => setFavorit(data.items)).catch((err) => setError(pesanError(err)));
+      api
+        .get('/favorites')
+        .then(({ data }) => setFavorit(data.items))
+        .catch((err) => setError(pesanError(err)));
     }, [user])
   );
 

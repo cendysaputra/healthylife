@@ -37,7 +37,9 @@ function ArticleSection() {
           <div className="hl-skeleton" />
         </div>
       ) : error ? (
-        <p className="alert alert--error" role="alert">{error}</p>
+        <p className="alert alert--error" role="alert">
+          {error}
+        </p>
       ) : items.length === 0 ? (
         <div className="hl-empty">
           <Sym id="cat-cloud" />
