@@ -12,8 +12,9 @@ function ArticleSection() {
   useEffect(() => {
     let batal = false;
     client
-      .get('/contents', { params: { limit: 6 } })
-      .then(({ data }) => !batal && setItems(data.items))
+      .get('/contents', { params: { limit: 18 } })
+      // Tanpa video
+      .then(({ data }) => !batal && setItems(data.items.filter((c) => c.category !== 'video').slice(0, 6)))
       .catch((err) => !batal && setError(pesanError(err)))
       .finally(() => !batal && setLoading(false));
     return () => {

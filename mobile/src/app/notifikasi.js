@@ -10,7 +10,7 @@ export default function Notifikasi() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Ambil daftar dulu, baru tandai sudah dilihat
+    // Ambil, lalu tandai dilihat
     api
       .get('/notifications')
       .then(({ data }) => {

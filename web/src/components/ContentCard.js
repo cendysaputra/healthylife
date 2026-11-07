@@ -6,7 +6,7 @@ import { formatTanggalKartu, gayaKategori, labelKategori, urlGambar } from '../u
 import { BookmarkIcon } from './Icon';
 import Sym from './Svg';
 
-// Sampul: thumbnail, foto kategori, ilustrasi
+// Sampul
 export function Sampul({ content }) {
   const gaya = gayaKategori(content.category);
   const [gagal, setGagal] = useState(false);
@@ -62,14 +62,12 @@ function ContentCard({ content, headingLevel = 3 }) {
   const isVideo = content.category === 'video';
   const href = `/konten/${content.slug}`;
 
-  const meta = [
-    content.publishedAt ? formatTanggalKartu(content.publishedAt) : null,
-    content.readTime
-      ? `${content.readTime} MENIT BACA`
-      : content.durationMinutes
-        ? `${content.durationMinutes} MENIT`
-        : null
-  ].filter(Boolean);
+  const tanggal = content.publishedAt ? formatTanggalKartu(content.publishedAt) : null;
+  const durasi = content.readTime
+    ? `${content.readTime} MENIT BACA`
+    : content.durationMinutes
+      ? `${content.durationMinutes} MENIT`
+      : null;
 
   return (
     <article className="hl-card">
@@ -88,7 +86,11 @@ function ContentCard({ content, headingLevel = 3 }) {
       </Heading>
       {content.summary && <p className="hl-card-summary">{content.summary}</p>}
       <div className="hl-card-foot">
-        <span>{meta.join(' · ')}</span>
+        <span>
+          {tanggal && <time className="hl-card-date">{tanggal}</time>}
+          {tanggal && durasi && ' · '}
+          {durasi}
+        </span>
         <Link to={href} className="hl-card-arrow" aria-label={`${isVideo ? 'Tonton' : 'Baca'}: ${content.title}`}>
           <Sym id="arrow" />
         </Link>

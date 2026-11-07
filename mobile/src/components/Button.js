@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
 import { colors, space } from '../lib/theme';
 
-// Tombol polos, gampang diganti saat styling
+// Tombol
 export default function Button({ title, onPress, disabled, variant = 'primary' }) {
   return (
     <Pressable

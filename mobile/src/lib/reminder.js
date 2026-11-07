@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
-// Tampilkan notifikasi walau aplikasi sedang dibuka
+// Notif saat app terbuka
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -13,7 +13,7 @@ Notifications.setNotificationHandler({
 
 const ID_PENGINGAT = 'pengingat-harian';
 
-// Pasang pengingat harian jam 19.00
+// Pengingat 19.00
 export const aktifkanPengingat = async () => {
   const izin = await Notifications.requestPermissionsAsync();
   if (!izin.granted) return false;

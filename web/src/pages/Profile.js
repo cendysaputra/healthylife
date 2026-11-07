@@ -18,8 +18,6 @@ const bacaKebiasaan = () => {
   }
 };
 
-const bulanTahun = (date) => new Date(date).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
-
 function Profile() {
   const { user, logout } = useAuth();
   const { items: favorit, loading } = useFavorites();
@@ -36,44 +34,32 @@ function Profile() {
     <>
       <PageHero
         className="prof-hero"
+        top={<span className="prof-hello">Halo, {namaDepan}</span>}
         title={
           <>
-            Halo,
+            Langkah kecilmu,
             <br />
-            <span>{namaDepan}.</span>
+            <span>tersimpan di sini.</span>
           </>
         }
-        description="Atur target harian, lihat kebiasaan pilihanmu, dan buka lagi konten yang sudah kamu simpan."
+        description="Target, kebiasaan, dan bacaan favoritmu."
         art={
-          <div className="prof-avatar-wrap">
-            <div className="prof-avatar" aria-hidden="true">
-              {user.name?.charAt(0).toUpperCase()}
-            </div>
+          <div className="prof-avatar-wrap" aria-hidden="true">
+            <span className="prof-avatar-ring" />
+            <div className="prof-avatar">{user.name?.charAt(0).toUpperCase()}</div>
+            <span className="prof-chip prof-chip--target">
+              <i />
+              Target {user.dailyTarget} menit/hari
+            </span>
+            <span className="prof-chip prof-chip--habit">
+              <Sym id={kebiasaan?.simbol || 'cat-leaf'} />
+              {kebiasaan ? kebiasaan.label : 'Belum pilih kebiasaan'}
+            </span>
             <Mascot varian="kuning" className="prof-maskot prof-maskot--a" />
-            <Mascot varian="ungu" className="prof-maskot prof-maskot--b" />
+            <Mascot varian="lavender" className="prof-maskot prof-maskot--b" />
           </div>
         }
-      >
-        <dl className="prof-stats">
-          <div>
-            <dt>Target harian</dt>
-            <dd>
-              {user.dailyTarget}
-              <small>menit</small>
-            </dd>
-          </div>
-          <div>
-            <dt>Konten tersimpan</dt>
-            <dd>{favorit.length}</dd>
-          </div>
-          {user.createdAt && (
-            <div>
-              <dt>Bergabung</dt>
-              <dd className="prof-stats-text">{bulanTahun(user.createdAt)}</dd>
-            </div>
-          )}
-        </dl>
-      </PageHero>
+      />
 
       <section className="prof-grid container" aria-label="Akun, target, dan kebiasaan">
         <div className="prof-card prof-card--akun">
@@ -105,7 +91,7 @@ function Profile() {
           <h2>Bergerak {user.dailyTarget} menit setiap hari.</h2>
           <TargetForm idPrefix="profil-target" />
           <Link to="/aktivitas" className="hl-link hl-link--ink prof-card-link">
-            Lihat aktivitasmu <Sym id="arrow" />
+            Lihat aktivitasmu
           </Link>
         </div>
 
@@ -115,24 +101,24 @@ function Profile() {
           <h2>{kebiasaan ? kebiasaan.label : 'Belum memilih kebiasaan.'}</h2>
           <p>{kebiasaan ? kebiasaan.teks : 'Pilih satu kebiasaan kecil di beranda, lalu mulai pelan-pelan.'}</p>
           <div className="prof-habit-links">
-            {kebiasaan?.link && (
-              <Link to={kebiasaan.link.to} className="hl-button hl-button--orange hl-button--sm">
+            {kebiasaan?.link ? (
+              <Link to={kebiasaan.link.to} className="prof-habit-link">
                 {kebiasaan.link.label}
               </Link>
+            ) : (
+              !kebiasaan && (
+                <Link to="/#kebiasaan" className="prof-habit-link">
+                  Pilih kebiasaan
+                </Link>
+              )
             )}
-            <Link to="/#kebiasaan" className="prof-habit-change">
-              {kebiasaan ? 'Ganti kebiasaan' : 'Pilih kebiasaan'} <Sym id="arrow" />
-            </Link>
           </div>
         </div>
       </section>
 
       <section className="prof-fav container" id="favorit" aria-labelledby="judul-favorit">
         <div className="hl-heading">
-          <div>
-            <span className="hl-eyebrow prof-fav-eyebrow">TERSIMPAN UNTUKMU</span>
-            <h2 id="judul-favorit">Favoritmu.</h2>
-          </div>
+          <h2 id="judul-favorit">Favoritmu.</h2>
           <Link to="/konten" className="hl-button hl-button--sm">
             Cari konten lain
           </Link>

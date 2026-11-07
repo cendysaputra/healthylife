@@ -43,7 +43,7 @@ function Footer() {
             {!user && <Link to="/register">Daftar</Link>}
           </nav>
 
-          <div className="hl-footer-col">
+          <div className="hl-footer-col hl-footer-note">
             <h2>Catatan</h2>
             <p>Konten HealthyLife bersifat informasi umum, bukan pengganti saran tenaga medis.</p>
           </div>
@@ -53,7 +53,7 @@ function Footer() {
       <div className="hl-footer-base">
         <Cloud warna="#5e0091" mulai={8} className="hl-footer-base-cloud" />
         <div className="hl-footer-base-body">
-          <p className="container hl-footer-copy">© {new Date().getFullYear()} HealthyLife. Semua hak dilindungi.</p>
+          <p className="container hl-footer-copy">© {new Date().getFullYear()} HealthyLife. All rights reserved.</p>
         </div>
       </div>
     </footer>

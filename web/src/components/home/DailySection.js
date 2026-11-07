@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import client, { pesanError } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
-import { formatTanggalPendek, hariIni, labelAktivitas, pesanProgres, tanggalLokal } from '../../utils/format';
+import { formatTanggalPendek, pesanProgres } from '../../utils/format';
 import ActivityForm from '../ActivityForm';
 import Dialog from '../Dialog';
 import TargetForm from '../TargetForm';
@@ -13,23 +13,17 @@ function DailySection() {
   const navigate = useNavigate();
 
   const [summary, setSummary] = useState(null);
-  const [log, setLog] = useState([]);
   const [error, setError] = useState('');
   const [dialog, setDialog] = useState(null); // 'catat' | 'target' | null
 
   const muat = useCallback(async () => {
     if (!user) {
       setSummary(null);
-      setLog([]);
       return;
     }
     try {
-      const [s, r] = await Promise.all([
-        client.get('/activities/summary'),
-        client.get('/activities', { params: { limit: 20 } })
-      ]);
-      setSummary(s.data);
-      setLog(r.data.items.filter((a) => tanggalLokal(a.date) === hariIni()));
+      const { data } = await client.get('/activities/summary');
+      setSummary(data);
       setError('');
     } catch (err) {
       setError(pesanError(err));
@@ -48,15 +42,6 @@ function DailySection() {
     setDialog(jenis);
   };
 
-  const hapus = async (id) => {
-    try {
-      await client.delete(`/activities/${id}`);
-      await muat();
-    } catch (err) {
-      setError(pesanError(err));
-    }
-  };
-
   // Angka contoh untuk tamu
   const today = user ? (summary?.today ?? 0) : 8;
   const target = summary?.target ?? user?.dailyTarget ?? 30;
@@ -71,7 +56,7 @@ function DailySection() {
           <button type="button" className="hl-button" onClick={() => buka('catat')}>
             Catat Aktivitas
           </button>
-          <button type="button" className="hl-link hl-link--ink" onClick={() => buka('target')}>
+          <button type="button" className="hl-link hl-link--ink hl-daily-target-link" onClick={() => buka('target')}>
             Atur Targetmu
           </button>
         </div>
@@ -92,29 +77,9 @@ function DailySection() {
             {error}
           </p>
         )}
-        {log.length > 0 && (
-          <ul className="hl-daily-log">
-            {log.map((a) => (
-              <li key={a._id}>
-                <span>
-                  {labelAktivitas(a.type)}
-                  {a.note && <small> · {a.note}</small>}
-                </span>
-                <strong>{a.duration} mnt</strong>
-                <button
-                  type="button"
-                  onClick={() => hapus(a._id)}
-                  aria-label={`Hapus ${labelAktivitas(a.type)} ${a.duration} menit`}
-                >
-                  ×
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
         {user && (
           <Link to="/aktivitas" className="hl-daily-link">
-            Lihat riwayat & 7 hari terakhir →
+            Lihat riwayat & 7 hari terakhir
           </Link>
         )}
       </div>

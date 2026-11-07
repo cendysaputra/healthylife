@@ -1,4 +1,4 @@
-// Token tampilan, nanti diisi saat styling
+// Token tema
 export const colors = {
   bg: '#FFFFFF',
   text: '#121212',

@@ -1,13 +1,8 @@
+import { Link } from 'react-router-dom';
 import fotoHero from '../assets/images/hero-peregangan.webp';
 import Mascot from './Mascot';
-import { scrollKe } from '../utils/smoothScroll';
 
 function Hero() {
-  const keArtikel = (e) => {
-    e.preventDefault();
-    scrollKe('artikel');
-  };
-
   return (
     <section className="hl-hero container" id="beranda">
       <div className="hl-hero-copy">
@@ -22,9 +17,9 @@ function Hero() {
           Nggak perlu mengubah semuanya sekaligus. Temukan inspirasi sederhana untuk tubuh yang lebih aktif dan pikiran
           yang lebih tenang.
         </p>
-        <a href="#artikel" className="hl-button" onClick={keArtikel}>
+        <Link to="/konten" className="hl-button">
           Temukan Inspirasimu
-        </a>
+        </Link>
       </div>
       <div className="hl-hero-art">
         <span className="hl-hero-ring" aria-hidden="true" />

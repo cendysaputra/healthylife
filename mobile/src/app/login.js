@@ -20,7 +20,7 @@ export default function Login() {
     setProses(true);
     try {
       await login(email.trim(), password);
-      // Kembali ke layar asal kalau ada
+      // Kembali ke asal
       if (from) router.replace(from);
       else router.back();
     } catch (err) {

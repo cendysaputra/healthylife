@@ -16,7 +16,6 @@ import {
   pesanProgres,
   tanggalLokal
 } from '../utils/format';
-import { scrollKe } from '../utils/smoothScroll';
 
 // Ikon per jenis
 const JENIS = {
@@ -103,11 +102,6 @@ function Activity() {
     }
   };
 
-  const keForm = () => {
-    scrollKe('catat');
-    setTimeout(() => document.getElementById('act-duration')?.focus({ preventScroll: true }), 400);
-  };
-
   const today = summary?.today ?? 0;
   const target = summary?.target ?? 30;
   const percent = summary?.percent ?? 0;
@@ -129,7 +123,6 @@ function Activity() {
             <span>tetap maju.</span>
           </>
         }
-        description="Catat setiap gerak, sekecil apa pun. Langkah kecilmu terkumpul di sini."
         art={
           <div className="akt-today">
             <MataKartu className="akt-today-eyes" />
@@ -152,21 +145,12 @@ function Activity() {
               <p>{summary ? pesanProgres(summary) : 'Memuat progresmu...'}</p>
               <strong>{percent}%</strong>
             </div>
-            <Mascot varian="kuning" className="akt-today-maskot" />
           </div>
         }
-      >
-        <div className="akt-hero-actions">
-          <button type="button" className="hl-button" onClick={keForm}>
-            Catat aktivitas
-          </button>
-          <button type="button" className="hl-link hl-link--ink" onClick={() => setDialogTarget(true)}>
-            Atur targetmu <Sym id="arrow" />
-          </button>
-        </div>
-      </PageHero>
+      />
 
       <section className="akt-week container" aria-labelledby="judul-minggu">
+        <Mascot varian="kuning" className="akt-maskot" />
         <div className="akt-stats">
           <span className="hl-eyebrow">7 HARI TERAKHIR</span>
           <h2 id="judul-minggu">Lihat langkahmu terkumpul.</h2>
@@ -193,6 +177,9 @@ function Activity() {
               </dd>
             </div>
           </dl>
+          <button type="button" className="hl-link hl-link--ink akt-target-link" onClick={() => setDialogTarget(true)}>
+            Atur targetmu ({target} menit/hari) <Sym id="arrow" />
+          </button>
         </div>
 
         <div className="akt-chart">

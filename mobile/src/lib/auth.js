@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Cek sesi saat aplikasi dibuka
+  // Cek sesi
   const refreshUser = useCallback(async () => {
     try {
       if (!(await ambilToken())) return setUser(null);

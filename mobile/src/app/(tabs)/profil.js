@@ -27,7 +27,7 @@ export default function Profil() {
       .catch(() => {});
   }, [user]);
 
-  // Ambil favorit setiap tab dibuka
+  // Muat saat fokus
   useFocusEffect(
     useCallback(() => {
       if (!user) return;

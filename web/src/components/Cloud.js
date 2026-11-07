@@ -1,4 +1,4 @@
-// [diameter, tinggi pusat] dalam px, tinggi min 36px
+// [diameter, tinggi] px
 const POLA = [
   [300, 86],
   [256, 128],

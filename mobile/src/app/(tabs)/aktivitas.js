@@ -35,7 +35,7 @@ export default function Aktivitas() {
     }
   }, [user]);
 
-  // Muat ulang setiap tab dibuka
+  // Muat saat fokus
   useFocusEffect(
     useCallback(() => {
       muat();

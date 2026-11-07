@@ -12,34 +12,29 @@ function Header() {
   const { items: favorit } = useFavorites();
   const navigate = useNavigate();
   const location = useLocation();
-  const akunRef = useRef(null);
+  const headerRef = useRef(null);
 
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const [akunOpen, setAkunOpen] = useState(false);
+  // Panel aktif
+  const [panel, setPanel] = useState(null);
   const [notif, setNotif] = useState({ count: 0, items: [] });
+  const menuOpen = panel === 'menu';
+  const notifOpen = panel === 'notif';
+  const akunOpen = panel === 'akun';
+  const togglePanel = (nama) => setPanel((p) => (p === nama ? null : nama));
 
   // Tutup saat pindah halaman
   useEffect(() => {
-    setMenuOpen(false);
-    setNotifOpen(false);
-    setAkunOpen(false);
+    setPanel(null);
   }, [location.pathname, location.search]);
 
   // Klik luar / Escape
   useEffect(() => {
-    if (!notifOpen && !akunOpen) return undefined;
+    if (!panel) return undefined;
     const onClick = (e) => {
-      if (akunRef.current && !akunRef.current.contains(e.target)) {
-        setNotifOpen(false);
-        setAkunOpen(false);
-      }
+      if (headerRef.current && !headerRef.current.contains(e.target)) setPanel(null);
     };
     const onKey = (e) => {
-      if (e.key === 'Escape') {
-        setNotifOpen(false);
-        setAkunOpen(false);
-      }
+      if (e.key === 'Escape') setPanel(null);
     };
     document.addEventListener('mousedown', onClick);
     document.addEventListener('keydown', onKey);
@@ -47,7 +42,7 @@ function Header() {
       document.removeEventListener('mousedown', onClick);
       document.removeEventListener('keydown', onKey);
     };
-  }, [notifOpen, akunOpen]);
+  }, [panel]);
 
   useEffect(() => {
     if (!user) {
@@ -62,8 +57,7 @@ function Header() {
 
   const toggleNotif = async () => {
     const buka = !notifOpen;
-    setNotifOpen(buka);
-    setAkunOpen(false);
+    togglePanel('notif');
     // Tandai dibaca
     if (buka && notif.count > 0) {
       try {
@@ -75,7 +69,7 @@ function Header() {
   };
 
   const tutupNotif = () => {
-    setNotifOpen(false);
+    setPanel(null);
     setNotif((n) => ({ ...n, count: 0 }));
   };
 
@@ -89,7 +83,7 @@ function Header() {
   const navKategori = ['artikel', 'video', 'olahraga', 'nutrisi'].map((v) => KATEGORI.find((k) => k.value === v));
 
   return (
-    <header className="header">
+    <header className="header" ref={headerRef}>
       <div className="nav-wrap container">
         <Link to="/" className="brand hl-brand" aria-label="HealthyLife beranda">
           <img src={logo} alt="HealthyLife" width="380" height="120" />
@@ -113,7 +107,7 @@ function Header() {
           )}
         </nav>
 
-        <div className="nav-account" ref={akunRef}>
+        <div className="nav-account">
           {!user && (
             <>
               <Link to="/login" className="text-link is-plain">
@@ -126,7 +120,7 @@ function Header() {
           )}
 
           {user && (
-            <>
+            <div className="nav-tools">
               <Link
                 to="/profil#favorit"
                 className="icon-button icon-button--fav"
@@ -170,14 +164,13 @@ function Header() {
                 )}
               </div>
 
+              <span className="nav-tools-sep" aria-hidden="true" />
+
               <div className="dropdown">
                 <button
                   type="button"
                   className="account-trigger"
-                  onClick={() => {
-                    setAkunOpen((v) => !v);
-                    setNotifOpen(false);
-                  }}
+                  onClick={() => togglePanel('akun')}
                   aria-expanded={akunOpen}
                   aria-label={`Akun ${user.name}`}
                 >
@@ -209,7 +202,7 @@ function Header() {
                   </div>
                 )}
               </div>
-            </>
+            </div>
           )}
         </div>
 
@@ -220,7 +213,7 @@ function Header() {
           aria-expanded={menuOpen}
           aria-controls="main-nav"
           aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
-          onClick={() => setMenuOpen((v) => !v)}
+          onClick={() => togglePanel('menu')}
         >
           <span />
           <span />

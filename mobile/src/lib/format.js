@@ -26,14 +26,14 @@ export const formatTanggal = (date) =>
 
 export const urlGambar = (path) => (path ? `${ASSET_URL}${path}` : null);
 
-// Ambil ID video dari link YouTube
+// ID YouTube
 export const idYoutube = (url) => {
   if (!url) return null;
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
   return m ? m[1] : null;
 };
 
-// Tanggal hari ini (YYYY-MM-DD, waktu lokal)
+// Hari ini (lokal)
 export const hariIni = () => {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);

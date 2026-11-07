@@ -6,7 +6,6 @@ import ContentCard from '../components/ContentCard';
 import Icon from '../components/Icon';
 import Mascot from '../components/Mascot';
 import Select from '../components/Select';
-import Sym from '../components/Svg';
 import { scrollKe } from '../utils/smoothScroll';
 import { KATEGORI } from '../utils/format';
 
@@ -142,15 +141,6 @@ function ContentList() {
 
       <section className="articles-section container list-results" id="hasil">
         <Mascot varian="kuning" className="list-mascot list-mascot--bawah" />
-        {q && (
-          <div className="section-heading">
-            <h2>Hasil untuk "{q}"</h2>
-            <button type="button" className="text-link all-articles" onClick={() => ubahParam({ q: '', page: '' })}>
-              Hapus pencarian <Sym id="arrow" />
-            </button>
-          </div>
-        )}
-
         {loading && (
           <div className="loading-grid" role="status" aria-label="Memuat konten">
             <div className="skeleton-card" />
@@ -172,8 +162,8 @@ function ContentList() {
                 {q || kategori ? (
                   <>
                     <p>Coba kata kunci lain atau pilih kategori Semua.</p>
-                    <Link to="/konten" className="text-link">
-                      Lihat semua konten <Sym id="arrow" />
+                    <Link to="/konten" className="hl-link list-reset-link">
+                      Lihat semua konten
                     </Link>
                   </>
                 ) : (

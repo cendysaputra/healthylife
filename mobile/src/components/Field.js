@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import { colors, space } from '../lib/theme';
 
-// Input dengan label
+// Field
 export default function Field({ label, ...props }) {
   return (
     <View style={styles.wrap}>

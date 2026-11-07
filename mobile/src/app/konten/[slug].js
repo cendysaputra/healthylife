@@ -30,7 +30,7 @@ export default function DetailKonten() {
       .finally(() => setLoading(false));
   }, [slug]);
 
-  // Cek sudah difavoritkan atau belum
+  // Status favorit
   const cekFavorit = useCallback(async () => {
     if (!user || !data) return setFavorit(false);
     try {
@@ -46,7 +46,7 @@ export default function DetailKonten() {
   }, [cekFavorit]);
 
   const toggleFavorit = async () => {
-    // Belum login, arahkan ke login lalu kembali ke sini
+    // Login dulu
     if (!user) return router.push({ pathname: '/login', params: { from: `/konten/${slug}` } });
     try {
       if (favorit) await api.delete(`/favorites/${data.content._id}`);

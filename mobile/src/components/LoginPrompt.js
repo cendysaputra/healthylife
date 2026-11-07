@@ -3,7 +3,7 @@ import { router } from 'expo-router';
 import Button from './Button';
 import { space } from '../lib/theme';
 
-// Muncul di layar yang butuh login
+// Ajakan login
 export default function LoginPrompt({ pesan, from }) {
   return (
     <View style={{ gap: space.gap }}>

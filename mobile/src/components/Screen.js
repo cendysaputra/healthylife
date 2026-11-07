@@ -1,7 +1,7 @@
 import { ActivityIndicator, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { colors, space } from '../lib/theme';
 
-// Kerangka layar: scroll, tarik untuk refresh, loading, dan error
+// Kerangka layar
 export default function Screen({ children, loading, error, onRefresh, refreshing = false }) {
   return (
     <ScrollView

@@ -4,7 +4,7 @@ import { router, useFocusEffect } from 'expo-router';
 import api from '../lib/api';
 import { useAuth } from '../lib/auth';
 
-// Ikon lonceng di header, angka = konten baru
+// Lonceng notifikasi
 export default function BellButton() {
   const { user } = useAuth();
   const [count, setCount] = useState(0);
