@@ -7,13 +7,11 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Simpan sesi
   const simpanSesi = (token, dataUser) => {
     localStorage.setItem(TOKEN_KEY, token);
     setUser(dataUser);
   };
 
-  // Ambil akun
   const refreshUser = useCallback(async () => {
     if (!localStorage.getItem(TOKEN_KEY)) {
       setUser(null);

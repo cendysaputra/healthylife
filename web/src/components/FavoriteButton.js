@@ -1,34 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import client, { pesanError } from '../api/client';
 import { useAuth } from '../context/AuthContext';
-import Icon from './Icon';
+import { useFavorites } from '../context/FavoritesContext';
+import { BookmarkIcon } from './Icon';
 
-// Button favorit
-function FavoriteButton({ contentId }) {
+function FavoriteButton({ content }) {
   const { user } = useAuth();
+  const { isSaved, toggle } = useFavorites();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [tersimpan, setTersimpan] = useState(false);
   const [proses, setProses] = useState(false);
   const [error, setError] = useState('');
-
-  // Cek status
-  useEffect(() => {
-    if (!user) {
-      setTersimpan(false);
-      return;
-    }
-    setTersimpan((user.favorites || []).includes(contentId));
-    client
-      .get('/favorites')
-      .then(({ data }) => setTersimpan(data.items.some((i) => i._id === contentId)))
-      .catch(() => {});
-  }, [user, contentId]);
+  const tersimpan = isSaved(content._id);
 
   const handleClick = async () => {
-    // Belum login
     if (!user) {
       navigate('/login', { state: { from: location.pathname } });
       return;
@@ -36,15 +22,9 @@ function FavoriteButton({ contentId }) {
     setProses(true);
     setError('');
     try {
-      if (tersimpan) {
-        await client.delete(`/favorites/${contentId}`);
-        setTersimpan(false);
-      } else {
-        await client.post(`/favorites/${contentId}`);
-        setTersimpan(true);
-      }
+      await toggle(content);
     } catch (err) {
-      setError(pesanError(err));
+      setError(err.message);
     } finally {
       setProses(false);
     }
@@ -52,15 +32,9 @@ function FavoriteButton({ contentId }) {
 
   return (
     <div className="favorite">
-      <button
-        type="button"
-        className={`btn btn--secondary btn--sm favorite__btn ${tersimpan ? 'is-saved' : ''}`}
-        onClick={handleClick}
-        disabled={proses}
-        aria-pressed={tersimpan}
-      >
-        <Icon name="heart" />
-        {tersimpan ? 'Hapus dari Favorit' : 'Simpan ke Favorit'}
+      <button type="button" className="favorite-button" onClick={handleClick} disabled={proses} aria-pressed={tersimpan}>
+        <BookmarkIcon />
+        {tersimpan ? 'Tersimpan di favorit' : 'Simpan ke favorit'}
       </button>
       {error && <p role="alert" className="alert alert--error">{error}</p>}
     </div>

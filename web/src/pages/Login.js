@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { pesanError } from '../api/client';
+import AuthBenefits from '../components/AuthBenefits';
+import { PageHero } from '../components/Canvas';
+import Sym from '../components/Svg';
 import { useAuth } from '../context/AuthContext';
 
 function Login() {
@@ -13,7 +16,6 @@ function Login() {
   const [error, setError] = useState('');
   const [proses, setProses] = useState(false);
 
-  // Sudah login
   if (user) return <Navigate to={tujuan} replace />;
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -32,17 +34,24 @@ function Login() {
   };
 
   return (
-    <section className="section">
-      <div className="container">
-        <div className="auth">
-          <div className="auth__intro">
-            <h1>Masuk</h1>
-            <p>Masuk untuk mencatat aktivitas harian dan menyimpan konten favorit.</p>
-            {location.state?.from && <p className="auth__note">Masuk dulu untuk melanjutkan.</p>}
-          </div>
-
-          <div className="auth__form">
-            <form onSubmit={handleSubmit} className="form">
+    <>
+      <PageHero
+        className="page-hero--auth"
+        eyebrow="SENANG BERTEMU LAGI"
+        title={
+          <>
+            Masuk, lalu
+            <br />
+            <span>lanjutkan ritmemu.</span>
+          </>
+        }
+        description="Catat aktivitas harian, pantau target, dan buka lagi konten favoritmu."
+        art={
+          <div className="auth-card">
+            <Sym id="sun" className="auth-card-sun" />
+            <h2>Masuk</h2>
+            {location.state?.from && <p className="auth-note">Masuk dulu untuk melanjutkan.</p>}
+            <form onSubmit={handleSubmit} className="form-stack">
               <div className="field">
                 <label htmlFor="email">Email</label>
                 <input id="email" name="email" type="email" autoComplete="email" required value={form.email} onChange={handleChange} />
@@ -55,16 +64,31 @@ function Login() {
 
               {error && <p role="alert" className="alert alert--error">{error}</p>}
 
-              <button type="submit" className="btn btn--primary btn--block" disabled={proses}>{proses ? 'Memproses...' : 'Masuk'}</button>
+              <button type="submit" className="button button-blue button-block" disabled={proses}>
+                {proses ? 'Memproses...' : 'Masuk'} <Sym id="arrow" />
+              </button>
             </form>
 
-            <p className="auth__switch">
-              Belum punya akun? <Link to="/register" state={location.state}>Daftar sekarang</Link>
+            <p className="auth-switch">
+              Belum punya akun? <Link to="/register" state={location.state}>Daftar gratis</Link>
             </p>
           </div>
+        }
+      >
+        <div className="about-values">
+          <span>
+            <Sym id="cat-leaf" />
+            Mulai dari yang kecil
+          </span>
+          <span>
+            <Sym id="heart" />
+            Dengan ritmemu sendiri
+          </span>
         </div>
-      </div>
-    </section>
+      </PageHero>
+
+      <AuthBenefits />
+    </>
   );
 }
 

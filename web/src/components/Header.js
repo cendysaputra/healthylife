@@ -1,28 +1,52 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import client from '../api/client';
 import { KATEGORI, labelKategori } from '../utils/format';
 import Icon from './Icon';
+import logo from '../assets/images/logo.png';
 
 function Header() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const akunRef = useRef(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [akunOpen, setAkunOpen] = useState(false);
   const [notif, setNotif] = useState({ count: 0, items: [] });
 
-  // Close pas pindah
+  // Tutup saat pindah halaman
   useEffect(() => {
     setMenuOpen(false);
     setNotifOpen(false);
     setAkunOpen(false);
   }, [location.pathname, location.search]);
 
-  // Notifikasi
+  // Tutup saat klik di luar / tekan Escape
+  useEffect(() => {
+    if (!notifOpen && !akunOpen) return undefined;
+    const onClick = (e) => {
+      if (akunRef.current && !akunRef.current.contains(e.target)) {
+        setNotifOpen(false);
+        setAkunOpen(false);
+      }
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setNotifOpen(false);
+        setAkunOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [notifOpen, akunOpen]);
+
   useEffect(() => {
     if (!user) {
       setNotif({ count: 0, items: [] });
@@ -34,22 +58,20 @@ function Header() {
       .catch(() => setNotif({ count: 0, items: [] }));
   }, [user, location.pathname]);
 
-  // Open notifikasi
   const toggleNotif = async () => {
     const buka = !notifOpen;
     setNotifOpen(buka);
     setAkunOpen(false);
-    // Tandai dilihat
+    // Badge hilang setelah panel dibuka
     if (buka && notif.count > 0) {
       try {
         await client.put('/notifications/seen');
       } catch {
-        // abaikan
+        // gagal menandai bukan masalah besar
       }
     }
   };
 
-  // Close notifikasi
   const tutupNotif = () => {
     setNotifOpen(false);
     setNotif((n) => ({ ...n, count: 0 }));
@@ -60,120 +82,113 @@ function Header() {
     navigate('/');
   };
 
-  // Menu aktif
-  const kategoriAktif = new URLSearchParams(location.search).get('kategori');
+  // Menu kategori aktif
+  const kategoriAktif = location.pathname === '/konten' ? new URLSearchParams(location.search).get('kategori') : null;
+  const navKategori = ['artikel', 'video', 'olahraga', 'nutrisi'].map((v) => KATEGORI.find((k) => k.value === v));
 
   return (
     <header className="header">
-      <div className="container header__inner">
-        <Link to="/" className="header__logo">HealthyLife</Link>
+      <div className="nav-wrap container">
+        <Link to="/" className="brand hl-brand" aria-label="HealthyLife beranda">
+          <img src={logo} alt="HealthyLife" width="380" height="120" />
+        </Link>
 
-        {/* Button hamburger */}
+        <nav className={`nav ${menuOpen ? 'open' : ''}`} aria-label="Navigasi utama" id="main-nav">
+          {navKategori.map((k) => (
+            <Link key={k.value} to={`/konten?kategori=${k.value}`} aria-current={kategoriAktif === k.value ? 'page' : undefined}>
+              {k.label}
+            </Link>
+          ))}
+          <NavLink to="/aktivitas">Aktivitas</NavLink>
+          {!user && (
+            <NavLink to="/login" className="nav-mobile-only">Masuk</NavLink>
+          )}
+        </nav>
+
+        <div className="nav-account" ref={akunRef}>
+          {!user && (
+            <>
+              <Link to="/login" className="text-link is-plain">Masuk</Link>
+              <Link to="/register" className="hl-button hl-button--sm">
+                Daftar
+              </Link>
+            </>
+          )}
+
+          {user && (
+            <>
+              <div className="dropdown">
+                <button
+                  type="button"
+                  className="icon-button"
+                  onClick={toggleNotif}
+                  aria-expanded={notifOpen}
+                  aria-label={notif.count > 0 ? `Notifikasi, ${notif.count} konten baru` : 'Notifikasi'}
+                >
+                  <Icon name="bell" />
+                  {notif.count > 0 && <span className="notif-badge" aria-hidden="true">{notif.count}</span>}
+                </button>
+                {notifOpen && (
+                  <div className="dropdown-panel">
+                    <p className="dropdown-title">KONTEN BARU</p>
+                    {notif.items.length === 0 && <p className="dropdown-empty">Belum ada konten baru. Kami kabari kalau ada.</p>}
+                    <ul className="dropdown-list">
+                      {notif.items.map((item) => (
+                        <li key={item._id}>
+                          <Link to={`/konten/${item.slug}`} onClick={tutupNotif}>
+                            <span className="dropdown-meta">{labelKategori(item.category)}</span>
+                            {item.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              <div className="dropdown">
+                <button
+                  type="button"
+                  className="account-trigger"
+                  onClick={() => {
+                    setAkunOpen((v) => !v);
+                    setNotifOpen(false);
+                  }}
+                  aria-expanded={akunOpen}
+                  aria-label={`Akun ${user.name}`}
+                >
+                  <span className="avatar" aria-hidden="true">{user.name?.charAt(0).toUpperCase()}</span>
+                  <span className="account-name">{user.name}</span>
+                  <Icon name="chevron-down" />
+                </button>
+                {akunOpen && (
+                  <div className="dropdown-panel dropdown-panel--small">
+                    <ul className="dropdown-list">
+                      <li><Link to="/profil">Profil</Link></li>
+                      <li><Link to="/profil#favorit">Favorit</Link></li>
+                      <li><Link to="/aktivitas">Aktivitas</Link></li>
+                      <li className="dropdown-divider" aria-hidden="true" />
+                      <li><button type="button" className="dropdown-danger" onClick={handleLogout}>Keluar</button></li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* Hamburger di tablet & HP */}
         <button
           type="button"
-          className="header__burger"
+          className="menu-toggle"
           aria-expanded={menuOpen}
-          aria-controls="menu-utama"
+          aria-controls="main-nav"
+          aria-label={menuOpen ? 'Tutup menu' : 'Buka menu'}
           onClick={() => setMenuOpen((v) => !v)}
         >
-          <Icon name={menuOpen ? 'close' : 'menu'} />
-          {menuOpen ? 'Tutup' : 'Menu'}
+          <span />
+          <span />
         </button>
-
-        {/* Menu utama */}
-        <nav id="menu-utama" className={`header__nav ${menuOpen ? 'is-open' : ''}`} aria-label="Menu utama">
-          <ul className="header__menu">
-            <li><NavLink to="/" end>Beranda</NavLink></li>
-            {KATEGORI.map((k) => (
-              <li key={k.value}>
-                <Link
-                  to={`/konten?kategori=${k.value}`}
-                  aria-current={location.pathname === '/konten' && kategoriAktif === k.value ? 'page' : undefined}
-                >
-                  {k.label}
-                </Link>
-              </li>
-            ))}
-            <li><NavLink to="/aktivitas">Aktivitas</NavLink></li>
-          </ul>
-
-          <div className="header__actions">
-            <Link to="/konten" className="header__action header__action--icon">
-              <Icon name="search" />
-              <span className="header__action-text">Cari</span>
-            </Link>
-
-            {/* Belum login */}
-            {!user && (
-              <>
-                <Link to="/login" className="header__action">Masuk</Link>
-                <Link to="/register" className="btn btn--primary btn--sm">Daftar</Link>
-              </>
-            )}
-
-            {/* Sudah login */}
-            {user && (
-              <>
-                <div className="dropdown">
-                  <button
-                    type="button"
-                    className="header__action header__action--icon"
-                    onClick={toggleNotif}
-                    aria-expanded={notifOpen}
-                  >
-                    <Icon name="bell" />
-                    <span className="header__action-text">Notifikasi</span>
-                    {notif.count > 0 && <span className="badge header__badge">{notif.count}</span>}
-                  </button>
-                  {notifOpen && (
-                    <div className="dropdown__panel">
-                      <p className="dropdown__title">Konten baru</p>
-                      {notif.items.length === 0 && <p className="dropdown__empty">Belum ada konten baru.</p>}
-                      <ul className="dropdown__list">
-                        {notif.items.map((item) => (
-                          <li key={item._id}>
-                            <Link to={`/konten/${item.slug}`} onClick={tutupNotif}>
-                              <span className="dropdown__meta">{labelKategori(item.category)}</span>
-                              {item.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-
-                <div className="dropdown">
-                  <button
-                    type="button"
-                    className="header__action"
-                    onClick={() => {
-                      setAkunOpen((v) => !v);
-                      setNotifOpen(false);
-                    }}
-                    aria-expanded={akunOpen}
-                  >
-                    <span className="account__avatar" aria-hidden="true">
-                      {user.name?.charAt(0).toUpperCase()}
-                    </span>
-                    <span className="account__name">{user.name}</span>
-                    <Icon name="chevron-down" className="account__chevron" />
-                  </button>
-                  {akunOpen && (
-                    <div className="dropdown__panel">
-                      <ul className="dropdown__list">
-                        <li><Link to="/profil">Profil</Link></li>
-                        <li><Link to="/profil#favorit">Favorit</Link></li>
-                        <li className="dropdown__divider" aria-hidden="true" />
-                        <li><button type="button" className="dropdown__danger" onClick={handleLogout}>Keluar</button></li>
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </>
-            )}
-          </div>
-        </nav>
       </div>
     </header>
   );

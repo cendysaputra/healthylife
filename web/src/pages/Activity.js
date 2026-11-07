@@ -1,19 +1,24 @@
 import { useCallback, useEffect, useState } from 'react';
 import client, { pesanError } from '../api/client';
-import { JENIS_AKTIVITAS, formatTanggal, hariIni, labelAktivitas } from '../utils/format';
+import ActivityForm from '../components/ActivityForm';
+import { PageHero } from '../components/Canvas';
+import Dialog from '../components/Dialog';
+import Sym from '../components/Svg';
+import TargetForm from '../components/TargetForm';
+import { formatTanggal, formatTanggalPendek, labelAktivitas, namaHari, pesanProgres } from '../utils/format';
+import { scrollKe } from '../utils/smoothScroll';
 
-const FORM_AWAL = { type: 'jalan', duration: '', date: hariIni(), note: '' };
+// Ilustrasi per jenis aktivitas
+const SIMBOL = { jalan: 'cat-shoe', lari: 'move', bersepeda: 'cat-shoe', gym: 'buddy', yoga: 'mind', peregangan: 'cat-leaf', lainnya: 'bubbles' };
 
 function Activity() {
   const [summary, setSummary] = useState(null);
   const [riwayat, setRiwayat] = useState([]);
-  const [form, setForm] = useState(FORM_AWAL);
   const [loading, setLoading] = useState(true);
-  const [simpan, setSimpan] = useState(false);
   const [error, setError] = useState('');
   const [pesan, setPesan] = useState('');
+  const [dialogTarget, setDialogTarget] = useState(false);
 
-  // Ambil data
   const muatData = useCallback(async () => {
     try {
       const [s, r] = await Promise.all([client.get('/activities/summary'), client.get('/activities')]);
@@ -30,27 +35,12 @@ function Activity() {
     muatData();
   }, [muatData]);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
-
-  // Simpan aktivitas
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSaved = async () => {
     setError('');
-    setPesan('');
-    setSimpan(true);
-    try {
-      await client.post('/activities', { ...form, duration: Number(form.duration) });
-      setForm({ ...FORM_AWAL, date: hariIni() });
-      setPesan('Aktivitas tersimpan.');
-      await muatData();
-    } catch (err) {
-      setError(pesanError(err));
-    } finally {
-      setSimpan(false);
-    }
+    setPesan('Aktivitas tersimpan.');
+    await muatData();
   };
 
-  // Hapus aktivitas
   const handleHapus = async (id) => {
     setError('');
     setPesan('');
@@ -63,151 +53,180 @@ function Activity() {
     }
   };
 
-  // Pesan progres
-  const pesanProgres = () => {
-    if (!summary) return '';
-    if (summary.today === 0) return 'Yuk mulai bergerak, 10 menit jalan santai sudah dihitung.';
-    if (summary.remaining === 0) return 'Target hari ini tercapai. Pertahankan besok!';
-    return `Sedikit lagi! Tinggal ${summary.remaining} menit untuk capai targetmu.`;
+  const keForm = () => {
+    scrollKe('catat');
+    setTimeout(() => document.getElementById('act-duration')?.focus({ preventScroll: true }), 400);
   };
 
-  if (loading) {
-    return (
-      <section className="section">
-        <div className="container">
-          <p className="status" role="status">Memuat...</p>
-        </div>
-      </section>
-    );
-  }
+  const today = summary?.today ?? 0;
+  const target = summary?.target ?? 30;
+  const week = summary?.week ?? [];
+  const maks = Math.max(target, ...week.map((h) => h.minutes), 1);
+  const totalMinggu = week.reduce((n, h) => n + h.minutes, 0);
+  const hariTercapai = week.filter((h) => h.minutes >= target).length;
 
   return (
     <>
-      <section className="section">
-        <div className="container">
-          <header className="page-head">
-            <h1>Aktivitas</h1>
-          </header>
+      <PageHero
+        eyebrow="TARGET HARIANMU"
+        title={
+          <>
+            Sedikit demi sedikit,
+            <br />
+            <span>tetap maju.</span>
+          </>
+        }
+        description="Catat setiap gerak, sekecil apa pun. Langkah kecilmu terkumpul di sini."
+        art={
+          <div className="daily-card hero-daily">
+            <div className="daily-top">
+              <span>GERAKMU HARI INI</span>
+              <span>{formatTanggalPendek(new Date()).toUpperCase()}</span>
+            </div>
+            <div className="daily-total">
+              <strong>{loading ? '–' : today}</strong>
+              <span>
+                dari <b>{target}</b> menit
+              </span>
+              <Sym id="move" />
+            </div>
+            <progress value={Math.min(today, target)} max={target} aria-label="Progres target harian" />
+            <div className="daily-foot">
+              <p>{summary ? pesanProgres(summary) : 'Memuat progresmu...'}</p>
+              {summary && <strong>{summary.percent}%</strong>}
+            </div>
+          </div>
+        }
+      >
+        <div className="hero-actions">
+          <button type="button" className="button button-blue" onClick={keForm}>
+            + Catat aktivitas
+          </button>
+          <button type="button" className="text-link" onClick={() => setDialogTarget(true)}>
+            Atur targetmu ↗
+          </button>
+        </div>
+      </PageHero>
 
-          {/* Progres hari ini */}
+      {loading && (
+        <section className="page container">
+          <p className="status" role="status">Memuat...</p>
+        </section>
+      )}
+
+      {!loading && (
+        <>
           {summary && (
-            <div className="today">
-              <div>
-                <h2 className="today__title">Hari ini</h2>
-                <p className="stat">
-                  <strong className="stat__value">{summary.today}</strong>
-                  <span className="stat__unit">dari {summary.target} menit</span>
+            <section className="activity-section container week-section" aria-labelledby="judul-minggu">
+              <Sym id="bubbles" className="section-doodle doodle-d" />
+              <div className="activity-copy">
+                <span className="eyebrow">7 HARI TERAKHIR</span>
+                <h2 id="judul-minggu">
+                  Lihat langkahmu
+                  <br />
+                  terkumpul.
+                </h2>
+                <div className="week-stats">
+                  <div>
+                    <strong>{totalMinggu}</strong>
+                    <span>menit minggu ini</span>
+                  </div>
+                  <div>
+                    <strong>
+                      {hariTercapai}
+                      <small>/7</small>
+                    </strong>
+                    <span>hari target tercapai</span>
+                  </div>
+                </div>
+              </div>
+              <div className="week-card">
+                <ol className="week-bars">
+                  {week.map((h, i) => {
+                    const tinggi = Math.round((h.minutes / maks) * 100);
+                    const kelas = ['week-bar', h.minutes >= target ? 'is-done' : '', i === week.length - 1 ? 'is-today' : ''].join(' ');
+                    return (
+                      <li key={h.date} className={kelas} aria-label={`${formatTanggal(h.date)}: ${h.minutes} menit`}>
+                        <b aria-hidden="true">{h.minutes}</b>
+                        <span className="week-bar-track" aria-hidden="true">
+                          <span className="week-bar-fill" style={{ height: `${tinggi}%` }} />
+                        </span>
+                        <small aria-hidden="true">{namaHari(h.date)}</small>
+                      </li>
+                    );
+                  })}
+                </ol>
+                <p className="week-legend">
+                  <span className="dot dot-done" /> Target tercapai
+                  <span className="dot" /> Belum tercapai
                 </p>
-                <progress value={summary.today} max={summary.target} aria-label="Progres target harian" />
-                <div className="today__foot">
-                  <p className="today__message">{pesanProgres()}</p>
-                  <p className="today__percent">{summary.percent}% dari target</p>
-                </div>
               </div>
+            </section>
+          )}
 
-              {/* Tujuh hari */}
+          <section className="container log-section" id="catat">
+            <div className="start-panel start-motion log-panel">
+              <Sym id="cat-shoe" className="start-vector" />
+              <span className="eyebrow">CATAT GERAKMU</span>
+              <h2>Apa yang kamu lakukan hari ini?</h2>
+              <ActivityForm idPrefix="act" onSaved={handleSaved} />
+              {error && <p role="alert" className="alert alert--error">{error}</p>}
+              {pesan && <p role="status" className="alert alert--success">{pesan}</p>}
+            </div>
+          </section>
+
+          <section className="articles-section container history-section" aria-labelledby="judul-riwayat">
+            <Sym id="cat-leaf" className="section-doodle doodle-e" />
+            <div className="section-heading">
               <div>
-                <h3 className="week__title">7 hari terakhir</h3>
-                <ul className="week-list">
-                  {summary.week.map((h) => (
-                    <li key={h.date} className="week-list__item">
-                      <span className="week-list__date">{formatTanggal(h.date)}</span>
-                      <span className="week-list__minutes">{h.minutes} menit</span>
-                      <progress value={h.minutes} max={summary.target} aria-hidden="true" />
-                    </li>
-                  ))}
-                </ul>
+                <span className="eyebrow">CATATANMU</span>
+                <h2 id="judul-riwayat">Riwayat aktivitas</h2>
               </div>
+              <p>{riwayat.length > 0 ? `${riwayat.length} catatan terbaru` : 'Belum ada catatan'}</p>
             </div>
-          )}
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          {/* Form catat */}
-          <div className="form-block">
-            <form onSubmit={handleSubmit} className="form">
-              <h2 className="form__title">Catat aktivitas</h2>
-
-              <div className="form__grid">
-                <div className="field">
-                  <label htmlFor="type">Jenis</label>
-                  <select id="type" name="type" value={form.type} onChange={handleChange}>
-                    {JENIS_AKTIVITAS.map((j) => (
-                      <option key={j.value} value={j.value}>{j.label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="field">
-                  <label htmlFor="duration">Durasi (menit)</label>
-                  <input id="duration" name="duration" type="number" min="1" max="600" required value={form.duration} onChange={handleChange} />
-                </div>
-
-                <div className="field">
-                  <label htmlFor="date">Tanggal</label>
-                  <input id="date" name="date" type="date" max={hariIni()} required value={form.date} onChange={handleChange} />
-                </div>
-
-                <div className="field">
-                  <label htmlFor="note">Catatan</label>
-                  <input id="note" name="note" type="text" maxLength="200" placeholder="Opsional" value={form.note} onChange={handleChange} />
-                </div>
+            {riwayat.length === 0 ? (
+              <div className="articles-empty">
+                <Sym id="cat-shoe" />
+                <h3>Belum ada aktivitas.</h3>
+                <p>Catat aktivitas pertamamu lewat form di atas. Riwayatnya muncul di sini.</p>
               </div>
+            ) : (
+              <ul className="history-list">
+                {riwayat.map((a) => (
+                  <li key={a._id} className="history-item">
+                    <span className="history-icon">
+                      <Sym id={SIMBOL[a.type] || 'bubbles'} />
+                    </span>
+                    <div className="history-main">
+                      <strong>{labelAktivitas(a.type)}</strong>
+                      <span>
+                        {formatTanggal(a.date)}
+                        {a.note ? ` · ${a.note}` : ''}
+                      </span>
+                    </div>
+                    <span className="history-duration">{a.duration} menit</span>
+                    <button type="button" className="link-danger" onClick={() => handleHapus(a._id)} aria-label={`Hapus ${labelAktivitas(a.type)} ${formatTanggal(a.date)}`}>
+                      Hapus
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </>
+      )}
 
-              <div className="form__actions">
-                <button type="submit" className="btn btn--primary" disabled={simpan}>{simpan ? 'Menyimpan...' : 'Simpan Aktivitas'}</button>
-              </div>
-            </form>
-
-            {error && <p role="alert" className="alert alert--error">{error}</p>}
-            {pesan && <p role="status" className="alert alert--success">{pesan}</p>}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container">
-          {/* Riwayat */}
-          <div className="section-head">
-            <h2>Riwayat aktivitas</h2>
-          </div>
-          {riwayat.length === 0 ? (
-            <div className="empty">
-              <p className="empty__title">Belum ada aktivitas.</p>
-              <p className="empty__text">Catat aktivitas pertamamu lewat form di atas. Riwayatnya muncul di sini.</p>
-            </div>
-          ) : (
-            <div className="table-wrap" tabIndex="0" role="region" aria-label="Riwayat aktivitas">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Tanggal</th>
-                    <th>Jenis</th>
-                    <th>Durasi</th>
-                    <th>Catatan</th>
-                    <th className="table-action">Aksi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {riwayat.map((a) => (
-                    <tr key={a._id}>
-                      <td className="table-num">{formatTanggal(a.date)}</td>
-                      <td>{labelAktivitas(a.type)}</td>
-                      <td className="table-num">{a.duration} menit</td>
-                      <td>{a.note || '-'}</td>
-                      <td className="table-action">
-                        <button type="button" className="btn-text btn-text--danger" onClick={() => handleHapus(a._id)}>Hapus</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </section>
+      <Dialog open={dialogTarget} onClose={() => setDialogTarget(false)} labelledBy="dialog-target-akt" className="form-dialog">
+        <span className="eyebrow">TARGET YANG NYAMAN</span>
+        <h2 id="dialog-target-akt">Berapa menit bergerak per hari?</h2>
+        <TargetForm
+          idPrefix="akt-target"
+          onSaved={async () => {
+            setDialogTarget(false);
+            await muatData();
+          }}
+        />
+      </Dialog>
     </>
   );
 }

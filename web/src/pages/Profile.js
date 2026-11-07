@@ -1,50 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import client, { pesanError } from '../api/client';
+import { PageHero } from '../components/Canvas';
 import ContentCard from '../components/ContentCard';
+import CtaBox from '../components/CtaBox';
+import Sym from '../components/Svg';
+import TargetForm from '../components/TargetForm';
 import { useAuth } from '../context/AuthContext';
+import { useFavorites } from '../context/FavoritesContext';
+import { KEBIASAAN } from '../data/home';
 import { formatTanggal } from '../utils/format';
 
+// Diisi dari pilihan kebiasaan di beranda (localStorage)
+const bacaKebiasaan = () => {
+  try {
+    return KEBIASAAN.find((k) => k.id === localStorage.getItem('healthylife_habit')) || null;
+  } catch {
+    return null;
+  }
+};
+
 function Profile() {
-  const { user, setUser, logout } = useAuth();
+  const { user, logout } = useAuth();
+  const { items: favorit, loading, toggle } = useFavorites();
   const navigate = useNavigate();
-
-  const [favorit, setFavorit] = useState([]);
-  const [target, setTarget] = useState(user.dailyTarget);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [pesan, setPesan] = useState('');
+  const kebiasaan = bacaKebiasaan();
+  const namaDepan = user.name?.split(' ')[0] || user.name;
 
-  // Ambil favorit
-  useEffect(() => {
-    client
-      .get('/favorites')
-      .then(({ data }) => setFavorit(data.items))
-      .catch((err) => setError(pesanError(err)))
-      .finally(() => setLoading(false));
-  }, []);
-
-  // Simpan target
-  const handleTarget = async (e) => {
-    e.preventDefault();
+  const hapusFavorit = async (item) => {
     setError('');
-    setPesan('');
     try {
-      const { data } = await client.put('/users/target', { dailyTarget: Number(target) });
-      setUser({ ...user, dailyTarget: data.dailyTarget });
-      setPesan('Target harian diperbarui.');
+      await toggle(item);
     } catch (err) {
-      setError(pesanError(err));
-    }
-  };
-
-  // Hapus favorit
-  const hapusFavorit = async (id) => {
-    try {
-      await client.delete(`/favorites/${id}`);
-      setFavorit((list) => list.filter((f) => f._id !== id));
-    } catch (err) {
-      setError(pesanError(err));
+      setError(err.message);
     }
   };
 
@@ -55,72 +43,112 @@ function Profile() {
 
   return (
     <>
-      <section className="section">
-        <div className="container">
-          <header className="page-head">
-            <h1>Profil</h1>
-          </header>
-
-          <div className="profile">
-            {/* Data akun */}
-            <div>
-              <h2 className="profile__title">Akun</h2>
-              <dl className="data-list">
-                <dt>Nama</dt>
-                <dd>{user.name}</dd>
-                <dt>Email</dt>
-                <dd>{user.email}</dd>
-                <dt>Bergabung</dt>
-                <dd>{formatTanggal(user.createdAt)}</dd>
-              </dl>
+      <PageHero
+        eyebrow="RUANG MILIKMU"
+        title={
+          <>
+            Halo,
+            <br />
+            <span>{namaDepan}.</span>
+          </>
+        }
+        description="Atur target harian, lihat kebiasaan pilihanmu, dan buka lagi konten yang sudah kamu simpan."
+        art={
+          <div className="hero-blob-wrap">
+            <div className="hero-blob profile-blob">
+              <span className="profile-initial" aria-hidden="true">{user.name?.charAt(0).toUpperCase()}</span>
             </div>
-
-            {/* Target harian */}
-            <div>
-              <h2 className="profile__title">Target harian</h2>
-              <form onSubmit={handleTarget} className="target-form">
-                <div className="field">
-                  <label htmlFor="target">Target harian (menit)</label>
-                  <input id="target" type="number" min="5" max="300" required value={target} onChange={(e) => setTarget(e.target.value)} />
-                </div>
-                <button type="submit" className="btn btn--primary">Simpan Target</button>
-              </form>
-
-              {error && <p role="alert" className="alert alert--error">{error}</p>}
-              {pesan && <p role="status" className="alert alert--success">{pesan}</p>}
-            </div>
+            <Sym id="buddy" className="hero-blob-badge" />
+            <Sym id="sun" className="hero-blob-sun" />
+            <Sym id="bubbles" className="hero-blob-bubbles" />
           </div>
-
-          <div className="profile-actions">
-            <button type="button" className="btn btn--secondary" onClick={handleLogout}>Keluar</button>
+        }
+      >
+        <div className="profile-stats">
+          <div>
+            <strong>{user.dailyTarget}</strong>
+            <span>menit target harian</span>
           </div>
+          <div>
+            <strong>{favorit.length}</strong>
+            <span>konten tersimpan</span>
+          </div>
+        </div>
+      </PageHero>
+
+      <section className="start-section container" aria-label="Akun dan target">
+        <Sym id="bubbles" className="section-doodle doodle-a" />
+
+        <div className="start-panel profile-panel">
+          <span className="eyebrow">AKUN</span>
+          <h2>Tentang kamu.</h2>
+          <dl className="data-list">
+            <dt>Nama</dt>
+            <dd>{user.name}</dd>
+            <dt>Email</dt>
+            <dd>{user.email}</dd>
+            <dt>Bergabung</dt>
+            <dd>{formatTanggal(user.createdAt)}</dd>
+            <dt>Kebiasaan</dt>
+            <dd>
+              {kebiasaan ? kebiasaan.label : <Link to="/#kebiasaan" className="inline-link">Pilih kebiasaan di beranda</Link>}
+            </dd>
+          </dl>
+          <button type="button" className="text-link profile-logout" onClick={handleLogout}>
+            Keluar dari akun <Sym id="arrow" />
+          </button>
+          <Sym id={kebiasaan?.simbol || 'cat-leaf'} className="start-vector" />
+        </div>
+
+        <div className="start-panel start-food profile-panel">
+          <span className="eyebrow">TARGET HARIAN</span>
+          <h2>
+            Bergerak {user.dailyTarget} menit
+            <br />
+            setiap hari.
+          </h2>
+          <TargetForm idPrefix="profil-target" />
+          <Sym id="cat-shoe" className="start-vector" />
         </div>
       </section>
 
-      <section className="section" id="favorit">
-        <div className="container">
-          {/* Daftar favorit */}
-          <div className="section-head">
-            <h2>Favorit</h2>
+      <section className="articles-section container" id="favorit">
+        <Sym id="cat-leaf" className="section-doodle doodle-e" />
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">TERSIMPAN UNTUKMU</span>
+            <h2>Favoritmu.</h2>
           </div>
-          {loading && <p className="status" role="status">Memuat...</p>}
-          {!loading && favorit.length === 0 && (
-            <div className="empty">
-              <p className="empty__title">Belum ada konten favorit.</p>
-              <p className="empty__text">Buka konten lalu pilih Simpan ke Favorit agar tersimpan di sini.</p>
-              <Link to="/konten" className="link-plain">Lihat semua konten</Link>
-            </div>
-          )}
-          <div className="grid">
-            {favorit.map((item) => (
-              <div key={item._id} className="favorite-item">
-                <ContentCard content={item} />
-                <button type="button" className="btn-text btn-text--danger" onClick={() => hapusFavorit(item._id)}>Hapus dari Favorit</button>
+          <Link to="/konten" className="text-link all-articles">
+            Cari konten lain <Sym id="arrow" />
+          </Link>
+        </div>
+        {error && <p role="alert" className="alert alert--error">{error}</p>}
+        {loading && <p className="status" role="status">Memuat...</p>}
+        {!loading && (
+          <div className="article-grid">
+            {favorit.length === 0 ? (
+              <div className="articles-empty">
+                <Sym id="heart" />
+                <h3>Belum ada konten favorit.</h3>
+                <p>Buka konten lalu pilih Simpan ke favorit, atau tekan ikon bookmark di kartu.</p>
+                <Link to="/konten" className="text-link">
+                  Lihat semua konten <Sym id="arrow" />
+                </Link>
               </div>
-            ))}
+            ) : (
+              favorit.map((item) => (
+                <div key={item._id} className="favorite-item">
+                  <ContentCard content={item} />
+                  <button type="button" className="link-danger" onClick={() => hapusFavorit(item)}>Hapus dari favorit</button>
+                </div>
+              ))
+            )}
           </div>
-        </div>
+        )}
       </section>
+
+      <CtaBox />
     </>
   );
 }

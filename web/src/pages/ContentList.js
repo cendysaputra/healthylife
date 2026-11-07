@@ -1,9 +1,47 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import client, { pesanError } from '../api/client';
+import { HeroArt, PageHero } from '../components/Canvas';
+import CategoryCards from '../components/CategoryCards';
+import CtaBox from '../components/CtaBox';
 import ContentCard from '../components/ContentCard';
 import Icon from '../components/Icon';
-import { KATEGORI, labelKategori } from '../utils/format';
+import Sym from '../components/Svg';
+import { gayaKategori, labelKategori } from '../utils/format';
+import { scrollKe } from '../utils/smoothScroll';
+
+const INTRO = {
+  '': {
+    eyebrow: 'JELAJAHI SEMUA',
+    judul: ['Semua bekal baik,', 'di satu tempat.'],
+    teks: 'Artikel, video, panduan olahraga, dan ide nutrisi untuk menemani rutinitas sehatmu.',
+    warna: '#efe5d6'
+  },
+  artikel: {
+    eyebrow: 'BACA, RESAPI, COBA',
+    judul: ['Bacaan ringan,', 'untuk hari ini.'],
+    teks: 'Seputar tidur, minum, istirahat, dan merawat pikiran. Pelan-pelan saja bacanya.',
+    warna: '#f8e4ec'
+  },
+  video: {
+    eyebrow: 'TONTON, LALU COBA',
+    judul: ['Tonton sebentar,', 'lalu praktikkan.'],
+    teks: 'Video edukasi singkat yang bisa langsung kamu coba di rumah.',
+    warna: '#e9e2f5'
+  },
+  olahraga: {
+    eyebrow: 'GERAK DENGAN RITMEMU',
+    judul: ['Gerak kecil,', 'tetap berarti.'],
+    teks: 'Panduan gerak untuk pemula sampai yang ingin lebih rutin. Mulai dari yang paling nyaman.',
+    warna: '#dfe8f6'
+  },
+  nutrisi: {
+    eyebrow: 'ISI PIRING, ISI ENERGI',
+    judul: ['Isi piringmu,', 'isi energimu.'],
+    teks: 'Ide sederhana untuk makan lebih seimbang tanpa harus serba sempurna.',
+    warna: '#fbe3d6'
+  }
+};
 
 function ContentList() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -16,12 +54,11 @@ function ContentList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Sinkron kolom cari
+  // Kolom cari mengikuti ?q di URL
   useEffect(() => {
     setKeyword(q);
   }, [q]);
 
-  // Ambil daftar
   useEffect(() => {
     setLoading(true);
     setError('');
@@ -32,7 +69,6 @@ function ContentList() {
       .finally(() => setLoading(false));
   }, [kategori, q, page]);
 
-  // Ubah filter
   const ubahParam = (perubahan) => {
     const next = new URLSearchParams(searchParams);
     Object.entries(perubahan).forEach(([key, value]) => {
@@ -45,100 +81,117 @@ function ContentList() {
   const handleCari = (e) => {
     e.preventDefault();
     ubahParam({ q: keyword.trim(), page: '' });
+    scrollKe('hasil');
   };
 
-  const judul = kategori ? labelKategori(kategori) : 'Semua Konten';
+  const gantiHalaman = (n) => {
+    ubahParam({ page: n === 1 ? '' : String(n) });
+    scrollKe('hasil');
+  };
+
+  const intro = INTRO[kategori] || INTRO[''];
+  const judulGrid = q ? `Hasil untuk "${q}"` : kategori ? `Semua ${labelKategori(kategori).toLowerCase()}` : 'Semua konten';
 
   return (
-    <section className="section">
-      <div className="container">
-        <header className="page-head">
-          <h1>{judul}</h1>
-        </header>
-
-        <div className="toolbar">
-          {/* Tab kategori */}
-          <div role="tablist" aria-label="Kategori" className="tabs">
-            <button type="button" role="tab" className="tab" aria-selected={!kategori} onClick={() => ubahParam({ kategori: '', page: '' })}>
-              Semua
-            </button>
-            {KATEGORI.map((k) => (
-              <button
-                key={k.value}
-                type="button"
-                role="tab"
-                className="tab"
-                aria-selected={kategori === k.value}
-                onClick={() => ubahParam({ kategori: k.value, page: '' })}
-              >
-                {k.label}
-              </button>
-            ))}
+    <>
+      <PageHero
+        eyebrow={intro.eyebrow}
+        title={
+          <>
+            {intro.judul[0]}
+            <br />
+            <span>{intro.judul[1]}</span>
+          </>
+        }
+        description={intro.teks}
+        art={<HeroArt simbol={kategori ? gayaKategori(kategori).simbol : 'cat-leaf'} warna={intro.warna} />}
+      >
+        <form onSubmit={handleCari} className="search hero-search" role="search">
+          <label htmlFor="cari" className="visually-hidden">Cari konten</label>
+          <div className="search-input">
+            <Icon name="search" />
+            <input id="cari" type="search" value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="Contoh: sarapan sehat" />
           </div>
+          <button type="submit" className="button button-blue">Cari</button>
+        </form>
+      </PageHero>
 
-          {/* Pencarian */}
-          <form onSubmit={handleCari} className="search" role="search">
-            <div className="search__field">
-              <label htmlFor="cari">Cari konten</label>
-              <div className="search__input">
-                <Icon name="search" />
-                <input
-                  id="cari"
-                  type="search"
-                  value={keyword}
-                  onChange={(e) => setKeyword(e.target.value)}
-                  placeholder="Contoh: sarapan sehat"
-                />
-              </div>
-            </div>
-            <button type="submit" className="btn btn--secondary">Cari</button>
-          </form>
+      <section className="category-section container list-categories">
+        <Sym id="buddy" className="section-doodle doodle-b" />
+        <div className="section-heading compact">
+          <div>
+            <span className="eyebrow">SESUAI KEBUTUHANMU</span>
+            <h2>Pilih ruangmu.</h2>
+          </div>
+          <p>Ganti kategori kapan saja. Pencarianmu tetap tersimpan.</p>
+        </div>
+        <CategoryCards active={kategori} onSelect={(value) => ubahParam({ kategori: value, page: '' })} />
+      </section>
+
+      <section className="articles-section container" id="hasil">
+        <Sym id="cat-leaf" className="section-doodle doodle-e" />
+        <div className="section-heading">
+          <div>
+            <span className="eyebrow">{loading ? 'MEMUAT' : `${hasil.total} KONTEN`}</span>
+            <h2>{judulGrid}</h2>
+          </div>
+          {q && (
+            <button type="button" className="text-link all-articles" onClick={() => ubahParam({ q: '', page: '' })}>
+              Hapus pencarian <Sym id="arrow" />
+            </button>
+          )}
         </div>
 
-        {q && <p className="result-info">Hasil pencarian "{q}": {hasil.total} konten</p>}
-
-        {loading && <p className="status" role="status">Memuat...</p>}
+        {loading && (
+          <div className="loading-grid" role="status" aria-label="Memuat konten">
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+          </div>
+        )}
         {error && <p className="alert alert--error" role="alert">{error}</p>}
 
-        {!loading && !error && hasil.items.length === 0 && (
-          <div className="empty">
-            <p className="empty__title">Konten tidak ditemukan.</p>
-            {(q || kategori) && (
-              <>
-                <p className="empty__text">Coba kata kunci lain atau pilih kategori Semua.</p>
-                <Link to="/konten" className="link-plain">Lihat semua konten</Link>
-              </>
+        {!loading && !error && (
+          <div className="article-grid">
+            {hasil.items.length === 0 ? (
+              <div className="articles-empty">
+                <Sym id="cat-cloud" />
+                <h3>Konten tidak ditemukan.</h3>
+                {q || kategori ? (
+                  <>
+                    <p>Coba kata kunci lain atau pilih kategori Semua inspirasi.</p>
+                    <Link to="/konten" className="text-link">
+                      Lihat semua konten <Sym id="arrow" />
+                    </Link>
+                  </>
+                ) : (
+                  <p>Konten baru akan segera hadir.</p>
+                )}
+              </div>
+            ) : (
+              hasil.items.map((item) => <ContentCard key={item._id} content={item} />)
             )}
           </div>
         )}
 
-        {/* Daftar konten */}
-        <h2 className="visually-hidden">Daftar konten</h2>
-        {!loading && !error && (
-          <div className="grid">
-            {hasil.items.map((item) => (
-              <ContentCard key={item._id} content={item} />
-            ))}
-          </div>
-        )}
-
-        {/* Halaman */}
         {hasil.totalPages > 1 && (
           <nav aria-label="Halaman" className="pagination">
             {Array.from({ length: hasil.totalPages }, (_, i) => i + 1).map((n) => (
-              <button
-                key={n}
-                type="button"
-                aria-current={n === page ? 'page' : undefined}
-                onClick={() => ubahParam({ page: n === 1 ? '' : String(n) })}
-              >
+              <button key={n} type="button" aria-current={n === page ? 'page' : undefined} aria-label={`Halaman ${n}`} onClick={() => gantiHalaman(n)}>
                 {n}
               </button>
             ))}
           </nav>
         )}
-      </div>
-    </section>
+
+        <div className="article-bottom">
+          <span>Nggak harus langsung sempurna. Cukup mulai dari satu bacaan.</span>
+          <Sym id="heart" />
+        </div>
+      </section>
+
+      <CtaBox />
+    </>
   );
 }
 
