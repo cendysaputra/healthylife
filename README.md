@@ -1,4 +1,4 @@
-# HealthyLife
+# <picture><source media="(prefers-color-scheme: dark)" srcset="docs/screenshots/judul-gelap.svg"><img src="docs/screenshots/judul-terang.svg" alt="HealthyLife" height="40"></picture>
 
 **Your Daily Healthy Habit**
 
