@@ -4,9 +4,9 @@
 
 HealthyLife adalah *specialized platform* di bidang health & wellness yang menggabungkan konten edukasi pola hidup sehat dengan pencatatan aktivitas pribadi. Platform ini terdiri dari aplikasi web, aplikasi mobile, dan satu REST API yang dipakai bersama oleh keduanya.
 
-Proyek ini dibuat untuk Soal 4 Take Home mata kuliah Specialized Platform Development, BINUS Online Learning.
+Proyek ini dibuat untuk mata kuliah Specialized Platform Development, BINUS Online Learning.
 
-![Hero HealthyLife versi desktop](docs/screenshots/hero-desktop.png)
+<img src="docs/screenshots/thumbnail-rounded.png" alt="HealthyLife di laptop dan ponsel" width="100%">
 
 ## Fitur
 
@@ -26,11 +26,8 @@ Proyek ini dibuat untuk Soal 4 Take Home mata kuliah Specialized Platform Develo
 - Pengingat lokal setiap pukul 19.00 (khusus mobile)
 
 **Tambahan di web**
-- Pilihan "kebiasaan sehat" di beranda, tersimpan di browser dan ditampilkan di profil
-- Form catat aktivitas dan atur target langsung dari beranda lewat dialog
-- Smooth scroll, maskot beranimasi, dan tombol kembali ke atas
-- Meta SEO, Open Graph, dan Twitter card
-- Google Analytics 4 (hanya aktif di build produksi)
+- Pilihan "kebiasaan sehat" di beranda
+- Form catat aktivitas dan atur target
 
 ## Tech stack
 
@@ -42,34 +39,39 @@ Proyek ini dibuat untuk Soal 4 Take Home mata kuliah Specialized Platform Develo
 | Database | MongoDB (lokal untuk pengembangan, MongoDB Atlas untuk produksi) |
 | Deploy | Vercel (web), Railway (server), Expo Go dan APK lewat EAS (mobile) |
 
+<p>
+  <img src="docs/screenshots/hero-desktop-rounded.png" alt="Hero HealthyLife versi desktop" width="78%">
+  <img src="docs/screenshots/hero-mobile-rounded.png" alt="Beranda HealthyLife versi mobile" width="20.7%">
+</p>
+
 ## Struktur folder
 
 ```
 healthylife/
-├── server/                   REST API (Node.js + Express + MongoDB)
-│   ├── config/db.js          koneksi MongoDB
-│   ├── data/contents.json    data 30 konten
-│   ├── middleware/           auth (JWT) dan error handler
-│   ├── models/               User, Content, Activity
-│   ├── routes/               auth, contents, favorites, activities, notifications, users
-│   ├── utils/date.js         perhitungan hari dalam zona WIB
-│   ├── public/images/        thumbnail konten (<slug>.jpg)
-│   └── seed.js               mengisi database dengan 30 konten
-├── web/                      aplikasi web (React)
-│   ├── public/               index.html, favicon, gambar Open Graph
+├── server/               REST API
+│   ├── config/           koneksi database
+│   ├── data/             data konten
+│   ├── middleware/       auth dan error
+│   ├── models/           skema database
+│   ├── routes/           endpoint API
+│   ├── utils/            zona waktu
+│   ├── public/images/    thumbnail konten
+│   └── seed.js           isi database
+├── web/                  aplikasi web
+│   ├── public/           aset statis
 │   └── src/
-│       ├── api/              klien Axios dan token
-│       ├── components/       Header, Footer, kartu konten, form, dialog, section beranda
-│       ├── context/          AuthContext, FavoritesContext
-│       ├── data/             teks beranda dan geometri maskot
-│       ├── pages/            Home, ContentList, ContentDetail, Activity, Profile, Login, Register, NotFound
-│       └── styles/           CSS global, halaman, dan beranda
-├── mobile/                   aplikasi mobile (Expo)
+│       ├── api/          klien Axios
+│       ├── components/   komponen UI
+│       ├── context/      state global
+│       ├── data/         teks beranda
+│       ├── pages/        halaman web
+│       └── styles/       file CSS
+├── mobile/               aplikasi mobile
 │   └── src/
-│       ├── app/              layar expo-router: tab Beranda, Jelajah, Aktivitas, Profil, detail konten, notifikasi, login, register
-│       ├── components/       header, tab bar, kartu konten, tombol, field, ikon
-│       └── lib/              API, auth, favorit, pengingat, format, tema
-└── docs/screenshots/         tangkapan layar untuk README
+│       ├── app/          layar aplikasi
+│       ├── components/   komponen UI
+│       └── lib/          logika aplikasi
+└── docs/screenshots/     gambar README
 ```
 
 ## Menjalankan secara lokal
@@ -173,12 +175,12 @@ Jenis aktivitas: `jalan`, `lari`, `bersepeda`, `gym`, `yoga`, `peregangan`, `lai
 
 | Item | URL |
 |---|---|
-| Desain Figma | - |
 | Web | https://healthylife-theta.vercel.app/ |
-| API | - |
-| Expo Go (QR) | - |
-| APK | - |
+| Expo Go (QR) | https://expo.dev/accounts/cendysaputra-team/projects/healthylife/builds/a0ddfe54-1b79-48c5-8df4-aecdb14dd17f |
+| APK | https://github.com/cendysaputra/healthylife/releases/tag/v1.0.0 |
 
 ## Disclaimer
 
 Konten di HealthyLife bersifat edukasi dan bukan pengganti saran tenaga medis.
+
+<img src="docs/screenshots/maskot.webp" alt="Maskot HealthyLife" width="280">
