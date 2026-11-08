@@ -14,7 +14,7 @@ function DailySection() {
 
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState('');
-  const [dialog, setDialog] = useState(null); // 'catat' | 'target' | null
+  const [dialog, setDialog] = useState(null); // catat/target/null
 
   const muat = useCallback(async () => {
     if (!user) {

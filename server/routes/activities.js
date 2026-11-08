@@ -1,4 +1,3 @@
-// routes/activities.js
 const express = require('express');
 const Activity = require('../models/Activity');
 const auth = require('../middleware/auth');

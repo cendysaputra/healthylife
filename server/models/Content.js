@@ -1,4 +1,3 @@
-// models/Content.js
 const mongoose = require('mongoose');
 
 const SourceSchema = new mongoose.Schema(

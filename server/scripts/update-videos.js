@@ -1,4 +1,3 @@
-// scripts/update-videos.js
 // isi link video
 require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const mongoose = require('mongoose');

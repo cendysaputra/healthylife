@@ -1,5 +1,3 @@
-// middleware/errorHandler.js
-
 // error terpusat
 const errorHandler = (err, req, res, next) => {
   // id tidak valid

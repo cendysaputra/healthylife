@@ -1,4 +1,3 @@
-// utils/date.js
 // zona WIB
 
 const OFFSET_WIB = 7 * 60 * 60 * 1000;

@@ -1,4 +1,3 @@
-// routes/notifications.js
 const express = require('express');
 const Content = require('../models/Content');
 const User = require('../models/User');

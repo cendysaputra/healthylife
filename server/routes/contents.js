@@ -1,4 +1,3 @@
-// routes/contents.js
 const express = require('express');
 const Content = require('../models/Content');
 

@@ -1,4 +1,3 @@
-// seed.js
 // isi 30 konten
 require('dotenv').config();
 const mongoose = require('mongoose');

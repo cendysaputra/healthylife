@@ -126,25 +126,25 @@ npx eas-cli@latest build -p android --profile preview
 
 ## API
 
-Semua endpoint memakai prefix `/api/v1`. Endpoint bertanda 🔒 butuh header `Authorization: Bearer <token>`.
+Semua endpoint memakai prefix `/api/v1`. Endpoint dengan kolom Login bertanda "Ya" butuh header `Authorization: Bearer <token>`.
 
-| Method | Path | Fungsi |
-|---|---|---|
-| POST | `/auth/register` | Daftar akun |
-| POST | `/auth/login` | Masuk |
-| GET | `/auth/me` 🔒 | Data akun yang sedang login |
-| GET | `/contents?category=&q=&page=&limit=` | Daftar konten yang sudah terbit |
-| GET | `/contents/:slug` | Detail konten dan 3 konten terkait |
-| GET | `/favorites` 🔒 | Daftar favorit |
-| POST | `/favorites/:contentId` 🔒 | Tambah favorit |
-| DELETE | `/favorites/:contentId` 🔒 | Hapus favorit |
-| GET | `/activities` 🔒 | Riwayat aktivitas |
-| POST | `/activities` 🔒 | Catat aktivitas |
-| DELETE | `/activities/:id` 🔒 | Hapus aktivitas |
-| GET | `/activities/summary` 🔒 | Ringkasan hari ini dan 7 hari terakhir |
-| GET | `/notifications` 🔒 | Konten yang terbit sejak terakhir dicek |
-| PUT | `/notifications/seen` 🔒 | Tandai notifikasi sudah dilihat |
-| PUT | `/users/target` 🔒 | Ubah target harian |
+| Method | Path | Login | Fungsi |
+|---|---|---|---|
+| POST | `/auth/register` | - | Daftar akun |
+| POST | `/auth/login` | - | Masuk |
+| GET | `/auth/me` | Ya | Data akun yang sedang login |
+| GET | `/contents?category=&q=&page=&limit=` | - | Daftar konten yang sudah terbit |
+| GET | `/contents/:slug` | - | Detail konten dan 3 konten terkait |
+| GET | `/favorites` | Ya | Daftar favorit |
+| POST | `/favorites/:contentId` | Ya | Tambah favorit |
+| DELETE | `/favorites/:contentId` | Ya | Hapus favorit |
+| GET | `/activities` | Ya | Riwayat aktivitas |
+| POST | `/activities` | Ya | Catat aktivitas |
+| DELETE | `/activities/:id` | Ya | Hapus aktivitas |
+| GET | `/activities/summary` | Ya | Ringkasan hari ini dan 7 hari terakhir |
+| GET | `/notifications` | Ya | Konten yang terbit sejak terakhir dicek |
+| PUT | `/notifications/seen` | Ya | Tandai notifikasi sudah dilihat |
+| PUT | `/users/target` | Ya | Ubah target harian |
 
 Thumbnail konten disajikan statis di `/images/<slug>.jpg`.
 
