@@ -49,7 +49,7 @@ export const urlGambar = (path) => (path ? `${ASSET_URL}${path}` : '');
 
 export const urlEmbedYoutube = (url) => {
   if (!url) return null;
-  const cocok = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  const cocok = url.match(/(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
   return cocok ? `https://www.youtube.com/embed/${cocok[1]}` : null;
 };
 

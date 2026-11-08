@@ -32,13 +32,27 @@
         "expo-build-properties",
         {
           "android": {
-            "buildArchs": ["arm64-v8a", "armeabi-v7a"],
+            "buildArchs": [
+              "arm64-v8a",
+              "armeabi-v7a"
+            ],
             "enableMinifyInReleaseBuilds": true,
             "enableShrinkResourcesInReleaseBuilds": true,
             "useLegacyPackaging": true
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "asyncRoutes": {
+          "web": true
+        }
+      },
+      "eas": {
+        "projectId": "6897d8de-843f-4643-9b57-8c2e927aa136"
+      }
+    },
+    "owner": "cendysaputra-team"
   }
 }

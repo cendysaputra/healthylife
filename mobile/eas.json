@@ -1,10 +1,13 @@
 {
-  "cli": { "appVersionSource": "remote" },
-  "build": {
-    "preview": {
-      "distribution": "internal",
-      "android": { "buildType": "apk" }
-    },
-    "production": {}
-  }
+   "cli": { "appVersionSource": "remote" },
+   "build": {
+      "preview": {
+         "distribution": "internal",
+         "android": { "buildType": "apk" },
+         "env": {
+            "EXPO_PUBLIC_API_URL": "https://healthylife-production.up.railway.app/api/v1"
+         }
+      },
+      "production": {}
+   }
 }

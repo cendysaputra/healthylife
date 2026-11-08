@@ -53,7 +53,7 @@ export const urlGambar =(path) => (path ? `${ASSET_URL}${path}` : null);
 // ID YouTube
 export const idYoutube = (url) => {
   if (!url) return null;
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([\w-]{11})/);
+  const m = url.match(/(?:youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([\w-]{11})/);
   return m ? m[1] : null;
 };
 
