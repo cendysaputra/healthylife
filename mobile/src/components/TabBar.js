@@ -12,7 +12,7 @@ export const TAB = [
   { name: 'profil', href: '/profil', label: 'Profil', ikon: 'profil' }
 ];
 
-// Tab bar (tanpa ripple/hover). Tab aktif dari path, kecuali diberi `aktif`.
+// Tab bar
 export function TabBarView({ aktif }) {
   const insets = useSafeAreaInsets();
   const pathname = usePathname();
@@ -51,7 +51,7 @@ export default function TabBar() {
   return <TabBarView />;
 }
 
-// Untuk layar di luar Tabs (detail, notifikasi)
+// Tab bar luar
 export function TabBarLuar({ aktif = 'jelajah' }) {
   return <TabBarView aktif={aktif} />;
 }

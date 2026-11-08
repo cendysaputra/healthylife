@@ -70,7 +70,7 @@ export default function Ikon({ name, size = 24, color = colors.ink, strokeWidth 
   );
 }
 
-// Ikon tab: garis saat diam, duotone (ungu + aksen oranye) saat aktif
+// Ikon tab
 const OREN = '#FF6600';
 const IKON_ISI = {
   beranda: (w) => (
@@ -119,9 +119,9 @@ export function IkonTab({ name, aktif, color, size = 22 }) {
   );
 }
 
-// Latar gradien vertikal (isi penuh induknya, ukuran diukur agar akurat di native)
+// Gradien vertikal
 export function Gradien({ dari, ke, stops }) {
-  // stops: [[offset, warna], ...] menimpa dari/ke
+  // stops menimpa dari/ke
   const titik = stops || [
     [0, dari],
     [0.55, dari],
@@ -154,7 +154,7 @@ export function Gradien({ dari, ke, stops }) {
   );
 }
 
-// Bookmark (isi saat tersimpan)
+// Ikon bookmark
 export function IkonBookmark({ size = 20, color = colors.ink, terisi = false }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24">
@@ -169,14 +169,14 @@ export function IkonBookmark({ size = 20, color = colors.ink, terisi = false }) 
   );
 }
 
-// Ilustrasi berwarna dari web
+// Ilustrasi berwarna
 export function Simbol({ id, size = 34 }) {
   const xml = ILUSTRASI[id];
   if (!xml) return null;
   return <SvgXml xml={xml} width={size} height={size} />;
 }
 
-// Geometri maskot (web/src/data/maskot.js)
+// Geometri maskot
 const MASKOT = {
   ungu: {
     mataY: 0.39,
@@ -242,7 +242,7 @@ const MASKOT = {
 
 const acak = (min, max) => min + Math.random() * (max - min);
 
-// Gerak menoleh & kedip (meniru useHidup di web)
+// Animasi menoleh, kedip
 function useHidup({ ukuran, menoleh: bisaMenoleh = true }) {
   const geser = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const putar = useRef(new Animated.Value(0)).current;
@@ -276,7 +276,7 @@ function useHidup({ ukuran, menoleh: bisaMenoleh = true }) {
       Animated.sequence(langkah).start(() => nanti(berkedip, acak(2200, 5000)));
     };
 
-    // Hormati pengaturan kurangi gerakan
+    // Hormati reduced-motion
     AccessibilityInfo.isReduceMotionEnabled()
       .catch(() => false)
       .then((kurangi) => {
@@ -298,7 +298,7 @@ function useHidup({ ukuran, menoleh: bisaMenoleh = true }) {
   return { geser, rotate, kedip };
 }
 
-// Skala kedip berpusat di tinggi mata
+// Pusat skala kedip
 const gayaKedip = (kedip, size, mataY) => {
   const dy = size * (mataY - 0.5);
   return { transform: [{ translateY: dy }, { scaleY: kedip }, { translateY: -dy }] };
@@ -338,7 +338,7 @@ export function Maskot({ varian = 'putih', size = 60, style }) {
   );
 }
 
-// Mata kartu ungu (berkedip)
+// Mata kartu ungu
 export function MataKartu({ size = 34, style }) {
   const { kedip } = useHidup({ ukuran: size, menoleh: false });
   return (
@@ -355,7 +355,7 @@ export function MataKartu({ size = 34, style }) {
   );
 }
 
-// Pola awan [diameter, tinggi terlihat] (web/src/components/Cloud.js)
+// Pola awan
 const POLA = [
   [300, 86],
   [256, 128],
@@ -368,7 +368,7 @@ const POLA = [
   [300, 100]
 ];
 
-// Tepi awan di atas blok berwarna
+// Tepi awan
 export function Awan({ warna, mulai = 0, tinggi = 44, skala = 0.42 }) {
   const { width } = useWindowDimensions();
   const pola = [...POLA.slice(mulai % POLA.length), ...POLA.slice(0, mulai % POLA.length)];

@@ -1,4 +1,4 @@
-// Token tema (mengikuti web)
+// Token tema
 export const colors = {
   bg: '#FFFFFF',
   ink: '#1B1B1B',
@@ -26,7 +26,7 @@ export const colors = {
   successBg: '#E8F3EC'
 };
 
-// Brand lama, tetap diekspor untuk kompatibilitas
+// Alias lama
 colors.brand = colors.purple;
 colors.border = colors.line;
 
@@ -37,14 +37,14 @@ export const fonts = {
   bold: 'IBMPlexSans_700Bold'
 };
 
-// Skala spasi (pakai ini, jangan angka acak)
+// Skala spasi
 export const space = {
   screen: 16, // tepi kiri-kanan layar
   section: 48, // antar section
-  block: 16, // antar kartu/blok dalam section, judul section ke isi
+  block: 16, // antar blok
   list: 12, // antar item daftar
   card: 20, // padding dalam kartu
-  inner: 12, // jarak elemen di dalam kartu
+  inner: 12, // isi kartu
   heroTop: 24,
   heroBottom: 32,
   gap: 12

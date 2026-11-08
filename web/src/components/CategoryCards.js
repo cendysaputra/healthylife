@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { KARTU_KATEGORI } from '../data/home';
 import Sym from './Svg';
 
-// Pil kategori: onSelect atau hrefFor
+// Pil kategori
 function CategoryCards({ active = null, onSelect, hrefFor, semua = true, label = 'Pilih kategori konten' }) {
   return (
     <div className="hl-cats" role="group" aria-label={label}>

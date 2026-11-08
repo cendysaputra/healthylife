@@ -6,8 +6,8 @@ import { Maskot } from './Ikon';
 import { StackHeader, TabHeader } from './AppHeader';
 import { TabBarLuar } from './TabBar';
 
-// Kerangka layar: header (ikut scroll) + hero krem + isi
-// header: 'tab' atau judul layar stack
+// Kerangka layar
+// header: 'tab'/judul
 export default function Screen({
   children,
   header = 'tab',
@@ -63,12 +63,12 @@ export default function Screen({
   );
 }
 
-// Blok krem pembuka halaman
+// Hero krem
 export function Hero({ children, style }) {
   return <View style={[styles.hero, style]}>{children}</View>;
 }
 
-// Tautan kecil di samping judul section
+// Tautan judul section
 export function LinkAksi({ title, onPress }) {
   return (
     <Pressable

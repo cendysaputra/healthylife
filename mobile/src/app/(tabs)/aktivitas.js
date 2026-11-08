@@ -22,7 +22,7 @@ import Select from '../../components/Select';
 import Teks, { Eyebrow, Judul } from '../../components/Teks';
 import Ikon, { Maskot, MataKartu, Simbol } from '../../components/Ikon';
 
-// Ikon per jenis (sama dengan web)
+// Ikon per jenis
 const JENIS = {
   jalan: { simbol: 'cat-shoe', warna: '#FFF1C7' },
   lari: { simbol: 'move', warna: '#FFE3D1' },

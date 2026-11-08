@@ -11,7 +11,18 @@ export function Sampul({ content }) {
   const gaya = gayaKategori(content.category);
   const [gagal, setGagal] = useState(false);
   const src = content.thumbnail && !gagal ? urlGambar(content.thumbnail) : gaya.foto;
-  if (src) return <img src={src} alt="" loading="lazy" width="900" height="630" onError={() => setGagal(true)} />;
+  if (src)
+    return (
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width="900"
+        height="630"
+        onError={() => setGagal(true)}
+      />
+    );
   return (
     <span className="vector-cover">
       <Sym id={gaya.simbol} />

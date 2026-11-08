@@ -42,7 +42,7 @@ function DailySection() {
     setDialog(jenis);
   };
 
-  // Angka contoh untuk tamu
+  // Contoh untuk tamu
   const today = user ? (summary?.today ?? 0) : 8;
   const target = summary?.target ?? user?.dailyTarget ?? 30;
   const pesan = summary ? pesanProgres(summary) : 'Satu langkah kecil, bisa jadi awal yang baik.';

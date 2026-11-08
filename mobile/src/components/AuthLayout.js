@@ -5,7 +5,7 @@ import Teks, { Judul } from './Teks';
 import { Maskot } from './Ikon';
 import { kartuStyle } from './LoginPrompt';
 
-// Kerangka halaman masuk/daftar
+// Kerangka masuk/daftar
 export default function AuthLayout({ judul, aksen, deskripsi, kartuJudul, header, error, children }) {
   return (
     <Screen

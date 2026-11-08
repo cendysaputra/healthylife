@@ -26,6 +26,11 @@ function useFotoHero(content) {
   return [src, () => setGagal(true)];
 }
 
+// Gambar markdown lazy
+function MarkdownImg({ node, alt = '', ...props }) {
+  return <img alt={alt} loading="lazy" decoding="async" {...props} />;
+}
+
 function HeroSederhana({ judul, children }) {
   return (
     <InCanvas>
@@ -144,7 +149,7 @@ function ContentDetail() {
                 allowFullScreen
               />
             ) : foto ? (
-              <img src={foto} alt="" onError={onFotoError} />
+              <img src={foto} alt="" fetchpriority="high" onError={onFotoError} />
             ) : (
               <span className="single-hero-vector">
                 <Sym id={gaya.simbol} />
@@ -158,7 +163,7 @@ function ContentDetail() {
       <article className="single-body container">
         <div className="single-main">
           <div className="single-prose">
-            <ReactMarkdown>{content.body}</ReactMarkdown>
+            <ReactMarkdown components={{ img: MarkdownImg }}>{content.body}</ReactMarkdown>
           </div>
 
           <p className="single-note">

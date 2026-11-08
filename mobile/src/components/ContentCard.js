@@ -59,7 +59,7 @@ export function Tag({ category, style }) {
   );
 }
 
-// Kartu ringkas: thumbnail kiri, teks kanan
+// Kartu ringkas
 export default function ContentCard({ content, polos = false }) {
   const [gagal, setGagal] = useState(false);
   const gambar = !gagal ? urlGambar(content.thumbnail) : null;

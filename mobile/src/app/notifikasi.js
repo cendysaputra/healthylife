@@ -14,7 +14,7 @@ export default function Notifikasi() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Ambil, lalu tandai dilihat
+    // Ambil, tandai dilihat
     api
       .get('/notifications')
       .then(({ data }) => {

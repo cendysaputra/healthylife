@@ -38,7 +38,7 @@ export default function Profil() {
       .catch(() => {});
   }, [user]);
 
-  // Segarkan favorit saat fokus
+  // Segarkan favorit
   useFocusEffect(
     useCallback(() => {
       reload();

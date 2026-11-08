@@ -1,12 +1,12 @@
 import { StyleSheet, Text } from 'react-native';
 import { colors, fonts, type } from '../lib/theme';
 
-// Teks dengan font IBM Plex Sans
+// Teks IBM Plex
 export default function Teks({ w = 'regular', style, ...props }) {
   return <Text {...props} style={[styles.base, { fontFamily: fonts[w] }, style]} />;
 }
 
-// Judul besar ala hero web
+// Judul hero
 export function Judul({ children, aksen, warnaAksen = colors.orange, size = type.page, style }) {
   return (
     <Teks

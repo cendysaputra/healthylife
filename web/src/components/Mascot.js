@@ -5,7 +5,7 @@ import { MASKOT } from '../data/maskot';
 const acak = (min, max) => min + Math.random() * (max - min);
 const kurangGerak = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-// Animasi menoleh & kedip
+// Animasi menoleh, kedip
 export function useHidup(
   wajahRef,
   mataRef,

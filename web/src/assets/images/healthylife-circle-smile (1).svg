@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120" fill="none" role="img" aria-labelledby="title">
-  <title id="title">Lingkaran kuning dengan mata dan senyum</title>
-  <circle cx="60" cy="60" r="46" fill="#FFCA58"/>
-  <ellipse cx="47" cy="63" rx="3.8" ry="5.5" fill="#6B573F" transform="rotate(-10 47 63)"/>
-  <ellipse cx="75" cy="58" rx="3.8" ry="5.5" fill="#6B573F" transform="rotate(-10 75 58)"/>
-  <path d="M54 77C58 81 65 80 68 75" stroke="#6B573F" stroke-width="3.2" stroke-linecap="round"/>
-</svg>

@@ -2,8 +2,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { colors, fonts, radius } from '../lib/theme';
 import Teks from './Teks';
 
-// Tombol pil ala web
-// variant: primary | orange | outline | light | link | linkLight
+// Tombol pil
 export default function Button({
   title,
   onPress,

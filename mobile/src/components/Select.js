@@ -4,8 +4,7 @@ import { colors, radius } from '../lib/theme';
 import Teks from './Teks';
 import Ikon, { Simbol } from './Ikon';
 
-// Dropdown pilihan (panel terbuka di bawah tombol)
-// options: [{ value, label, simbol?, warna? }]
+// Dropdown pilihan
 export default function Select({ value, options, onChange, label = 'Pilih kategori', ikonTombol = 'kategori' }) {
   const [buka, setBuka] = useState(false);
   const pilihan = options.find((o) => o.value === value) || options[0];

@@ -1,7 +1,7 @@
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
-// Mati saat reduced motion
+// Mati saat reduced-motion
 let lenis = null;
 
 export function mulaiSmoothScroll() {

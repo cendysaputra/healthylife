@@ -26,7 +26,7 @@ function HabitSection() {
   const rencana = KEBIASAAN.find((k) => k.id === pilihan);
   const foto = fotoGagal[rencana.id] ? fotoCadangan : urlGambar(rencana.foto);
 
-  // Dipakai juga di Profil
+  // Dipakai di Profil
   const pilih = (id) => {
     setPilihan(id);
     try {
@@ -85,6 +85,7 @@ function HabitSection() {
                 src={foto}
                 alt=""
                 loading="lazy"
+                decoding="async"
                 width="1168"
                 height="784"
                 onError={() => setFotoGagal((g) => ({ ...g, [rencana.id]: true }))}

@@ -34,7 +34,7 @@ export function FavoritesProvider({ children }) {
 
   const ids = useMemo(() => new Set(items.map((i) => i._id)), [items]);
 
-  // Optimistis, rollback jika gagal
+  // Optimistis dengan rollback
   const toggle = useCallback(
     async (content) => {
       const tersimpan = ids.has(content._id);

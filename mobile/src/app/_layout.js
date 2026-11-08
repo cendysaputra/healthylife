@@ -2,7 +2,7 @@ import { View } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
-// Impor per berat agar varian lain tidak ikut dibundel
+// Impor per berat
 import { IBMPlexSans_400Regular } from '@expo-google-fonts/ibm-plex-sans/400Regular';
 import { IBMPlexSans_500Medium } from '@expo-google-fonts/ibm-plex-sans/500Medium';
 import { IBMPlexSans_600SemiBold } from '@expo-google-fonts/ibm-plex-sans/600SemiBold';
@@ -20,7 +20,7 @@ export default function RootLayout() {
     IBMPlexSans_700Bold
   });
 
-  // Tunggu font (lanjut saja kalau gagal dimuat)
+  // Tunggu font
   if (!fontSiap && !fontError) return <View style={{ flex: 1, backgroundColor: colors.cream }} />;
 
   return (

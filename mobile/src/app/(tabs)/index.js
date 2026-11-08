@@ -11,7 +11,7 @@ import Button from '../../components/Button';
 import Teks, { Eyebrow, Judul } from '../../components/Teks';
 import { Awan, Gradien, Maskot, MataKartu, Simbol } from '../../components/Ikon';
 
-// Kartu kategori (web/src/data/home.js)
+// Kartu kategori
 const KARTU_KATEGORI = [
   { value: 'nutrisi', label: 'Makan lebih baik', sub: 'Nutrisi sehari-hari', simbol: 'cat-bowl', warna: '#FFE4D3' },
   { value: 'olahraga', label: 'Aktif bergerak', sub: 'Mulai dari langkahmu', simbol: 'cat-shoe', warna: '#ECE2FF' },
@@ -46,7 +46,7 @@ export default function Beranda() {
     muat();
   }, [muat]);
 
-  // Ringkasan harian saat fokus
+  // Ringkasan saat fokus
   useFocusEffect(
     useCallback(() => {
       if (!user) return setSummary(null);
@@ -59,7 +59,7 @@ export default function Beranda() {
 
   const keJelajah = (kategori) => router.push({ pathname: '/jelajah', params: { kategori: kategori || '' } });
 
-  // Angka contoh untuk tamu
+  // Contoh untuk tamu
   const today = user ? (summary?.today ?? 0) : 8;
   const target = summary?.target ?? user?.dailyTarget ?? 30;
   const pesan = summary ? pesanProgres(summary) : 'Satu langkah kecil, bisa jadi awal yang baik.';
@@ -77,7 +77,7 @@ export default function Beranda() {
       hero={
         <View style={styles.heroLuar}>
           <View style={styles.heroKotak}>
-            {/* Cincin dekoratif (dipotong oleh kotak) */}
+            {/* Cincin dekoratif */}
             <View style={styles.heroClip} pointerEvents="none">
               <View style={styles.heroRing} />
             </View>
@@ -96,7 +96,7 @@ export default function Beranda() {
             </Teks>
             <Button title="Temukan Inspirasimu" variant="orange" block={false} onPress={() => keJelajah()} />
 
-            {/* Maskot di sudut kotak */}
+            {/* Maskot sudut */}
             <Maskot varian="kuning" size={56} style={[styles.smile, { top: -18, right: 28 }]} />
             <Maskot varian="lavender" size={44} style={[styles.smile, { left: -12, bottom: -20 }]} />
           </View>
@@ -164,7 +164,7 @@ export default function Beranda() {
         </View>
       </View>
 
-      {/* Target & progres harian */}
+      {/* Target harian */}
       <Section>
         <View style={styles.target}>
           <Eyebrow style={{ color: colors.yellowInk }}>Target harianmu</Eyebrow>

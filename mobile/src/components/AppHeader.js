@@ -5,7 +5,7 @@ import Teks from './Teks';
 import Ikon from './Ikon';
 import BellButton from './BellButton';
 
-// Logo teks HealthyLife.
+// Logo teks
 export function Logo({ size = 26, light = false }) {
   return (
     <Text
@@ -18,7 +18,7 @@ export function Logo({ size = 26, light = false }) {
   );
 }
 
-// Header tab: logo + lonceng (ikut di-scroll)
+// Header tab
 export function TabHeader() {
   return (
     <View style={styles.bar}>
@@ -33,7 +33,7 @@ export function TabHeader() {
 
 const kembali = () => (router.canGoBack() ? router.back() : router.replace('/'));
 
-// Header stack: tombol kembali + judul
+// Header stack
 export function StackHeader({ title }) {
   return (
     <View style={styles.bar}>

@@ -4,7 +4,7 @@ import { useAuth } from './auth';
 
 const FavoritesContext = createContext(null);
 
-// Favorit bersama (kartu, detail, profil)
+// Favorit bersama
 export function FavoritesProvider({ children }) {
   const { user } = useAuth();
   const [items, setItems] = useState([]);

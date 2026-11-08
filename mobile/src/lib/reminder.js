@@ -1,7 +1,7 @@
 import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 
-// Notif saat app terbuka
+// Notif saat terbuka
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -14,10 +14,10 @@ Notifications.setNotificationHandler({
 const ID_PENGINGAT = 'pengingat-harian';
 const CHANNEL = 'pengingat';
 
-// Pengingat 19.00. Hasil: { ok, pesan, keSetelan }
+// Pengingat 19.00
 export const aktifkanPengingat = async () => {
   try {
-    // Android 13+: prompt izin baru muncul setelah ada channel
+    // Channel dulu (Android 13+)
     if (Platform.OS === 'android') {
       await Notifications.setNotificationChannelAsync(CHANNEL, {
         name: 'Pengingat harian',
